@@ -1,0 +1,4 @@
+- source: project
+  netlify:
+    - id: d32ca120-f6b0-467e-a098-0cf2bdff99aa
+      url: 'https://corneliustanui.rbind.io'
