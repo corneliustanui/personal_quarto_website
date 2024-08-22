@@ -1,0 +1,45 @@
+project:
+  type: website
+  resources:
+    - "assets/pdf/Cornelius Tanui_Resume.pdf"
+
+website:
+  title: "Cornelius Tanui"
+  site-url: https://corneliustanui.rbind.io/
+  description: "Data and Technology"
+  favicon: assets/img/favicon.ico
+  open-graph:
+    locale: en-KE
+  navbar:
+    background: dark
+    foreground: white
+    search: true
+    # left:
+      # - text: "Cornelius Tanui"
+      # - href: index.qmd
+      
+    right:  
+      - text: "Home"
+        icon: house-fill
+        href: index.qmd
+        
+      - text: "Blog"  
+        icon: substack
+        href: content/blog.qmd
+        
+      - text: "Projects"  
+        icon: kanban
+        href: content/projects.qmd
+        
+  page-footer:
+    border: true
+    left: "Website made with [Quarto](https://quarto.org/), by Cornelius Tanui."
+    right: "The content (text and images) are licensed under CC BY-NC 4.0"
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+
+editor: visual

@@ -1,0 +1,32 @@
+---
+pagetitle: "Cornelius Tanui | Home"
+title: "Cornelius Tanui"
+image: assets/img/prof_pic.jpeg
+about:
+  template: jolla
+  links:
+    - text: LinkedIn
+      icon: linkedin
+      url: "https://www.linkedin.com/in/cornelius-tanui-527979b9"
+      
+    - text: GitHub
+      icon: github
+      url: "https://github.com/corneliustanui"
+      
+    - text: Email
+      icon: envelope-fill
+      url: "mailto:kiplimocornelius@gmail.com"
+      
+    - text: Blog
+      icon: substack
+      url: "content/blog.qmd"
+      
+    - text: CV
+      icon: file-earmark-person
+      url: "assets/pdf/Cornelius Tanui_Resume.pdf"
+comments: false 
+---
+
+I am a skilled data professional with over 5 years of experience in public health, renewable energy, WASH, climate action, and clinical trials. 
+
+Having a B.Sc. in Applied Statistics with Computing, I have worked as a Data Analyst, Statistician, Statistical Trainer, Data Manager, and currently as an FSP Data Configurations Engineer with one of [Phastar](https://phastar.com/about-us)'s large pharmaceutical client.
