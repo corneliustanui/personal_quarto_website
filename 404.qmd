@@ -1,0 +1,8 @@
+---
+pagetitle: "Cornelius Tanui | 404"
+---
+
+<br> [Ooops, you got a 404!]{.h1 style="font-size:2em"}
+
+
+Sorry, that page is unavailable, and I have no idea why. Please [go home](/), or use the search button, or [email me](mailto:kiplimocornelius@gmail.com) if you did not get what you are looking for.

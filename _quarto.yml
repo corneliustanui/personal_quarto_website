@@ -34,7 +34,12 @@ website:
   page-footer:
     border: true
     left: "Website made with [Quarto](https://quarto.org/), by Cornelius Tanui."
-    right: "The content (text and images) are licensed under CC BY-NC 4.0"
+    # right: "The content (text and images) are licensed under CC BY-NC 4.0"
+    right: "[License Statement](License.html)"
+
+  cookie-consent:
+    type: express
+    prefs-text: "Change your cookies preferences"
 
 format:
   html:
