@@ -27,6 +27,6 @@ about:
 comments: false 
 ---
 
-I am a skilled data professional with over 5 years of experience in public health, renewable energy, WASH, climate action, and clinical trials. 
+I am a skilled data professional with over 5 years of experience in public health, renewable energy, WASH, climate action, and clinical trials.
 
-Having a B.Sc. in Applied Statistics with Computing, I have worked as a Data Analyst, Statistician, Statistical Trainer, Data Manager, and currently as an FSP Data Configurations Engineer with one of [Phastar](https://phastar.com/about-us)'s large pharmaceutical client.
+Having a B.Sc. in Applied Statistics with Computing, I have worked as a Data Analyst, Statistician, Statistical Trainer, Data Manager, and currently as an FSP Data Configurations Engineer with one of [Phastar](https://phastar.com/about-us)'s large pharmaceutical clients.
