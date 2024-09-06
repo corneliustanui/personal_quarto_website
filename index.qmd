@@ -1,7 +1,7 @@
 ---
 pagetitle: "Cornelius Tanui | Home"
 title: "Cornelius Tanui"
-image: assets/img/prof_pic.jpeg
+image: www/prof_pic.jpeg
 about:
   template: jolla
   links:

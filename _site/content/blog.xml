@@ -10,7 +10,40 @@
 <atom:link href="https://corneliustanui.rbind.io/content/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Data and Technology</description>
 <generator>quarto-1.4.553</generator>
-<lastBuildDate>Mon, 08 Jan 2024 21:00:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 05 Sep 2024 21:00:00 GMT</lastBuildDate>
+<item>
+  <title>Household Classifier</title>
+  <dc:creator>Cornelius Tanui</dc:creator>
+  <link>https://corneliustanui.rbind.io/content/posts/2024-09-06/</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="university-funding-in-kenya" class="level3">
+<h3 class="anchored" data-anchor-id="university-funding-in-kenya">University Funding in Kenya</h3>
+<section id="my-shallow-thoughts-on-mti" class="level5">
+<h5 class="anchored" data-anchor-id="my-shallow-thoughts-on-mti">My Shallow Thoughts on MTI</h5>
+<p>When I first heard of MTI, my immediate thought was that the government of Kenya had finally embraced ‘Artificial Intelligence’ on a larger scale, and decided to award university students scholarships based on economic bands decided by some novel AI algorithm. Think, a combination of classification algorithms of high repute. What a pleasant thought, right? No.</p>
+<p>No because, later, I searched for MTI online and found out that it stands for ‘means testing instrument’, and if you are too much into data, you would think ‘means’ is the average, like, ‘testing of means’ is not an entirely bad thought, we come across it all the time in data analytics. T-test is a test of means, right? Right. I kid you not, ‘means’ in the context of MTI stands for ‘resources’ that a student has access to that could otherwise be used to fund their higher education.’Means’ can be a confusing word. Well, ‘means of transport’ surely does not imply the mathematical average.</p>
+<p>As it turned out, MTI is a widely used concept in the education and social protection sectors, and I was embarrassingly waaay off in thinking that it had something to do with AI.</p>
+<p>I was waaay off in yet another aspect – think about it for a moment; the students joining university in September, 2024 as first-years/freshmen had never been banded before, and therefore, there would be no training data for my imagined novel AI model! This is the first time banding is happening in Kenya, so maybe, just maybe, there will be (enough) data to train a model in 2025, so that the freshmen of 2025 will have successfully been banded by the AI.</p>
+</section>
+<section id="background-of-mti-banding" class="level5">
+<h5 class="anchored" data-anchor-id="background-of-mti-banding">Background of MTI Banding</h5>
+
+
+</section>
+</section>
+
+ ]]></description>
+  <category>R</category>
+  <category>classification</category>
+  <category>prediction</category>
+  <category>MTI</category>
+  <guid>https://corneliustanui.rbind.io/content/posts/2024-09-06/</guid>
+  <pubDate>Thu, 05 Sep 2024 21:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Modelling CPI Using ARIMA(p,d,q)</title>
   <dc:creator>Cornelius Tanui</dc:creator>

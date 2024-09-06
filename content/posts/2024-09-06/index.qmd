@@ -1,0 +1,29 @@
+---
+title: Household Classifier
+subtitle: Predictiing the Household Economic Bands Into Which Kenyan University Students Fall for Award of Government Financial Support.
+author: Cornelius Tanui
+date: '2024-09-06'
+slug: classification
+categories: [R, classification, prediction, MTI]
+---
+
+```{r chunk options, include = FALSE}
+
+knitr::opts_chunk$set(warning = FALSE,
+                      message = FALSE)
+
+```
+
+### University Funding in Kenya
+
+##### My Shallow Thoughts on MTI
+
+When I first heard of MTI, my immediate thought was that the government of Kenya had finally embraced 'Artificial Intelligence' on a larger scale, and decided to award university students scholarships based on economic bands decided by some novel AI algorithm. Think, a combination of classification algorithms of high repute. What a pleasant thought, right? No.
+
+No because, later, I searched for MTI online and found out that it stands for 'means testing instrument', and if you are too much into data, you would think 'means' is the average, like, 'testing of means' is not an entirely bad thought, we come across it all the time in data analytics. T-test is a test of means, right? Right. I kid you not, 'means' in the context of MTI stands for 'resources' that a student has access to that could otherwise be used to fund their higher education.'Means' can be a confusing word. Well, 'means of transport' surely does not imply the mathematical average.
+
+As it turned out, MTI is a widely used concept in the education and social protection sectors, and I was embarrassingly waaay off in thinking that it had something to do with AI.
+
+I was waaay off in yet another aspect -- think about it for a moment; the students joining university in September, 2024 as first-years/freshmen had never been banded before, and therefore, there would be no training data for my imagined novel AI model! This is the first time banding is happening in Kenya, so maybe, just maybe, there will be (enough) data to train a model in 2025, so that the freshmen of 2025 will have successfully been banded by the AI.
+
+##### Background of MTI Banding

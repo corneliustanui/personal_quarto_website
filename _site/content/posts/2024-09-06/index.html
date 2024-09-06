@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Cornelius Tanui">
+<meta name="dcterms.date" content="2024-09-06">
 
-<title>Cornelius Tanui | Blog</title>
+<title>Cornelius Tanui - Household Classifier</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,27 +25,25 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="../www/favicon.ico" rel="icon">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/cookie-consent/cookie-consent.js"></script>
-<link href="../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../www/favicon.ico" rel="icon">
+<script src="../../../site_libs/cookie-consent/cookie-consent.js"></script>
+<link href="../../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -71,35 +71,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-subtitle','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-subtitle","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-FKYWD742CS"></script>
 
 <script type="text/plain" cookie-consent="tracking">
@@ -128,38 +99,10 @@ cookieconsent.run({
 </script> 
   
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="../styles.css">
-<link rel="alternate" type="application/rss+xml" title="Cornelius Tanui" href="blog.xml" data-external="1"><meta property="og:title" content="Cornelius Tanui | Blog">
+<link rel="stylesheet" href="../../../styles.css">
+<meta property="og:title" content="Cornelius Tanui - Household Classifier">
+<meta property="og:description" content="Predictiing the Household Economic Bands Into Which Kenyan University Students Fall for Award of Government Financial Support.">
 <meta property="og:site_name" content="Cornelius Tanui">
 <meta property="og:locale" content="en-KE">
 </head>
@@ -171,7 +114,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title">Cornelius Tanui</span>
     </a>
   </div>
@@ -182,17 +125,17 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> <i class="bi bi-house-fill" role="img">
+    <a class="nav-link" href="../../../index.html"> <i class="bi bi-house-fill" role="img">
 </i> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../content/blog.html" aria-current="page"> <i class="bi bi-substack" role="img">
+    <a class="nav-link" href="../../../content/blog.html"> <i class="bi bi-substack" role="img">
 </i> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../content/projects.html"> <i class="bi bi-kanban" role="img">
+    <a class="nav-link" href="../../../content/projects.html"> <i class="bi bi-kanban" role="img">
 </i> 
 <span class="menu-text">Projects</span></a>
   </li>  
@@ -204,25 +147,50 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(2)</span></div><div class="category" data-category="MTI">MTI <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R">R <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Smoothing">Smoothing <span class="quarto-category-count">(1)</span></div><div class="category" data-category="classification">classification <span class="quarto-category-count">(1)</span></div><div class="category" data-category="prediction">prediction <span class="quarto-category-count">(1)</span></div><div class="category" data-category="time-series">time-series <span class="quarto-category-count">(1)</span></div></div></div>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#university-funding-in-kenya" id="toc-university-funding-in-kenya" class="nav-link active" data-scroll-target="#university-funding-in-kenya">University Funding in Kenya</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Blog</h1>
-</div>
+<h1 class="title">Household Classifier</h1>
+<p class="subtitle lead">Predictiing the Household Economic Bands Into Which Kenyan University Students Fall for Award of Government Financial Support.</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">R</div>
+    <div class="quarto-category">classification</div>
+    <div class="quarto-category">prediction</div>
+    <div class="quarto-category">MTI</div>
+  </div>
+  </div>
 
 
 
-<div class="quarto-title-meta column-page-left">
+<div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Cornelius Tanui </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 6, 2024</p>
+    </div>
+  </div>
   
     
   </div>
@@ -232,98 +200,23 @@ window.Quarto = {
 </header>
 
 
+<section id="university-funding-in-kenya" class="level3">
+<h3 class="anchored" data-anchor-id="university-funding-in-kenya">University Funding in Kenya</h3>
+<section id="my-shallow-thoughts-on-mti" class="level5">
+<h5 class="anchored" data-anchor-id="my-shallow-thoughts-on-mti">My Shallow Thoughts on MTI</h5>
+<p>When I first heard of MTI, my immediate thought was that the government of Kenya had finally embraced ‘Artificial Intelligence’ on a larger scale, and decided to award university students scholarships based on economic bands decided by some novel AI algorithm. Think, a combination of classification algorithms of high repute. What a pleasant thought, right? No.</p>
+<p>No because, later, I searched for MTI online and found out that it stands for ‘means testing instrument’, and if you are too much into data, you would think ‘means’ is the average, like, ‘testing of means’ is not an entirely bad thought, we come across it all the time in data analytics. T-test is a test of means, right? Right. I kid you not, ‘means’ in the context of MTI stands for ‘resources’ that a student has access to that could otherwise be used to fund their higher education.’Means’ can be a confusing word. Well, ‘means of transport’ surely does not imply the mathematical average.</p>
+<p>As it turned out, MTI is a widely used concept in the education and social protection sectors, and I was embarrassingly waaay off in thinking that it had something to do with AI.</p>
+<p>I was waaay off in yet another aspect – think about it for a moment; the students joining university in September, 2024 as first-years/freshmen had never been banded before, and therefore, there would be no training data for my imagined novel AI model! This is the first time banding is happening in Kenya, so maybe, just maybe, there will be (enough) data to train a model in 2025, so that the freshmen of 2025 will have successfully been banded by the AI.</p>
+</section>
+<section id="background-of-mti-banding" class="level5">
+<h5 class="anchored" data-anchor-id="background-of-mti-banding">Background of MTI Banding</h5>
 
 
+</section>
+</section>
 
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="R,classification,prediction,MTI" data-listing-date-sort="1725570000000" data-listing-file-modified-sort="1725645478176" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="314">
-<div class="thumbnail">
-<p><a href="../content/posts/2024-09-06/index.html" class="no-external"></a></p><a href="../content/posts/2024-09-06/index.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="../content/posts/2024-09-06/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../content/posts/2024-09-06/index.html" class="no-external">Household Classifier</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../content/posts/2024-09-06/index.html" class="no-external">Predictiing the Household Economic Bands Into Which Kenyan University Students Fall for Award of Government Financial Support.</a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('classification'); return false;">
-classification
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('prediction'); return false;">
-prediction
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('MTI'); return false;">
-MTI
-</div>
-</div>
-<div class="listing-description">
-<a href="../content/posts/2024-09-06/index.html" class="no-external">When I first heard of MTI, my immediate thought was that the government of Kenya had finally embraced ‘Artificial Intelligence’ on a larger scale, and decided to award…</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../content/posts/2024-09-06/index.html" class="no-external">
-<div class="listing-date">
-Sep 6, 2024
-</div>
-<div class="listing-author">
-Cornelius Tanui
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="R,time-series,Smoothing" data-listing-date-sort="1704747600000" data-listing-file-modified-sort="1725642676960" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="20" data-listing-word-count-sort="3838">
-<div class="thumbnail">
-<p><a href="../content/posts/2024-08-22/index.html" class="no-external"></a></p><a href="../content/posts/2024-08-22/index.html" class="no-external">
-<p class="card-img-top"><img src="posts\2024-08-22\index_files\figure-html\show trend-1.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="../content/posts/2024-08-22/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../content/posts/2024-08-22/index.html" class="no-external">Modelling CPI Using ARIMA(p,d,q)</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../content/posts/2024-08-22/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('time-series'); return false;">
-time-series
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Smoothing'); return false;">
-Smoothing
-</div>
-</div>
-<div class="listing-description">
-<a href="../content/posts/2024-08-22/index.html" class="no-external">Consumer Price Index (CPI) is defined as a measure of the weighted aggregate change in retail prices paid by consumers for a given basket of goods and services.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../content/posts/2024-08-22/index.html" class="no-external">
-<div class="listing-date">
-Jan 9, 2024
-</div>
-<div class="listing-author">
-Cornelius Tanui
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
