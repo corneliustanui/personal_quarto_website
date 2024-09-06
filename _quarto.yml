@@ -1,15 +1,16 @@
 project:
   type: website
   resources:
-    - "assets/pdf/Cornelius Tanui_Resume.pdf"
+    - "www/Cornelius Tanui_Resume.pdf"
 
 website:
   title: "Cornelius Tanui"
   site-url: https://corneliustanui.rbind.io/
   description: "Data and Technology"
-  favicon: assets/img/favicon.ico
-  open-graph:
+  favicon: www/favicon.ico
+  open-graph: 
     locale: en-KE
+     
   navbar:
     background: dark
     foreground: white
@@ -40,6 +41,10 @@ website:
   cookie-consent:
     type: express
     prefs-text: "Change your cookies preferences"
+    
+  google-analytics:
+    tracking-id: "G-FKYWD742CS"
+    anonymize-ip: true
 
 format:
   html:

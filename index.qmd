@@ -1,7 +1,7 @@
 ---
 pagetitle: "Cornelius Tanui | Home"
 title: "Cornelius Tanui"
-image: assets/img/prof_pic.jpeg
+image: www/prof_pic.jpeg
 about:
   template: jolla
   links:
@@ -29,4 +29,4 @@ comments: false
 
 I am a skilled data professional with over 5 years of experience in public health, renewable energy, WASH, climate action, and clinical trials.
 
-Having a B.Sc. in Applied Statistics with Computing, I have worked as a Data Analyst, Statistician, Statistical Trainer, Data Manager, and currently as an FSP Data Configurations Engineer with one of [Phastar](https://phastar.com/about-us)'s large pharmaceutical clients.
+Having a B.Sc. in Applied Statistics with Computing, I have worked as a Data Analyst, Statistician, Statistical Trainer, Data Manager, and currently as an FSP Data Configurations Engineer.

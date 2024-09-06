@@ -191,7 +191,7 @@ The plot above shows the individual components of CPI;
 
 -   Trend,
 -   Seasonality, and
--   Random error. 
+-   Random error.
 
 Here, seasonal fluctuations are more evident. The trend has been smoothed, i.e. it is devoid of seasonality and random error. To explore seasonality:-
 
@@ -375,7 +375,7 @@ We fail to reject $H_0$ at 95% confidence level because `0.9802 > 0.05`. The con
 Testing stationarity by checking whether the data is white noise, Ljung-Box (1978) test was made use of. The test is based on whether the sample autocorrelation is equal to zero:
 
 -   $H_0; ρ = 0$ White noise
--   $H_1; ρ ≠ 0$ Not white noise. 
+-   $H_1; ρ ≠ 0$ Not white noise.
 
 This test follows a Chi-square distribution. If the p-value is less than 0.05 at lag $h$ degrees of freedom, $H_0$ is rejected and differencing is done.
 
@@ -414,8 +414,7 @@ $$Y_t=α+ϵ_t+ϕ_1ϵ_{t−1}+ϕ_2ϵ_{t−2}+...ϕ_{t−q}$$
 
 Overall, ARIMA becomes:
 
-$$Y_t=α+β_1Y_t−1+β_2Y_{t−2}+...+β_pY_{t−p}ϵ_t+ϕ_1ϵ_{t−1}+ϕ_2ϵ_{t−2}+...+ϕ_qϵ_{t−q}$$
-Substituting the coefficients, this becomes: $$Y_t=α-0.7461Y_{t−1}-0.4174Y_{t−2}-0.8993ϵ_{t−1}-0.2587ϵ_{t−2}+0.8043ϵ_{t−3}$$
+$$Y_t=α+β_1Y_t−1+β_2Y_{t−2}+...+β_pY_{t−p}ϵ_t+ϕ_1ϵ_{t−1}+ϕ_2ϵ_{t−2}+...+ϕ_qϵ_{t−q}$$ Substituting the coefficients, this becomes: $$Y_t=α-0.7461Y_{t−1}-0.4174Y_{t−2}-0.8993ϵ_{t−1}-0.2587ϵ_{t−2}+0.8043ϵ_{t−3}$$
 
 #### a) Check Residuals for White Noise
 
