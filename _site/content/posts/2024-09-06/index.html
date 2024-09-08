@@ -8,8 +8,9 @@
 
 <meta name="author" content="Cornelius Tanui">
 <meta name="dcterms.date" content="2024-09-06">
+<meta name="description" content="Predicting the Household Economic Bands Into Which University Students Fall for Award of Financial Support from the Kenyan Government.">
 
-<title>Cornelius Tanui - Household Classifier</title>
+<title>Cornelius Tanui - Kenyan Household Bands Classifier</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -101,8 +102,8 @@ cookieconsent.run({
 
 
 <link rel="stylesheet" href="../../../styles.css">
-<meta property="og:title" content="Cornelius Tanui - Household Classifier">
-<meta property="og:description" content="Predictiing the Household Economic Bands Into Which Kenyan University Students Fall for Award of Government Financial Support.">
+<meta property="og:title" content="Cornelius Tanui - Kenyan Household Bands Classifier">
+<meta property="og:description" content="Predicting the Household Economic Bands Into Which University Students Fall for Award of Financial Support from the Kenyan Government.">
 <meta property="og:site_name" content="Cornelius Tanui">
 <meta property="og:locale" content="en-KE">
 </head>
@@ -155,7 +156,8 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#university-funding-in-kenya" id="toc-university-funding-in-kenya" class="nav-link active" data-scroll-target="#university-funding-in-kenya">University Funding in Kenya</a></li>
+  <li><a href="#university-funding-in-kenya" id="toc-university-funding-in-kenya" class="nav-link active" data-scroll-target="#university-funding-in-kenya"><span class="header-section-number">0.1</span> University Funding in Kenya</a></li>
+  <li><a href="#ai-powered-approach-to-household-banding" id="toc-ai-powered-approach-to-household-banding" class="nav-link" data-scroll-target="#ai-powered-approach-to-household-banding"><span class="header-section-number">0.2</span> AI Powered Approach to Household Banding</a></li>
   </ul>
 </nav>
     </div>
@@ -164,8 +166,7 @@ cookieconsent.run({
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Household Classifier</h1>
-<p class="subtitle lead">Predictiing the Household Economic Bands Into Which Kenyan University Students Fall for Award of Government Financial Support.</p>
+<h1 class="title">Kenyan Household Bands Classifier</h1>
   <div class="quarto-categories">
     <div class="quarto-category">R</div>
     <div class="quarto-category">classification</div>
@@ -174,6 +175,11 @@ cookieconsent.run({
   </div>
   </div>
 
+<div>
+  <div class="description">
+    Predicting the Household Economic Bands Into Which University Students Fall for Award of Financial Support from the Kenyan Government.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -181,7 +187,7 @@ cookieconsent.run({
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Cornelius Tanui </p>
+             <p><a href="https://corneliustanui.rbind.io/">Cornelius Tanui</a> </p>
           </div>
   </div>
     
@@ -200,23 +206,44 @@ cookieconsent.run({
 </header>
 
 
-<section id="university-funding-in-kenya" class="level3">
-<h3 class="anchored" data-anchor-id="university-funding-in-kenya">University Funding in Kenya</h3>
-<section id="my-shallow-thoughts-on-mti" class="level5">
-<h5 class="anchored" data-anchor-id="my-shallow-thoughts-on-mti">My Shallow Thoughts on MTI</h5>
-<p>When I first heard of MTI, my immediate thought was that the government of Kenya had finally embraced ‘Artificial Intelligence’ on a larger scale, and decided to award university students scholarships based on economic bands decided by some novel AI algorithm. Think, a combination of classification algorithms of high repute. What a pleasant thought, right? No.</p>
-<p>No because, later, I searched for MTI online and found out that it stands for ‘means testing instrument’, and if you are too much into data, you would think ‘means’ is the average, like, ‘testing of means’ is not an entirely bad thought, we come across it all the time in data analytics. T-test is a test of means, right? Right. I kid you not, ‘means’ in the context of MTI stands for ‘resources’ that a student has access to that could otherwise be used to fund their higher education.’Means’ can be a confusing word. Well, ‘means of transport’ surely does not imply the mathematical average.</p>
-<p>As it turned out, MTI is a widely used concept in the education and social protection sectors, and I was embarrassingly waaay off in thinking that it had something to do with AI.</p>
+<section id="university-funding-in-kenya" class="level3" data-number="0.1">
+<h3 data-number="0.1" class="anchored" data-anchor-id="university-funding-in-kenya"><span class="header-section-number">0.1</span> University Funding in Kenya</h3>
+<section id="sec-shallow" class="level5" data-number="0.1.0.1">
+<h5 data-number="0.1.0.1" class="anchored" data-anchor-id="sec-shallow"><span class="header-section-number">0.1.0.1</span> My Shallow Thoughts on MTI</h5>
+<p>When I first heard of MTI, my immediate thought was that the government of Kenya had finally embraced Artificial Intelligence on a larger scale and decided to award university students scholarships based on economic bands decided by some novel AI algorithm. Think, a combination of classification algorithms of ‘repute compute, high repute’. A pleasant thought, right? No.</p>
+<p>No because, later, I searched for MTI online and found out that it stands for ‘means testing instrument’, and if you are deep into data, you would think ‘means’ is hereby used to denote ‘average’. You see, ‘testing of means’ is not remotely uncommon, we come across it all the time in data analytics. T-test is a test of means, right? Right. I kid you not, ‘means’ in the context of MTI stands for ‘resources’, or ‘assets’, that a student has access to that could otherwise be used to fund their higher education. ‘Means’ can be a confusing word. Nonetheless, there are also ‘means of transport’, ‘by all means’, etc.</p>
+<p>As it turned out, MTI is a widely used concept in the education and social protection sectors, and I was embarrassingly waaay off in thinking that it had something to do with statistical averages</p>
 <p>I was waaay off in yet another aspect – think about it for a moment; the students joining university in September, 2024 as first-years/freshmen had never been banded before, and therefore, there would be no training data for my imagined novel AI model! This is the first time banding is happening in Kenya, so maybe, just maybe, there will be (enough) data to train a model in 2025, so that the freshmen of 2025 will have successfully been banded by the AI.</p>
 </section>
-<section id="background-of-mti-banding" class="level5">
-<h5 class="anchored" data-anchor-id="background-of-mti-banding">Background of MTI Banding</h5>
+<section id="background-of-mti" class="level5" data-number="0.1.0.2">
+<h5 data-number="0.1.0.2" class="anchored" data-anchor-id="background-of-mti"><span class="header-section-number">0.1.0.2</span> Background of MTI</h5>
+<p>MTI has been around for a while now, with the first documented use in 1930s involving provision of relief to households by governments. If a home was deemed able to support itself by the source of income it had, the the government benefits were stopped or reduced<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. MTI has since been heavily employed in the social protection sector to provide targeted anti-poverty benefits to households, civil legal aid to individuals<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, communities, and geographies globally. The obvious reason for preference of MTI over universal provision of support – such as universal basic income – is that MTI offers the support to targeted beneficiaries, because with the universal approach, there may be recipients who do not genuinely require it<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
+<p>In Kenya, MTI has been used for a long time to identify households in marginalized communities that are eligible for benefit from cash transfers<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> under the National Safety Net Programmes (NSNP). One such safety programme is the Hunger Safety Net Programme (HSNP) that supports old persons, orphans and vulnerable children, and persons with severe disability.</p>
+<p>Literature indicates that MTI has worked successfully so far in Kenya as implemented under NSNP, but it is not without shortcomings. For example, the popular controversy around it is it discourages the target population from engaging in savings<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>, consequently promoting poverty, a concept known as ‘poverty trap’<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. In Kenya, MTI sustained an unmitigated uproar over it’s banding inaccuracy that led to placement of students from poor backgrounds into higher bands<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> that required them to dig deep into their pockets to fill the gap, pockets which they either do not have, or are torn. The bands run from 1 (least able) to 5 (most able.)</p>
+<p>Under the hood, MTI is mainly a regression model – such as a tobit model – that aggregates various variables together and provides a value<sup>3</sup> which is then compared to a threshold that determines whether the candidate qualifiers for the benefit or does not. Principal components analysis models have also been deployed to this cause<sup>4</sup>.</p>
+<p>Now, let us explore how an Artificial Intelligence classifier could be used as an alternative to MTI to award financial support to university students in Kenya.</p>
+</section>
+</section>
+<section id="ai-powered-approach-to-household-banding" class="level3" data-number="0.2">
+<h3 data-number="0.2" class="anchored" data-anchor-id="ai-powered-approach-to-household-banding"><span class="header-section-number">0.2</span> AI Powered Approach to Household Banding</h3>
+<p>As noted in <a href="#sec-shallow" class="quarto-xref">Section&nbsp;0.1.0.1</a>, AI requires massive data to be trained on before it can be deployed for use, just a student requires a couple of lessons before sitting an exam.</p>
 
 
 </section>
-</section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>van Oorschot, W. J. H., &amp; Schell, J. (1991). Means-testing in Europe: A growing concern. In M. Adler, C. Bell, J. Clasen, &amp; A. Sinfield (Eds.), The sociology of social security (pp.&nbsp;187-211). (Edinburgh education and society series). Edinburgh University Press.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>https://www.gov.uk/guidance/criminal-legal-aid-means-testing<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Brown, C., Ravallion, M., &amp; Van de Walle, D. (2016). A poor means test. Econometric targeting in Africa. The World Bank.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Villa, Juan M. [2016] A harmonised proxy means test for Kenya’s National Safety Net programme. GDI Working Paper 2016-003. Manchester: The University of Manchester.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Elizabeth T. Powers,Does means-testing welfare discourage saving? evidence from a change in AFDC policy in the United States, Journal of Public Economics, Volume 68, Issue 1, 1998, Pages 33-53, ISSN 0047-2727, https://doi.org/10.1016/S0047-2727(97)00087-X. (https://www.sciencedirect.com/science/article/pii/S004727279700087X)<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Kraay, Aart, and David McKenzie. 2014. “Do Poverty Traps Exist? Assessing the Evidence.” Journal of Economic Perspectives, 28 (3): 127–48.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>https://www.citizen.digital/news/govt-explains-why-many-students-miss-out-on-scholarships-under-the-new-funding-model-n348207<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
