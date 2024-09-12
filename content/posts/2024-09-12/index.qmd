@@ -37,7 +37,6 @@ library(tidyverse)
 
 ```
 
-
 Simulation of data used by the Government in MTI to place university students into 5 bands for award of Government scholarship
 
 ::: {.callout-important appearance="default" collapse="false"}
@@ -91,4 +90,3 @@ write.csv(x = simulated_data, row.names = FALSE, file = here::here("./Data/simul
 saveRDS(object = simulated_data, file = here::here("./Data/simulated_data.rds"))
 
 ```
-
