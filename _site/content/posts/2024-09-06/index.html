@@ -23,6 +23,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -158,6 +192,7 @@ cookieconsent.run({
   <ul>
   <li><a href="#university-funding-in-kenya" id="toc-university-funding-in-kenya" class="nav-link active" data-scroll-target="#university-funding-in-kenya"><span class="header-section-number">0.1</span> University Funding in Kenya</a></li>
   <li><a href="#ai-powered-approach-to-household-banding" id="toc-ai-powered-approach-to-household-banding" class="nav-link" data-scroll-target="#ai-powered-approach-to-household-banding"><span class="header-section-number">0.2</span> AI Powered Approach to Household Banding</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">0.3</span> Conclusion</a></li>
   </ul>
 </nav>
     </div>
@@ -226,7 +261,129 @@ cookieconsent.run({
 </section>
 <section id="ai-powered-approach-to-household-banding" class="level3" data-number="0.2">
 <h3 data-number="0.2" class="anchored" data-anchor-id="ai-powered-approach-to-household-banding"><span class="header-section-number">0.2</span> AI Powered Approach to Household Banding</h3>
-<p>As noted in <a href="#sec-shallow" class="quarto-xref">Section&nbsp;0.1.0.1</a>, AI requires massive data to be trained on before it can be deployed for use, just a student requires a couple of lessons before sitting an exam.</p>
+<p>As noted in <a href="#sec-shallow" class="quarto-xref">Section&nbsp;0.1.0.1</a>, AI requires massive training on before it can be deployed for use, just a student requires a couple of lessons before sitting an exam.</p>
+<p>It is not too clear how and which factors were considered to create the 5 bands, although gross family income, geographical location poverty probability index, special circumstances such as orphans and students with disability, number of dependents, program costs, and gender are some of the factors that have been mentioned<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>. Because I do not have readily available data covering these factors, I am going to use simulate them and use R<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>, <a href="https://https://www.tidyverse.org//">{tidyverse}</a>, <a href="https://www.tidymodels.org/">{tidymodels}</a> and other packages to develop a data processing, modelling, and prediction pipeline using a machine learning multi-class classification (MCC)<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> model of our choice. Note that the outcome should be in discrete ordinal scale.</p>
+<section id="data-simulation" class="level5" data-number="0.2.0.1">
+<h5 data-number="0.2.0.1" class="anchored" data-anchor-id="data-simulation"><span class="header-section-number">0.2.0.1</span> Data Simulation</h5>
+<p>Simulation of these data is outside the scope of this article and will be covered in a later post.</p>
+<p>The table below shows the properties of the variables are;</p>
+<div id="tbl-properties" class="quarto-float anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-properties-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Properties of variables
+</figcaption>
+<div aria-describedby="tbl-properties-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table">
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Data type</th>
+<th>Distribution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bands</td>
+<td>Ordinal</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Gross family income</td>
+<td>x ∈ ℝ<sup>+</sup></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Geographical location</td>
+<td>Nominal</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Poverty probability index</td>
+<td>x ∈ ℝ<sup>+</sup></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Special circumstances such as orphans</td>
+<td>Binary</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Students with disability</td>
+<td>Binary</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Number of dependents</td>
+<td>x ∈ ℕ<sup>+</sup></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Program costs</td>
+<td>x ∈ ℝ<sup>+</sup></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Gender</td>
+<td>Nominal</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="descrpitive-analysis" class="level5" data-number="0.2.0.2">
+<h5 data-number="0.2.0.2" class="anchored" data-anchor-id="descrpitive-analysis"><span class="header-section-number">0.2.0.2</span> Descrpitive Analysis</h5>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>) <span class="co"># for reproducibility</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>class_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Bands =</span> <span class="fu">rbinom</span>(<span class="at">n =</span> <span class="dv">1000</span>, </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">size =</span> <span class="dv">5</span>, </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">prob =</span> <span class="fl">0.5</span>),</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Gross_Family_Income =</span> <span class="fu">rnbinom</span>(<span class="at">n =</span> <span class="dv">1000</span>, </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>                                                         <span class="at">size =</span> <span class="dv">5</span>, </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>                                                         <span class="at">mu =</span> <span class="dv">20000</span>),</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Geographical_Location =</span> <span class="fu">as.factor</span>(<span class="fu">ceiling</span>(<span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">1000</span>, </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>                                                                           <span class="at">min =</span> <span class="dv">1</span>, </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>                                                                           <span class="at">max =</span> <span class="dv">47</span>))),</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Poverty_Probability_Index =</span> <span class="fu">abs</span>(<span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">1000</span>, </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>                                                                 <span class="at">mean =</span> <span class="fl">0.3</span>, </span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>                                                                 <span class="at">sd =</span> <span class="fl">0.2</span>)),</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Orphans =</span> <span class="fu">as.factor</span>(<span class="fu">rbinom</span>(<span class="at">n =</span> <span class="dv">1000</span>,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>                                                    <span class="at">size =</span> <span class="dv">1</span>,</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>                                                    <span class="at">prob =</span> <span class="fl">0.4</span>)),</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Disability =</span> <span class="fu">as.factor</span>(<span class="fu">rbinom</span>(<span class="at">n =</span> <span class="dv">1000</span>,</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>                                                       <span class="at">size =</span> <span class="dv">1</span>,</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>                                                       <span class="at">prob =</span> <span class="fl">0.022</span>)),</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Number_of_Dependents =</span> <span class="fu">rpois</span>(<span class="at">n =</span> <span class="dv">1000</span>, </span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>                                                        <span class="at">lambda =</span> <span class="dv">4</span>),</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Program_Costs_KES =</span> <span class="fu">abs</span>(<span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">1000</span>,</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>                                                     <span class="at">mean =</span> <span class="dv">500000</span>,</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>                                                     <span class="at">sd =</span> <span class="dv">50000</span>)),</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Gender =</span> <span class="fu">as.factor</span>(<span class="fu">rbinom</span>(<span class="at">n =</span> <span class="dv">1000</span>,</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>                                                   <span class="at">size =</span> <span class="dv">3</span>,</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>                                                   <span class="at">prob =</span> <span class="fl">0.017</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="model-creation" class="level5" data-number="0.2.0.3">
+<h5 data-number="0.2.0.3" class="anchored" data-anchor-id="model-creation"><span class="header-section-number">0.2.0.3</span> Model Creation</h5>
+<section id="model-fitting" class="level7">
+<p class="heading">Model Fitting</p>
+</section>
+<section id="model-diagnostics" class="level7">
+<p class="heading">Model Diagnostics</p>
+</section>
+<section id="band-prediction" class="level7">
+<p class="heading">Band Prediction</p>
+</section>
+</section>
+</section>
+<section id="conclusion" class="level3" data-number="0.3">
+<h3 data-number="0.3" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">0.3</span> Conclusion</h3>
 
 
 </section>
@@ -242,6 +399,9 @@ cookieconsent.run({
 <li id="fn5"><p>Elizabeth T. Powers,Does means-testing welfare discourage saving? evidence from a change in AFDC policy in the United States, Journal of Public Economics, Volume 68, Issue 1, 1998, Pages 33-53, ISSN 0047-2727, https://doi.org/10.1016/S0047-2727(97)00087-X. (https://www.sciencedirect.com/science/article/pii/S004727279700087X)<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn6"><p>Kraay, Aart, and David McKenzie. 2014. “Do Poverty Traps Exist? Assessing the Evidence.” Journal of Economic Perspectives, 28 (3): 127–48.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn7"><p>https://www.citizen.digital/news/govt-explains-why-many-students-miss-out-on-scholarships-under-the-new-funding-model-n348207<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>https://kafu.ac.ke/images/2022/Academics/nfm/NEW_FUNDING_MODEL_-_6TH_AUGUST_2024.pdf<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>R Core Team (2021). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>Kook, L., Herzog, L., Hothorn, T., Dürr, O., &amp; Sick, B. (2022). Deep and interpretable regression models for ordinal outcomes. Pattern Recognition, 122, 108263.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

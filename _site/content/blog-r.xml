@@ -40,7 +40,293 @@
 </section>
 <section id="ai-powered-approach-to-household-banding" class="level3" data-number="0.2">
 <h3 data-number="0.2" class="anchored" data-anchor-id="ai-powered-approach-to-household-banding"><span class="header-section-number">0.2</span> AI Powered Approach to Household Banding</h3>
-<p>As noted in Section&nbsp;0.1.0.1, AI requires massive data to be trained on before it can be deployed for use, just a student requires a couple of lessons before sitting an exam.</p>
+<p>As noted in Section&nbsp;0.1.0.1, AI requires massive training on before it can be deployed for use, just a student requires a couple of lessons before sitting an exam.</p>
+<p>It is not too clear how and which factors were considered to create the 5 bands, although gross family income, geographical location poverty probability index, special circumstances such as orphans and students with disability, number of dependents, program costs, and gender are some of the factors that have been mentioned<sup>8</sup>. Because I do not have readily available data covering these factors, I am going to use simulate them and use R<sup>9</sup>, <a href="https://https://www.tidyverse.org//">{tidyverse}</a>, <a href="https://www.tidymodels.org/">{tidymodels}</a> and other packages to develop a data processing, modelling, and prediction pipeline using a machine learning multi-class classification (MCC)<sup>10</sup> model of our choice. Note that the outcome should be in discrete ordinal scale.</p>
+<section id="data-simulation" class="level5" data-number="0.2.0.1">
+<h5 data-number="0.2.0.1" class="anchored" data-anchor-id="data-simulation"><span class="header-section-number">0.2.0.1</span> Data Simulation</h5>
+<p>Simulation of these data is outside the scope of this article and will be covered in a later post.</p>
+<p>The table below shows the properties of the variables are;</p>
+<div id="tbl-properties" class="quarto-float anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-properties-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Properties of variables
+</figcaption>
+<div aria-describedby="tbl-properties-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table">
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Data type</th>
+<th>Distribution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bands</td>
+<td>Ordinal</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Gross family income</td>
+<td>x ∈ ℝ<sup>+</sup></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Geographical location</td>
+<td>Nominal</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Poverty probability index</td>
+<td>x ∈ ℝ<sup>+</sup></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Special circumstances such as orphans</td>
+<td>Binary</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Students with disability</td>
+<td>Binary</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Number of dependents</td>
+<td>x ∈ ℕ<sup>+</sup></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Program costs</td>
+<td>x ∈ ℝ<sup>+</sup></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Gender</td>
+<td>Nominal</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="descrpitive-analysis" class="level5" data-number="0.2.0.2">
+<h5 data-number="0.2.0.2" class="anchored" data-anchor-id="descrpitive-analysis"><span class="header-section-number">0.2.0.2</span> Descrpitive Analysis</h5>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">set.seed</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># for reproducibility</span></span>
+<span id="cb1-2"></span>
+<span id="cb1-3">class_data <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data.frame</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Bands =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rbinom</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span>, </span>
+<span id="cb1-4">                                        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, </span>
+<span id="cb1-5">                                        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">prob =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>),</span>
+<span id="cb1-6">                         <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Gross_Family_Income =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rnbinom</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span>, </span>
+<span id="cb1-7">                                                         <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, </span>
+<span id="cb1-8">                                                         <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mu =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20000</span>),</span>
+<span id="cb1-9">                         <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Geographical_Location =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.factor</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ceiling</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">runif</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span>, </span>
+<span id="cb1-10">                                                                           <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">min =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, </span>
+<span id="cb1-11">                                                                           <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">max =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">47</span>))),</span>
+<span id="cb1-12">                         <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Poverty_Probability_Index =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">abs</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rnorm</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span>, </span>
+<span id="cb1-13">                                                                 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mean =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.3</span>, </span>
+<span id="cb1-14">                                                                 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">sd =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>)),</span>
+<span id="cb1-15">                         <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Orphans =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.factor</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rbinom</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span>,</span>
+<span id="cb1-16">                                                    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,</span>
+<span id="cb1-17">                                                    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">prob =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.4</span>)),</span>
+<span id="cb1-18">                         <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Disability =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.factor</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rbinom</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span>,</span>
+<span id="cb1-19">                                                       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,</span>
+<span id="cb1-20">                                                       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">prob =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.022</span>)),</span>
+<span id="cb1-21">                         <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Number_of_Dependents =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rpois</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span>, </span>
+<span id="cb1-22">                                                        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lambda =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>),</span>
+<span id="cb1-23">                         <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Program_Costs_KES =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">abs</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rnorm</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span>,</span>
+<span id="cb1-24">                                                     <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mean =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">500000</span>,</span>
+<span id="cb1-25">                                                     <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">sd =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50000</span>)),</span>
+<span id="cb1-26">                         <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Gender =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.factor</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rbinom</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span>,</span>
+<span id="cb1-27">                                                   <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>,</span>
+<span id="cb1-28">                                                   <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">prob =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.017</span>)))</span></code></pre></div>
+</details>
+</div>
+</section>
+<section id="model-creation" class="level5" data-number="0.2.0.3">
+<h5 data-number="0.2.0.3" class="anchored" data-anchor-id="model-creation"><span class="header-section-number">0.2.0.3</span> Model Creation</h5>
+<section id="model-fitting" class="level7">
+<p class="heading">Model Fitting</p>
+</section>
+<section id="model-diagnostics" class="level7">
+<p class="heading">Model Diagnostics</p>
+</section>
+<section id="band-prediction" class="level7">
+<p class="heading">Band Prediction</p>
+</section>
+</section>
+</section>
+<section id="conclusion" class="level3" data-number="0.3">
+<h3 data-number="0.3" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">0.3</span> Conclusion</h3>
 
 
 </section>
@@ -56,6 +342,9 @@
 <li id="fn5"><p>Elizabeth T. Powers,Does means-testing welfare discourage saving? evidence from a change in AFDC policy in the United States, Journal of Public Economics, Volume 68, Issue 1, 1998, Pages 33-53, ISSN 0047-2727, https://doi.org/10.1016/S0047-2727(97)00087-X. (https://www.sciencedirect.com/science/article/pii/S004727279700087X)↩︎</p></li>
 <li id="fn6"><p>Kraay, Aart, and David McKenzie. 2014. “Do Poverty Traps Exist? Assessing the Evidence.” Journal of Economic Perspectives, 28 (3): 127–48.↩︎</p></li>
 <li id="fn7"><p>https://www.citizen.digital/news/govt-explains-why-many-students-miss-out-on-scholarships-under-the-new-funding-model-n348207↩︎</p></li>
+<li id="fn8"><p>https://kafu.ac.ke/images/2022/Academics/nfm/NEW_FUNDING_MODEL_-_6TH_AUGUST_2024.pdf↩︎</p></li>
+<li id="fn9"><p>R Core Team (2021). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.↩︎</p></li>
+<li id="fn10"><p>Kook, L., Herzog, L., Hothorn, T., Dürr, O., &amp; Sick, B. (2022). Deep and interpretable regression models for ordinal outcomes. Pattern Recognition, 122, 108263.↩︎</p></li>
 </ol>
 </section></div> ]]></description>
   <category>R</category>
