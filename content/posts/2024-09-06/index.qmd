@@ -8,6 +8,8 @@ date: '2024-09-06'
 
 format: 
   html: 
+    fontfamily: libertinus
+    fontsize: 12pt
     code-fold: true
     html-math-method: katex
     link-citations: true
@@ -64,5 +66,73 @@ programme. GDI Working Paper 2016-003. Manchester: The University of Manchester.
 [^7]: https://www.citizen.digital/news/govt-explains-why-many-students-miss-out-on-scholarships-under-the-new-funding-model-n348207
 
 ### AI Powered Approach to Household Banding
-As noted in @sec-shallow, AI requires massive data to be trained on before it can be deployed for use, just a student requires a couple of lessons before sitting an exam.
+As noted in @sec-shallow, AI requires massive training on before it can be deployed for use, just a student requires a couple of lessons before sitting an exam.
+
+It is not too clear how and which factors were considered to create the 5 bands, although gross family income, geographical location poverty probability index, special circumstances such as orphans and students with disability, number of dependents, program costs, and gender are some of the factors that have been mentioned[^8]. Because I do not have readily available data covering these factors, I am going to use simulate them and use R[^9], [{tidyverse}](https://https://www.tidyverse.org//), [{tidymodels}](https://www.tidymodels.org/) and other packages to develop a data processing, modelling, and prediction pipeline using a machine learning multi-class classification (MCC)[^10] model of our choice. Note that the outcome should be in discrete ordinal scale. 
+
+[^8]: https://kafu.ac.ke/images/2022/Academics/nfm/NEW_FUNDING_MODEL_-_6TH_AUGUST_2024.pdf
+[^9]: R Core Team (2021). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.
+[^10]: Kook, L., Herzog, L., Hothorn, T., Dürr, O., & Sick, B. (2022). Deep and interpretable regression models for ordinal outcomes. Pattern Recognition, 122, 108263.
+
+##### Data Simulation
+Simulation of these data is outside the scope of this article and will be covered in a later post. 
+
+The table below shows the properties of the variables are; 
+
+| Variable                              | Data type | Distribution |
+|---------------------------------------|-----------|--------------|
+| Bands                                 | Ordinal   |              |
+| Gross family income                   | x ∈ ℝ^+^  |              |
+| Geographical location                 | Nominal   |              | 
+| Poverty probability index             | x ∈ ℝ^+^  |              | 
+| Special circumstances such as orphans | Binary    |              | 
+| Students with disability              | Binary    |              | 
+| Number of dependents                  | x ∈ ℕ^+^  |              | 
+| Program costs                         | x ∈ ℝ^+^  |              | 
+| Gender                                | Nominal   |              | 
+
+: Properties of variables {#tbl-properties .striped .hover .primary .bordered}
+
+##### Descrpitive Analysis
+
+::: {.callout-important appearance="default" collapse="false"}
+## Disclaimer!
+
+The data is **simulated**, and therefore substantially differs with the actual scenario! The data is for learning purposes only, and the statistical estimates reported MUST NOT be taken as true reflection of the real-word situation.
+
+:::
+
+```{r load packages}
+
+## load packages
+library(xlsx)
+library(here)
+
+library(tidyverse)
+library(tidymodels)
+
+```
+
+The data;
+
+```{r the data}
+
+# table display setup
+#| label: tbl-simulated_data .striped .hover .primary .bordered
+#| tbl-cap: "Simulated data"
+#| tbl-cap-location: bottom 
+
+# load data
+simulated_data <- readRDS(here::here("./Data/simulated_data.rds"))
+
+# view data (printed on your browser)
+knitr::kable(head(x = simulated_data, n = 5))
+
+```
+
+##### Model Creation
+####### Model Fitting
+####### Model Diagnostics
+####### Band Prediction
+### Conclusion
 
