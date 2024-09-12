@@ -8,6 +8,8 @@ date: '2024-09-06'
 
 format: 
   html: 
+    fontfamily: libertinus
+    fontsize: 12pt
     code-fold: true
     html-math-method: katex
     link-citations: true
@@ -89,43 +91,44 @@ The table below shows the properties of the variables are;
 | Program costs                         | x ∈ ℝ^+^  |              | 
 | Gender                                | Nominal   |              | 
 
-: Properties of variables {#tbl-properties}
+: Properties of variables {#tbl-properties .striped .hover .primary .bordered}
 
 ##### Descrpitive Analysis
 
-```{r}
+::: {.callout-important appearance="default" collapse="false"}
+## Disclaimer!
 
-set.seed(1) # for reproducibility
+The data is **simulated**, and therefore substantially differs with the actual scenario! The data is for learning purposes only, and the statistical estimates reported MUST NOT be taken as true reflection of the real-word situation.
 
-class_data <- data.frame(Bands = rbinom(n = 1000, 
-                                        size = 5, 
-                                        prob = 0.5),
-                         Gross_Family_Income = rnbinom(n = 1000, 
-                                                         size = 5, 
-                                                         mu = 20000),
-                         Geographical_Location = as.factor(ceiling(runif(n = 1000, 
-                                                                           min = 1, 
-                                                                           max = 47))),
-                         Poverty_Probability_Index = abs(rnorm(n = 1000, 
-                                                                 mean = 0.3, 
-                                                                 sd = 0.2)),
-                         Orphans = as.factor(rbinom(n = 1000,
-                                                    size = 1,
-                                                    prob = 0.4)),
-                         Disability = as.factor(rbinom(n = 1000,
-                                                       size = 1,
-                                                       prob = 0.022)),
-                         Number_of_Dependents = rpois(n = 1000, 
-                                                        lambda = 4),
-                         Program_Costs_KES = abs(rnorm(n = 1000,
-                                                     mean = 500000,
-                                                     sd = 50000)),
-                         Gender = as.factor(rbinom(n = 1000,
-                                                   size = 3,
-                                                   prob = 0.017)))
+:::
+
+```{r load packages}
+
+## load packages
+library(xlsx)
+library(here)
+
+library(tidyverse)
+library(tidymodels)
 
 ```
 
+The data;
+
+```{r the data}
+
+# table display setup
+#| label: tbl-simulated_data .striped .hover .primary .bordered
+#| tbl-cap: "Simulated data"
+#| tbl-cap-location: bottom 
+
+# load data
+simulated_data <- readRDS(here::here("./Data/simulated_data.rds"))
+
+# view data (printed on your browser)
+knitr::kable(head(x = simulated_data, n = 5))
+
+```
 
 ##### Model Creation
 ####### Model Fitting
