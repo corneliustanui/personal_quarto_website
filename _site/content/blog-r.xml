@@ -9,34 +9,32 @@
 <link>https://corneliustanui.rbind.io/content/blog.html#category=R</link>
 <atom:link href="https://corneliustanui.rbind.io/content/blog-r.xml" rel="self" type="application/rss+xml"/>
 <description>Data and Technology</description>
-<generator>quarto-1.4.553</generator>
+<generator>quarto-1.5.57</generator>
 <lastBuildDate>Wed, 11 Sep 2024 21:00:00 GMT</lastBuildDate>
 <item>
-  <title>Introduction Statistical Data Simulation</title>
+  <title>Basics of Statistical Data Simulation</title>
   <dc:creator>Cornelius Tanui</dc:creator>
-  <link>https://corneliustanui.rbind.io/content/posts/2024-09-12/</link>
+  <link>https://corneliustanui.rbind.io/content/posts/Simulation_2024-09-12/</link>
   <description><![CDATA[ 
 
 
 
 
-<section id="data-simulation" class="level5" data-number="0.0.0.1">
-<h5 data-number="0.0.0.1" class="anchored" data-anchor-id="data-simulation"><span class="header-section-number">0.0.0.1</span> Data Simulation</h5>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># load packages</span></span>
-<span id="cb1-2"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">library</span>(here)</span>
-<span id="cb1-3"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">library</span>(tidyverse)</span></code></pre></div>
-</details>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://corneliustanui.rbind.io/content/posts/Simulation_2024-09-12/openart-image_colorful_statistical_data_simulation.jpg" style="width:80.0%;height:100.0%" alt="Statistical Data simulation" class="figure-img"></p>
+<figcaption>Statistical Data simulation. Image source: OpenArt</figcaption>
+</figure>
 </div>
-<p>Simulation of data used by the Government in MTI to place university students into 5 bands for award of Government scholarship</p>
+<section id="sec-intro" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
+<p>Simulation is a scientific process of creating an hypothetical situation that mirrors the real world phenomenon. In this article, we shall explore a few ways of generating hypothetical variables that closely resemble the data that may, for instance, be collected in a field survey. You may have asked yourself how a researcher would go about generating age values for a population without actually asking the respondents in a sample of a given population to fill a survey questionnaire asking for their ages. So, this is how.</p>
+<p>Different variables require different approaches of simulation, because of the underlying <strong>probability distribution.</strong> Simply put, a probability distribution defines the pattern to which the values of a variable conform. There is always a pattern that values follow, and for us to generate (simulate) the values for a variable, we are required to know what is pattern is like in advance. This prior knowledge of the characteristics of the pattern is known as <em>apriori</em>, because we know it in advance. This knowledge is largely extracted from literature. For example, if we want to simulate 100 age values in a population of epileptics, we need to ask these two questions:</p>
+<ol type="1">
+<li><p>What is the usual pattern of age like for the general population? We can use a histogram to get a hint of the underlying probability distribution for age. If the histogram reveals a bell-shaped pattern, we can roughly consider the <strong>normal distribution</strong> as the underlying probability distribution. There are many other probability distributions, and normal distribution is just one of them, which also happens to be the most common for numerical variables in the real space (x ∈ ℝ).</p></li>
+<li><p>What is the mean and standard deviation age of epileptics? The answer will allow us to reproduce the histogram in (2) above without going to the field to collect actual age data. Here, <em>mean</em> and <em>standard deviation</em> are the only parameters whose apriori values ae required.</p></li>
+</ol>
+<p>In this article, we shall simulate variables whose values mirror the data for the means testing instrument (MTI) used by the Government of Kenya to place university students into 5 bands for award of scholarship. This follows from <a href="https://corneliustanui.rbind.io/content/posts/MTI_Modeling_2024-09-06/">my earlier article</a> on using artificial intelligence as a more reliable alternative to the <a href="https://www.universitiesfund.go.ke/new-higher-education-funding-model/">new MTI-based university funding model in Kenya</a>.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -53,79 +51,619 @@ Disclaimer!
 </div>
 </div>
 </div>
+</section>
+<section id="sec-lit_rev" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Literature</h1>
+<p>There are are a number of factors<sup>1</sup> that the new MTI-based university funding model in Kenya considers for placement of students into 5 the bands. We shall discuss each one of them as here and deduce the probable underlying probability distributions and their associated parametric values that will enable us to simulate these factors. We shall simulate the data for 1000 students, thus <img src="https://latex.codecogs.com/png.latex?x_i">, where <img src="https://latex.codecogs.com/png.latex?i%20=%201,%202,%203,%20...,%201000">. Because the values are randomly generated, we shall seed random-number generator (RNG), for reciprocity purposes, to the arbitrary value of 44. Note that there is no real reason for this choice.</p>
+<section id="sec-bands" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="sec-bands"><span class="header-section-number">2.1</span> Bands</h2>
+<p>This is the outcome – a categorical 5-point ordinal variable where 1 represents the most needy and 5 represents the least needy<sup>2</sup>, thus <img src="https://latex.codecogs.com/png.latex?x_%7Bij%7D">, where <img src="https://latex.codecogs.com/png.latex?j%20=%20%5C%7B1,%202,%203,%20...,%205%5C%7D">. We will assume that each band has a fairly equal chance of occurring, i.e for <img src="https://latex.codecogs.com/png.latex?i%5E%7Bth%7D"> student, <img src="https://latex.codecogs.com/png.latex?p(x_%7Bi%7D)%20=%201/2">. We need a probability distribution function that draws 5 numbers between 1 to 5 for 1000 observations. We could use the <code>sample</code> function from <code>{base}</code> R package but the distribution of values would not be desirably skewed towards the left – it would lead to a near-uniform distribution. Remember that bands are a proxy for the socio-economic status of the household, and in Kenya – as with most other countries<sup>3</sup> – the number of rich households is significantly lower than the number of poor households, therefore we need to expect more band 1 households than band 5 households.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># table display setup</span></span>
-<span id="cb2-2"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">#| label: tbl-simulated_data .striped .hover .primary .bordered</span></span>
-<span id="cb2-3"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">#| tbl-cap: "Simulated data"</span></span>
-<span id="cb2-4"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">#| tbl-cap-location: bottom </span></span>
-<span id="cb2-5"></span>
-<span id="cb2-6"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># for reproducibility</span></span>
-<span id="cb2-7"><span class="fu" style="color: #4758AB;
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">set.seed</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1</span>) </span>
-<span id="cb2-8"></span>
-<span id="cb2-9"><span class="co" style="color: #5E5E5E;
+font-style: inherit;">44</span>)</span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;"># generate data</span></span>
-<span id="cb2-10">simulated_data <span class="ot" style="color: #003B4F;
+font-style: inherit;">barplot</span>(<span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+font-style: inherit;">table</span>(<span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">data.frame</span>(<span class="at" style="color: #657422;
+font-style: inherit;">sample</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">Bands =</span> <span class="fu" style="color: #4758AB;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">replace =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlab  =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Bands"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Histogram of Bands (Almost Uniform)"</span>)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://corneliustanui.rbind.io/content/posts/Simulation_2024-09-12/index_files/figure-html/undesirable bands-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The function <code>rbinom</code> from the package <code>{stats}</code> does exactly that – we simply need to specify n = 1000, size = 5, and prob = 1/5 in the arguments and add 1 to the result to remove 0 and introduce 5. The resulting values assume a binomial distribution (<img src="https://latex.codecogs.com/png.latex?p(x)%20=%20(_x%5En)p%5Exq%5E%7Bn-x%7D">) with 5 trials for each observation, and the resulting value between 1 and 5 (inclusive) indicate a success for the <img src="https://latex.codecogs.com/png.latex?j%5E%7Bth%7D"> trial. Finally, declare <img src="https://latex.codecogs.com/png.latex?x"> as an ordered factor.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">set.seed</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">44</span>)</span>
+<span id="cb2-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">barplot</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">table</span>(<span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">rbinom</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span>, </span>
-<span id="cb2-11">                                        <span class="at" style="color: #657422;
+font-style: inherit;">1000</span>,<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">5</span>, </span>
-<span id="cb2-12">                                        <span class="at" style="color: #657422;
+font-style: inherit;">5</span>, <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">prob =</span> <span class="fl" style="color: #AD0000;
+font-style: inherit;">prob =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">0.5</span>),</span>
-<span id="cb2-13">                         <span class="at" style="color: #657422;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">Gross_Family_Income =</span> <span class="fu" style="color: #4758AB;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>),  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlab  =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Bands"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Histogram of Bands (Appropriately Positively Skewed)"</span>)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://corneliustanui.rbind.io/content/posts/Simulation_2024-09-12/index_files/figure-html/desirable bands-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="gross-family-income" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="gross-family-income"><span class="header-section-number">2.2</span> Gross Family Income</h2>
+<p>Income, as with bands, is expected to be a positively skewed real-valued number (<img src="https://latex.codecogs.com/png.latex?x%20%E2%88%88%20%E2%84%9D%5E+">) which can assume the negative binomial distribution with mean of KES 20,000<sup>4</sup>. From this knowledge we can generate 1000 income values using <code>rnbinom</code> function from the package <code>{stats}</code> as below;</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">set.seed</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">44</span>)</span>
+<span id="cb3-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">hist</span>(<span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">rnbinom</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span>, </span>
-<span id="cb2-14">                                                         <span class="at" style="color: #657422;
+font-style: inherit;">1000</span>, <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">5</span>, </span>
-<span id="cb2-15">                                                         <span class="at" style="color: #657422;
+font-style: inherit;">5</span>, <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">mu =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">20000</span>),</span>
-<span id="cb2-16">                         <span class="at" style="color: #657422;
+font-style: inherit;">20000</span>),  <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">Geographical_Location =</span> <span class="fu" style="color: #4758AB;
+font-style: inherit;">xlab  =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Income"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Histogram of Gross Family Income"</span>)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://corneliustanui.rbind.io/content/posts/Simulation_2024-09-12/index_files/figure-html/Gross Family Income-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="geographical-location" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="geographical-location"><span class="header-section-number">2.3</span> Geographical Location</h2>
+<p>We will take all the 47 counties as the distinct geographical locations from which a student is equally likely to come – although realistically, certain counties have a relatively bigger share of student population, but for simplicity, we shall ignore this fact. With that out of the way, the appropriate probability distribution that ensures each student is allocated equal probability of being drawn from any of the 47 counties is the discrete uniform distribution. We can then simulate this variable using the function <code>runif</code> from the package <code>{stats}</code> as follows;</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">set.seed</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">44</span>)</span>
+<span id="cb4-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">barplot</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">table</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ceiling</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">runif</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">min =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">max =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">47</span>))), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlab  =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Geographical Location"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Discrete Uniform Distribution of Geographical Location"</span>)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://corneliustanui.rbind.io/content/posts/Simulation_2024-09-12/index_files/figure-html/Geographical Location-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="sec-pov_prob_ind" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="sec-pov_prob_ind"><span class="header-section-number">2.4</span> Poverty Probability Index</h2>
+<p>We shall treat this as <img src="https://latex.codecogs.com/png.latex?x%20%5Csim%20N(%5Cmu,%20s)"> which is in the field <img src="https://latex.codecogs.com/png.latex?x%20%E2%88%88%20%E2%84%9D%5E+">. This is the so-called normal distribution, and both <img src="https://latex.codecogs.com/png.latex?%5Cmu"> and <img src="https://latex.codecogs.com/png.latex?s"> are the mean and standard deviation apriori parameters. The probability density function itself is written as <img src="https://latex.codecogs.com/png.latex?f(x)%20=%20%5Cfrac%7B1%7D%7B%5Csigma%20%5Csqrt(2%20%5Cpi)%7De%5E%7B%5Cfrac%7B-1%7D%7B2%7D(%5Cfrac%7Bx-%5Cmu%7D%7B%5Csigma%7D)%5E2%7D">. According to <a href="https://www.povertyindex.org/country/kenya">PPI tool</a>, the mean index for Kenya is approximately 0.3 and the standard deviation is 0.2. With this apriori knowledge, we can plug the values into the <code>rnorm</code> function in the package <code>{stats}</code> as follows;</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">set.seed</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">44</span>)</span>
+<span id="cb5-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">hist</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">abs</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rnorm</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mean =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.3</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">sd =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>)), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlab  =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Poverty Probability Index"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Normal Distribution of Poverty Probability Index"</span>)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://corneliustanui.rbind.io/content/posts/Simulation_2024-09-12/index_files/figure-html/Poverty Probability Index-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="orphans" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="orphans"><span class="header-section-number">2.5</span> Orphans</h2>
+<p>This is a binary variable which indicates whether a student is an orphan or not, and therefore follows a binomial distribution with one trial (also called Bernoulli). We require the probability (rate/prevalence) of the status of being an orphan in Kenya for us to simulate the data for this variable. According to Lee <em>et al</em>. (2014), the 22.2% of children aged 15 to 17 were orphans and vulnerable (OVC). Students joining university are mostly aged 17 to 20 years, we shall therefore use the same rate of 0.222 to simulate this variable as shown below;</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">set.seed</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">44</span>)</span>
+<span id="cb6-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">barplot</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">table</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rbinom</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">prob =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.222</span>)), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlab  =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Orphan Status"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Bargraph of the Distribution of Orphan Status"</span>)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://corneliustanui.rbind.io/content/posts/Simulation_2024-09-12/index_files/figure-html/Orphans-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="disability" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="disability"><span class="header-section-number">2.6</span> Disability</h2>
+<p>This is yet another binary variable which indicates whether a student has disability or not, and therefore follows a binomial distribution with one trial. We shall use the rate of 2.2%<sup>5</sup>. Plugging this value in the <code>rbinom</code> formula, we get;</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">set.seed</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">44</span>)</span>
+<span id="cb7-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">barplot</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">table</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rbinom</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">prob =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.022</span>)), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlab  =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Disability Status"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Bargraph of the Distribution of Disability Status"</span>)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://corneliustanui.rbind.io/content/posts/Simulation_2024-09-12/index_files/figure-html/Disability-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="number-of-dependents" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="number-of-dependents"><span class="header-section-number">2.7</span> Number of Dependents</h2>
+<p>The variable represents counts, and therefore <img src="https://latex.codecogs.com/png.latex?x%20%E2%88%88%20%E2%84%95%5E+">. Both Poisson and negative binomial could model the variable effectively, but we shall focus on the former. The probability mass function for Poisson distribution is given as <img src="https://latex.codecogs.com/png.latex?f(x)%20=%20%5Cfrac%7Be%5E%7B%E2%80%93%CE%BB%7D%20%CE%BB%5Ex%7D%7Bx!%7D"> where <img src="https://latex.codecogs.com/png.latex?%CE%BB"> is the parameter representing the average number of occurrences of a Poisson per unit space/time. In this context, it is the number of depends per household. We shall use 4 as the value of this parameter<sup>6</sup> and plug into the function <code>rpois</code> in the package <code>{stats}</code> as follows;</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">set.seed</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">44</span>)</span>
+<span id="cb8-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">barplot</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">table</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rpois</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lambda =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>)), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlab  =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Number of Dependents"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Bargraph of the Distribution of Number of Dependents"</span>)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://corneliustanui.rbind.io/content/posts/Simulation_2024-09-12/index_files/figure-html/Number of Dependents-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="program-costs-kes" class="level2" data-number="2.8">
+<h2 data-number="2.8" class="anchored" data-anchor-id="program-costs-kes"><span class="header-section-number">2.8</span> Program Costs (KES)</h2>
+<p>Similar to Section&nbsp;2.4, this variable is in the field <img src="https://latex.codecogs.com/png.latex?x%20%E2%88%88%20%E2%84%9D%5E+"> where <img src="https://latex.codecogs.com/png.latex?x%20%5Csim%20N(%5Cmu,%20s)"> with parameters taken to be <img src="https://latex.codecogs.com/png.latex?%5Cmu%20=%20500,000"> and <img src="https://latex.codecogs.com/png.latex?sd%20=%2050,000">. Feeding these values into the normal distribution RNG, we get;</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">set.seed</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">44</span>)</span>
+<span id="cb9-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">hist</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">abs</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rnorm</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mean =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">500000</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">sd =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50000</span>)), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlab  =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Program Costs"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Histogram of Distribution of Program Costs (KES)"</span>)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://corneliustanui.rbind.io/content/posts/Simulation_2024-09-12/index_files/figure-html/Program Costs-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="gender" class="level2" data-number="2.9">
+<h2 data-number="2.9" class="anchored" data-anchor-id="gender"><span class="header-section-number">2.9</span> Gender</h2>
+<p>Similar to Section&nbsp;2.1,this variable follows a binomial distribution with 3 trials; male (49.0%), female (50.0%), and intersex (0.01%)<sup>7</sup>. Because of the small number of observations for the third category, we shall limit to 2 trials and and add 1 to remove 0 and introduce 3.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">set.seed</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">44</span>)</span>
+<span id="cb10-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">barplot</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">table</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rbinom</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">prob =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlab  =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Gender"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Bargraph of Gender"</span>)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://corneliustanui.rbind.io/content/posts/Simulation_2024-09-12/index_files/figure-html/Gender-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="sec-simul" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Statistical Data Simulation</h1>
+<p>We shall use the following R packages (installed from <a href="https://cran.r-project.org/">CRAN</a>) to simulate our variables;</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># load packages</span></span>
+<span id="cb11-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(here)</span>
+<span id="cb11-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(tidyverse)</span></code></pre></div>
+</details>
+</div>
+<p>Now, let’s combine all the simulated data according to probability distributions and their associated parameters identified and considered in Section&nbsp;2 into a data-frame. Notice that bands, gross family income, and poverty probability index are sorted to ensure that households in lower bands (band 1) are correspondingly assigned lower gross income and higher poverty probability index (PPI). The higher the PPI the higher the likelihood that a household is considered poor. The rest of the variables must not be sorted.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># table display setup</span></span>
+<span id="cb12-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#| label: tbl-simulated_data .striped .hover .primary .bordered</span></span>
+<span id="cb12-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#| tbl-cap: "Simulated data"</span></span>
+<span id="cb12-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#| tbl-cap-location: bottom </span></span>
+<span id="cb12-5"></span>
+<span id="cb12-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># for reproducibility</span></span>
+<span id="cb12-7"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">set.seed</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">44</span>)</span>
+<span id="cb12-8">simulated_data <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data.frame</span>(</span>
+<span id="cb12-9">  </span>
+<span id="cb12-10">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># sorting is necessary </span></span>
+<span id="cb12-11">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Bands =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sort</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.ordered</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rbinom</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span>,</span>
+<span id="cb12-12">                                 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>,</span>
+<span id="cb12-13">                                 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">prob =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">decreasing =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>),</span>
+<span id="cb12-14">  </span>
+<span id="cb12-15">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># sorting is necessary</span></span>
+<span id="cb12-16">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">GrossFamilyIncome =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sort</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rnbinom</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span>,</span>
+<span id="cb12-17">                                   <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>,</span>
+<span id="cb12-18">                                   <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mu =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20000</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">decreasing =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>),</span>
+<span id="cb12-19">  </span>
+<span id="cb12-20">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">GeographicalLocation =</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">as.factor</span>(<span class="fu" style="color: #4758AB;
 background-color: null;
@@ -135,20 +673,26 @@ font-style: inherit;">runif</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span>, </span>
-<span id="cb2-17">                                                                           <span class="at" style="color: #657422;
+font-style: inherit;">1000</span>,</span>
+<span id="cb12-21">                                                 <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">min =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1</span>, </span>
-<span id="cb2-18">                                                                           <span class="at" style="color: #657422;
+font-style: inherit;">1</span>,</span>
+<span id="cb12-22">                                                 <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">max =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">47</span>))),</span>
-<span id="cb2-19">                         <span class="at" style="color: #657422;
+<span id="cb12-23">  </span>
+<span id="cb12-24">  <span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">Poverty_Probability_Index =</span> <span class="fu" style="color: #4758AB;
+font-style: inherit;"># sorting is necessary</span></span>
+<span id="cb12-25">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">PovertyProbabilityIndex =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sort</span>(<span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">abs</span>(<span class="fu" style="color: #4758AB;
 background-color: null;
@@ -156,18 +700,23 @@ font-style: inherit;">rnorm</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span>, </span>
-<span id="cb2-20">                                                                 <span class="at" style="color: #657422;
+font-style: inherit;">1000</span>,</span>
+<span id="cb12-26">                                      <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">mean =</span> <span class="fl" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">0.3</span>, </span>
-<span id="cb2-21">                                                                 <span class="at" style="color: #657422;
+font-style: inherit;">0.3</span>,</span>
+<span id="cb12-27">                                      <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">sd =</span> <span class="fl" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">0.2</span>)),</span>
-<span id="cb2-22">                         <span class="at" style="color: #657422;
+font-style: inherit;">0.2</span>)), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">decreasing =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>),</span>
+<span id="cb12-28">  </span>
+<span id="cb12-29">  <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">Orphans =</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -178,17 +727,18 @@ background-color: null;
 font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1000</span>,</span>
-<span id="cb2-23">                                                    <span class="at" style="color: #657422;
+<span id="cb12-30">                             <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1</span>,</span>
-<span id="cb2-24">                                                    <span class="at" style="color: #657422;
+<span id="cb12-31">                             <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">prob =</span> <span class="fl" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">0.4</span>)),</span>
-<span id="cb2-25">                         <span class="at" style="color: #657422;
+font-style: inherit;">0.222</span>)),</span>
+<span id="cb12-32">  </span>
+<span id="cb12-33">  <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">Disability =</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -199,33 +749,35 @@ background-color: null;
 font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1000</span>,</span>
-<span id="cb2-26">                                                       <span class="at" style="color: #657422;
+<span id="cb12-34">                                <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1</span>,</span>
-<span id="cb2-27">                                                       <span class="at" style="color: #657422;
+<span id="cb12-35">                                <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">prob =</span> <span class="fl" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">0.022</span>)),</span>
-<span id="cb2-28">                         <span class="at" style="color: #657422;
+font-style: inherit;">0.022</span>)), </span>
+<span id="cb12-36">  </span>
+<span id="cb12-37">  <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">Number_of_Dependents =</span> <span class="fu" style="color: #4758AB;
+font-style: inherit;">NumberOfDependents =</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">rpois</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span>, </span>
-<span id="cb2-29">                                                        <span class="at" style="color: #657422;
+font-style: inherit;">1000</span>,</span>
+<span id="cb12-38">                             <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">lambda =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">4</span>),</span>
-<span id="cb2-30">                         <span class="at" style="color: #657422;
+<span id="cb12-39">  </span>
+<span id="cb12-40">  <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">Program_Costs_KES =</span> <span class="fu" style="color: #4758AB;
+font-style: inherit;">ProgramCostsKES =</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">abs</span>(<span class="fu" style="color: #4758AB;
 background-color: null;
@@ -234,17 +786,18 @@ background-color: null;
 font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1000</span>,</span>
-<span id="cb2-31">                                                     <span class="at" style="color: #657422;
+<span id="cb12-41">                              <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">mean =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">500000</span>,</span>
-<span id="cb2-32">                                                     <span class="at" style="color: #657422;
+<span id="cb12-42">                              <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">sd =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">50000</span>)),</span>
-<span id="cb2-33">                         <span class="at" style="color: #657422;
+<span id="cb12-43">  </span>
+<span id="cb12-44">  <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">Gender =</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -255,21 +808,34 @@ background-color: null;
 font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1000</span>,</span>
-<span id="cb2-34">                                                   <span class="at" style="color: #657422;
+<span id="cb12-45">                            <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">3</span>,</span>
-<span id="cb2-35">                                                   <span class="at" style="color: #657422;
+font-style: inherit;">2</span>,</span>
+<span id="cb12-46">                            <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">prob =</span> <span class="fl" style="color: #AD0000;
+font-style: inherit;">prob =</span> <span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">0.017</span>)))</span>
-<span id="cb2-36"></span>
-<span id="cb2-37"><span class="co" style="color: #5E5E5E;
+font-style: inherit;">c</span>(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.49</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.50</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb12-47">)</span>
+<span id="cb12-48"></span>
+<span id="cb12-49"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># view data (printed on your browser)</span></span>
-<span id="cb2-38">knitr<span class="sc" style="color: #5E5E5E;
+<span id="cb12-50">knitr<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -284,96 +850,99 @@ background-color: null;
 font-style: inherit;">5</span>))</span></code></pre></div>
 </details>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 4%">
-<col style="width: 14%">
-<col style="width: 15%">
+<col style="width: 13%">
+<col style="width: 16%">
 <col style="width: 18%">
-<col style="width: 5%">
-<col style="width: 7%">
-<col style="width: 15%">
+<col style="width: 6%">
+<col style="width: 8%">
+<col style="width: 14%">
 <col style="width: 12%">
 <col style="width: 5%">
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: right;">Bands</th>
-<th style="text-align: right;">Gross_Family_Income</th>
-<th style="text-align: left;">Geographical_Location</th>
-<th style="text-align: right;">Poverty_Probability_Index</th>
+<th style="text-align: left;">Bands</th>
+<th style="text-align: right;">GrossFamilyIncome</th>
+<th style="text-align: left;">GeographicalLocation</th>
+<th style="text-align: right;">PovertyProbabilityIndex</th>
 <th style="text-align: left;">Orphans</th>
 <th style="text-align: left;">Disability</th>
-<th style="text-align: right;">Number_of_Dependents</th>
-<th style="text-align: right;">Program_Costs_KES</th>
+<th style="text-align: right;">NumberOfDependents</th>
+<th style="text-align: right;">ProgramCostsKES</th>
 <th style="text-align: left;">Gender</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">18621</td>
-<td style="text-align: left;">36</td>
-<td style="text-align: right;">0.1751991</td>
 <td style="text-align: left;">1</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">510735.4</td>
-<td style="text-align: left;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">6235</td>
-<td style="text-align: left;">39</td>
-<td style="text-align: right;">0.2081443</td>
-<td style="text-align: left;">1</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">466547.2</td>
-<td style="text-align: left;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">33812</td>
-<td style="text-align: left;">33</td>
-<td style="text-align: right;">0.5994036</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">458893.0</td>
-<td style="text-align: left;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">30154</td>
-<td style="text-align: left;">22</td>
-<td style="text-align: right;">0.3511708</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">554462.2</td>
-<td style="text-align: left;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">27145</td>
-<td style="text-align: left;">14</td>
-<td style="text-align: right;">0.1675043</td>
+<td style="text-align: right;">1154</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: right;">0.9187172</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: right;">5</td>
-<td style="text-align: right;">464203.2</td>
+<td style="text-align: right;">536555.6</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">1</td>
+<td style="text-align: right;">3127</td>
+<td style="text-align: left;">47</td>
+<td style="text-align: right;">0.9179034</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">505307.0</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">3582</td>
+<td style="text-align: left;">3</td>
+<td style="text-align: right;">0.8995892</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">446018.0</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">3691</td>
+<td style="text-align: left;">24</td>
+<td style="text-align: right;">0.8663438</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">488874.6</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">4082</td>
+<td style="text-align: left;">7</td>
+<td style="text-align: right;">0.8652463</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">503376.7</td>
+<td style="text-align: left;">2</td>
 </tr>
 </tbody>
 </table>
 </div>
+</div>
+<p>We can finally save the simulated data in a desired location in the local computer disc for further use;</p>
+<div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># write data to disc</span></span>
-<span id="cb3-2"><span class="fu" style="color: #4758AB;
+<span id="cb13-2"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">write.csv</span>(<span class="at" style="color: #657422;
 background-color: null;
@@ -390,7 +959,7 @@ background-color: null;
 font-style: inherit;">here</span>(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"./Data/simulated_data.csv"</span>))</span>
-<span id="cb3-3"><span class="fu" style="color: #4758AB;
+<span id="cb13-3"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">saveRDS</span>(<span class="at" style="color: #657422;
 background-color: null;
@@ -405,59 +974,78 @@ background-color: null;
 font-style: inherit;">"./Data/simulated_data.rds"</span>))</span></code></pre></div>
 </details>
 </div>
+</section>
+<section id="sec-concl" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Conclusion</h1>
+<p>We have covered a few ways in which data can be generated based on their known probability distributions, and the values of the parameters of those distributions obtained from existing literature.</p>
+<p>Each probability distribution has a corresponding Application Programming Interface (API), in the form of a function, that accesses the RNG. The API tells the RNG to generate random numbers in a particular manner that satisfies the conditions of the probability distribution (pattern).</p>
+<p>There are tens of other probability distributions that are outside the scope of this article. If you are interested in <em>mathematical statistics</em>, you may check them out. Each probability distribution describes a special phenomenon, with a wide range of real world applications.</p>
+<p>However, the real world scenario may be too complex to be described by just one probability distribution, and in such a case, several distributions may be combined to create a complex (mixed) distribution that may sufficiently describe the real world scenario.</p>
 
 
 </section>
 
- ]]></description>
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>https://kafu.ac.ke/images/2022/Academics/nfm/NEW_FUNDING_MODEL_-_6TH_AUGUST_2024.pdf↩︎</p></li>
+<li id="fn2"><p>https://www.universitiesfund.go.ke/wp-content/uploads/2024/03/Issue-December-2023.pdf↩︎</p></li>
+<li id="fn3"><p>https://www.researchgate.net/figure/US-Distribution-of-Income-Actual-vs-Lognormal-model_fig1_327971358↩︎</p></li>
+<li id="fn4"><p>https://www.businessdailyafrica.com/bd/economy/kenyans-average-income-of-sh20-123-hits-six-year-high–4043204↩︎</p></li>
+<li id="fn5"><p>https://devinit-prod-static.ams3.cdn.digitaloceanspaces.com/media/documents/Status-of-disability-in-Kenya__IF.pdf↩︎</p></li>
+<li id="fn6"><p>https://dhsprogram.com/pubs/pdf/SR277/SR277.pdf↩︎</p></li>
+<li id="fn7"><p>https://kenya.unfpa.org/en/topics/population-matters-0↩︎</p></li>
+</ol>
+</section></div> ]]></description>
   <category>R</category>
   <category>simulation</category>
   <category>mathematical statistical</category>
-  <guid>https://corneliustanui.rbind.io/content/posts/2024-09-12/</guid>
+  <guid>https://corneliustanui.rbind.io/content/posts/Simulation_2024-09-12/</guid>
   <pubDate>Wed, 11 Sep 2024 21:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Kenyan Household Bands Classifier</title>
   <dc:creator>Cornelius Tanui</dc:creator>
-  <link>https://corneliustanui.rbind.io/content/posts/2024-09-06/</link>
+  <link>https://corneliustanui.rbind.io/content/posts/MTI_Modeling_2024-09-06/</link>
   <description><![CDATA[ 
 
 
 
 
-<section id="university-funding-in-kenya" class="level3" data-number="0.1">
-<h3 data-number="0.1" class="anchored" data-anchor-id="university-funding-in-kenya"><span class="header-section-number">0.1</span> University Funding in Kenya</h3>
-<section id="sec-shallow" class="level5" data-number="0.1.0.1">
-<h5 data-number="0.1.0.1" class="anchored" data-anchor-id="sec-shallow"><span class="header-section-number">0.1.0.1</span> My Shallow Thoughts on MTI</h5>
-<p>When I first heard of MTI, my immediate thought was that the government of Kenya had finally embraced Artificial Intelligence on a larger scale and decided to award university students scholarships based on economic bands decided by some novel AI algorithm. Think, a combination of classification algorithms of ‘repute compute, high repute’. A pleasant thought, right? No.</p>
-<p>No because, later, I searched for MTI online and found out that it stands for ‘means testing instrument’, and if you are deep into data, you would think ‘means’ is hereby used to denote ‘average’. You see, ‘testing of means’ is not remotely uncommon, we come across it all the time in data analytics. T-test is a test of means, right? Right. I kid you not, ‘means’ in the context of MTI stands for ‘resources’, or ‘assets’, that a student has access to that could otherwise be used to fund their higher education. ‘Means’ can be a confusing word. Nonetheless, there are also ‘means of transport’, ‘by all means’, etc.</p>
-<p>As it turned out, MTI is a widely used concept in the education and social protection sectors, and I was embarrassingly waaay off in thinking that it had something to do with statistical averages</p>
-<p>I was waaay off in yet another aspect – think about it for a moment; the students joining university in September, 2024 as first-years/freshmen had never been banded before, and therefore, there would be no training data for my imagined novel AI model! This is the first time banding is happening in Kenya, so maybe, just maybe, there will be (enough) data to train a model in 2025, so that the freshmen of 2025 will have successfully been banded by the AI.</p>
+<section id="university-funding-in-kenya" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> University Funding in Kenya</h1>
+<section id="sec-shallow" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="sec-shallow"><span class="header-section-number">1.1</span> My Shallow Thoughts on MTI</h2>
+<p>When I first heard of MTI, my immediate thought was that the government of Kenya had finally embraced Artificial Intelligence on a larger scale and decided to award university students scholarships based on economic bands decided by some novel AI algorithm. Think, a combination of classification algorithms of ‘high compute, high repute’. A pleasant thought, right? No.</p>
+<p>No because, later on, I searched for MTI online and found out that it stands for ‘means testing instrument’, and if you are deep into data, you would think ‘means’ is hereby used to denote average. See, ‘testing of means’ is not remotely uncommon, we come across it all the time in data analytics. T-test is a test of means. However, ‘means’ in the context of MTI stands for resources, or assets’, that a student has access to that could be used to fund their higher education. ‘Means’ can be a confusing word. ‘Means of transport’, ‘by all means’, etc.</p>
+<p>As it turned out, MTI is a widely used concept in the education and social protection sectors, and I was embarrassingly waaay off in thinking that it had something to do with statistical averages.</p>
+<p>I was waaay off in yet, yet again, in a different aspect – the students joining university in September, 2024 as first-years/freshmen had never been banded before, and therefore, there would be no training data for my imagined AI model! This is the first time banding is happening in Kenya, as regards university funding, so maybe, there will be (enough) data to train a model in 2025, so that the freshmen of 2025 will have successfully been banded by AI.</p>
 </section>
-<section id="background-of-mti" class="level5" data-number="0.1.0.2">
-<h5 data-number="0.1.0.2" class="anchored" data-anchor-id="background-of-mti"><span class="header-section-number">0.1.0.2</span> Background of MTI</h5>
-<p>MTI has been around for a while now, with the first documented use in 1930s involving provision of relief to households by governments. If a home was deemed able to support itself by the source of income it had, the the government benefits were stopped or reduced<sup>1</sup>. MTI has since been heavily employed in the social protection sector to provide targeted anti-poverty benefits to households, civil legal aid to individuals<sup>2</sup>, communities, and geographies globally. The obvious reason for preference of MTI over universal provision of support – such as universal basic income – is that MTI offers the support to targeted beneficiaries, because with the universal approach, there may be recipients who do not genuinely require it<sup>3</sup>.</p>
+<section id="background-to-mti" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="background-to-mti"><span class="header-section-number">1.2</span> Background to MTI</h2>
+<p>Globally, MTI has been around for a while now, with the first documented use in 1930s involving provision of relief to households by governments. If a home was deemed able to support itself by the source of income it had, the the government benefits were stopped or reduced<sup>1</sup>. MTI has since been heavily employed in the social protection to provide targeted anti-poverty benefits to households, civil legal aid to individuals<sup>2</sup>, communities, and geographies. The obvious reason for preference of MTI to universal provision of support – such as universal basic income – is that MTI offers the support to targeted beneficiaries, because with the universal approach, there may be recipients who do not genuinely require it<sup>3</sup>.</p>
 <p>In Kenya, MTI has been used for a long time to identify households in marginalized communities that are eligible for benefit from cash transfers<sup>4</sup> under the National Safety Net Programmes (NSNP). One such safety programme is the Hunger Safety Net Programme (HSNP) that supports old persons, orphans and vulnerable children, and persons with severe disability.</p>
-<p>Literature indicates that MTI has worked successfully so far in Kenya as implemented under NSNP, but it is not without shortcomings. For example, the popular controversy around it is it discourages the target population from engaging in savings<sup>5</sup>, consequently promoting poverty, a concept known as ‘poverty trap’<sup>6</sup>. In Kenya, MTI sustained an unmitigated uproar over it’s banding inaccuracy that led to placement of students from poor backgrounds into higher bands<sup>7</sup> that required them to dig deep into their pockets to fill the gap, pockets which they either do not have, or are torn. The bands run from 1 (least able) to 5 (most able.)</p>
-<p>Under the hood, MTI is mainly a regression model – such as a tobit model – that aggregates various variables together and provides a value<sup>3</sup> which is then compared to a threshold that determines whether the candidate qualifiers for the benefit or does not. Principal components analysis models have also been deployed to this cause<sup>4</sup>.</p>
-<p>Now, let us explore how an Artificial Intelligence classifier could be used as an alternative to MTI to award financial support to university students in Kenya.</p>
+<p>Literature indicates that MTI has worked successfully so far in Kenya as implemented under NSNP, yet it is not without shortcomings. For example, the popular controversy around it is, it discourages the target population from engaging in financial savings<sup>5</sup>, consequently promoting poverty, a concept known as poverty trap<sup>6</sup>. MTI sustained an unmitigated uproar over it’s banding inaccuracy<sup>7</sup> that led to placement of students from poor backgrounds into higher bands that require them to dig deep into their pockets to fill the gap, pockets which they either do not have, or are torn. The bands range from 1 (least able) to 5 (most able.)</p>
+<p>Under the hood, MTI is mainly a regression model – such as a tobit model – that aggregates various variables together and provides a value<sup>3</sup> which is then compared to a threshold that determines whether the candidate qualifies for the benefit, or does not. Principal components analysis models have also been deployed to this cause<sup>4</sup>.</p>
+<p>Now, let us explore how a machine learning (ML) classifier could be used as an alternative to MTI to award financial support to university students in Kenya.</p>
 </section>
 </section>
-<section id="ai-powered-approach-to-household-banding" class="level3" data-number="0.2">
-<h3 data-number="0.2" class="anchored" data-anchor-id="ai-powered-approach-to-household-banding"><span class="header-section-number">0.2</span> AI Powered Approach to Household Banding</h3>
-<p>As noted in Section&nbsp;0.1.0.1, AI requires massive training on before it can be deployed for use, just a student requires a couple of lessons before sitting an exam.</p>
-<p>It is not too clear how and which factors were considered to create the 5 bands, although gross family income, geographical location poverty probability index, special circumstances such as orphans and students with disability, number of dependents, program costs, and gender are some of the factors that have been mentioned<sup>8</sup>. Because I do not have readily available data covering these factors, I am going to use simulate them and use R<sup>9</sup>, <a href="https://https://www.tidyverse.org//">{tidyverse}</a>, <a href="https://www.tidymodels.org/">{tidymodels}</a> and other packages to develop a data processing, modelling, and prediction pipeline using a machine learning multi-class classification (MCC)<sup>10</sup> model of our choice. Note that the outcome should be in discrete ordinal scale.</p>
-<section id="data-simulation" class="level5" data-number="0.2.0.1">
-<h5 data-number="0.2.0.1" class="anchored" data-anchor-id="data-simulation"><span class="header-section-number">0.2.0.1</span> Data Simulation</h5>
+<section id="ml-approach-to-household-banding" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> ML Approach to Household Banding</h1>
+<p>It goes without saying that a student requires a couple of lessons before sitting an exam, so does a ML model require massive – yet meticulous – training before it can be deployed for use, as noted in Section&nbsp;1.1.</p>
+<p>It is not too clear how and which factors were considered to create the 5 bands, although gross family income, geographical location poverty probability index, special circumstances such as orphans and students with disability, number of dependents, program costs, and gender are some of the variables that have been mentioned<sup>8</sup>. Because I do not have readily available data covering these variables, I am going to simulate them and use R<sup>9</sup>, <a href="https://https://www.tidyverse.org//">{tidyverse}</a>, <a href="https://www.tidymodels.org/">{tidymodels}</a> and other R packages to develop a data processing, modelling, and prediction pipeline using a ML multi-class classification (MCC)<sup>10</sup> model of our choice. Note that the outcome should be in discrete ordinal scale.</p>
+<section id="data-simulation" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="data-simulation"><span class="header-section-number">2.1</span> Data Simulation</h2>
 <p>Simulation of these data is outside the scope of this article and will be covered in a later post.</p>
 <p>The table below shows the properties of the variables are;</p>
-<div id="tbl-properties" class="striped hover primary bordered quarto-float anchored">
+<div id="tbl-properties" class="striped hover primary bordered quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-properties-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;1: Properties of variables
 </figcaption>
 <div aria-describedby="tbl-properties-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="table-striped table-hover table-primary table-bordered table">
+<table class="table-striped table-hover table-primary table-bordered caption-top table">
 <thead>
 <tr class="header">
 <th>Variable</th>
@@ -517,8 +1105,8 @@ Table&nbsp;1: Properties of variables
 </figure>
 </div>
 </section>
-<section id="descrpitive-analysis" class="level5" data-number="0.2.0.2">
-<h5 data-number="0.2.0.2" class="anchored" data-anchor-id="descrpitive-analysis"><span class="header-section-number">0.2.0.2</span> Descrpitive Analysis</h5>
+<section id="descrpitive-analysis" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="descrpitive-analysis"><span class="header-section-number">2.2</span> Descrpitive Analysis</h2>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -531,7 +1119,7 @@ Disclaimer!
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
-<p>The data is <strong>simulated</strong>, and therefore substantially differs with the actual scenario! The data is for learning purposes only, and the statistical estimates reported MUST NOT be taken as true reflection of the real-word situation.</p>
+<p>The data is <strong>simulated</strong>, and therefore substantially differs with the actual scenario! The data is meant for learning purposes only, and the statistical estimates reported MUST NOT be taken as true reflection of the real-word situation.</p>
 </div>
 </div>
 </div>
@@ -556,7 +1144,7 @@ background-color: null;
 font-style: inherit;">library</span>(tidymodels)</span></code></pre></div>
 </details>
 </div>
-<p>The data;</p>
+<p>The simulated data looks like this;</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -606,107 +1194,107 @@ background-color: null;
 font-style: inherit;">5</span>))</span></code></pre></div>
 </details>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 4%">
-<col style="width: 14%">
-<col style="width: 15%">
+<col style="width: 13%">
+<col style="width: 16%">
 <col style="width: 18%">
-<col style="width: 5%">
-<col style="width: 7%">
-<col style="width: 15%">
+<col style="width: 6%">
+<col style="width: 8%">
+<col style="width: 14%">
 <col style="width: 12%">
 <col style="width: 5%">
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: right;">Bands</th>
-<th style="text-align: right;">Gross_Family_Income</th>
-<th style="text-align: left;">Geographical_Location</th>
-<th style="text-align: right;">Poverty_Probability_Index</th>
+<th style="text-align: left;">Bands</th>
+<th style="text-align: right;">GrossFamilyIncome</th>
+<th style="text-align: left;">GeographicalLocation</th>
+<th style="text-align: right;">PovertyProbabilityIndex</th>
 <th style="text-align: left;">Orphans</th>
 <th style="text-align: left;">Disability</th>
-<th style="text-align: right;">Number_of_Dependents</th>
-<th style="text-align: right;">Program_Costs_KES</th>
+<th style="text-align: right;">NumberOfDependents</th>
+<th style="text-align: right;">ProgramCostsKES</th>
 <th style="text-align: left;">Gender</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">18621</td>
-<td style="text-align: left;">36</td>
-<td style="text-align: right;">0.1751991</td>
 <td style="text-align: left;">1</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">510735.4</td>
-<td style="text-align: left;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">6235</td>
-<td style="text-align: left;">39</td>
-<td style="text-align: right;">0.2081443</td>
-<td style="text-align: left;">1</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">466547.2</td>
-<td style="text-align: left;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">33812</td>
-<td style="text-align: left;">33</td>
-<td style="text-align: right;">0.5994036</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">458893.0</td>
-<td style="text-align: left;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">30154</td>
-<td style="text-align: left;">22</td>
-<td style="text-align: right;">0.3511708</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">554462.2</td>
-<td style="text-align: left;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">27145</td>
-<td style="text-align: left;">14</td>
-<td style="text-align: right;">0.1675043</td>
+<td style="text-align: right;">1154</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: right;">0.9187172</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: right;">5</td>
-<td style="text-align: right;">464203.2</td>
+<td style="text-align: right;">536555.6</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">1</td>
+<td style="text-align: right;">3127</td>
+<td style="text-align: left;">47</td>
+<td style="text-align: right;">0.9179034</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">505307.0</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">3582</td>
+<td style="text-align: left;">3</td>
+<td style="text-align: right;">0.8995892</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">446018.0</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">3691</td>
+<td style="text-align: left;">24</td>
+<td style="text-align: right;">0.8663438</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">488874.6</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">4082</td>
+<td style="text-align: left;">7</td>
+<td style="text-align: right;">0.8652463</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">503376.7</td>
+<td style="text-align: left;">2</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 </section>
-<section id="model-creation" class="level5" data-number="0.2.0.3">
-<h5 data-number="0.2.0.3" class="anchored" data-anchor-id="model-creation"><span class="header-section-number">0.2.0.3</span> Model Creation</h5>
-<section id="model-fitting" class="level7">
-<p class="heading">Model Fitting</p>
+<section id="model-creation" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="model-creation"><span class="header-section-number">2.3</span> Model Creation</h2>
+<section id="model-fitting" class="level3" data-number="2.3.1">
+<h3 data-number="2.3.1" class="anchored" data-anchor-id="model-fitting"><span class="header-section-number">2.3.1</span> Model Fitting</h3>
 </section>
-<section id="model-diagnostics" class="level7">
-<p class="heading">Model Diagnostics</p>
+<section id="model-diagnostics" class="level3" data-number="2.3.2">
+<h3 data-number="2.3.2" class="anchored" data-anchor-id="model-diagnostics"><span class="header-section-number">2.3.2</span> Model Diagnostics</h3>
 </section>
-<section id="band-prediction" class="level7">
-<p class="heading">Band Prediction</p>
+<section id="band-prediction" class="level3" data-number="2.3.3">
+<h3 data-number="2.3.3" class="anchored" data-anchor-id="band-prediction"><span class="header-section-number">2.3.3</span> Band Prediction</h3>
 </section>
 </section>
 </section>
-<section id="conclusion" class="level3" data-number="0.3">
-<h3 data-number="0.3" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">0.3</span> Conclusion</h3>
+<section id="conclusion" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Conclusion</h1>
 
 
 </section>
@@ -731,13 +1319,13 @@ font-style: inherit;">5</span>))</span></code></pre></div>
   <category>classification</category>
   <category>prediction</category>
   <category>MTI</category>
-  <guid>https://corneliustanui.rbind.io/content/posts/2024-09-06/</guid>
+  <guid>https://corneliustanui.rbind.io/content/posts/MTI_Modeling_2024-09-06/</guid>
   <pubDate>Thu, 05 Sep 2024 21:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Modelling CPI Using ARIMA(p,d,q)</title>
   <dc:creator>Cornelius Tanui</dc:creator>
-  <link>https://corneliustanui.rbind.io/content/posts/2024-08-22/</link>
+  <link>https://corneliustanui.rbind.io/content/posts/ARIMA_Fitting_2024-08-22/</link>
   <description><![CDATA[ 
 
 
@@ -1397,7 +1985,7 @@ font-style: inherit;">NA</span>)))</span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://corneliustanui.rbind.io/content/posts/2024-08-22/index_files/figure-html/show trend-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://corneliustanui.rbind.io/content/posts/ARIMA_Fitting_2024-08-22/index_files/figure-html/show trend-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1504,7 +2092,7 @@ font-style: inherit;">TRUE</span>)</span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://corneliustanui.rbind.io/content/posts/2024-08-22/index_files/figure-html/decompose-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://corneliustanui.rbind.io/content/posts/ARIMA_Fitting_2024-08-22/index_files/figure-html/decompose-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1544,7 +2132,7 @@ font-style: inherit;">"Seasonally adjusted"</span>)</span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://corneliustanui.rbind.io/content/posts/2024-08-22/index_files/figure-html/decompose1-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://corneliustanui.rbind.io/content/posts/ARIMA_Fitting_2024-08-22/index_files/figure-html/decompose1-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1645,7 +2233,7 @@ font-style: inherit;">2</span>)</span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://corneliustanui.rbind.io/content/posts/2024-08-22/index_files/figure-html/decompose2-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://corneliustanui.rbind.io/content/posts/ARIMA_Fitting_2024-08-22/index_files/figure-html/decompose2-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1799,7 +2387,7 @@ font-style: inherit;">theme_classic</span>()</span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://corneliustanui.rbind.io/content/posts/2024-08-22/index_files/figure-html/histogram-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://corneliustanui.rbind.io/content/posts/ARIMA_Fitting_2024-08-22/index_files/figure-html/histogram-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1912,7 +2500,7 @@ font-style: inherit;">theme_classic</span>()</span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://corneliustanui.rbind.io/content/posts/2024-08-22/index_files/figure-html/histogram1-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://corneliustanui.rbind.io/content/posts/ARIMA_Fitting_2024-08-22/index_files/figure-html/histogram1-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1966,7 +2554,7 @@ font-style: inherit;">theme_classic</span>()</span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://corneliustanui.rbind.io/content/posts/2024-08-22/index_files/figure-html/qq plot-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://corneliustanui.rbind.io/content/posts/ARIMA_Fitting_2024-08-22/index_files/figure-html/qq plot-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -2038,7 +2626,7 @@ font-style: inherit;">theme_light</span>()</span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://corneliustanui.rbind.io/content/posts/2024-08-22/index_files/figure-html/lagging-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://corneliustanui.rbind.io/content/posts/ARIMA_Fitting_2024-08-22/index_files/figure-html/lagging-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -2080,7 +2668,7 @@ font-style: inherit;">theme_classic</span>()</span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://corneliustanui.rbind.io/content/posts/2024-08-22/index_files/figure-html/ACF-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://corneliustanui.rbind.io/content/posts/ARIMA_Fitting_2024-08-22/index_files/figure-html/ACF-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -2117,7 +2705,7 @@ font-style: inherit;">theme_classic</span>()</span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://corneliustanui.rbind.io/content/posts/2024-08-22/index_files/figure-html/PACF-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://corneliustanui.rbind.io/content/posts/ARIMA_Fitting_2024-08-22/index_files/figure-html/PACF-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -2241,7 +2829,7 @@ font-style: inherit;">checkresiduals</span>(CPIfit)</span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://corneliustanui.rbind.io/content/posts/2024-08-22/index_files/figure-html/residuals-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://corneliustanui.rbind.io/content/posts/ARIMA_Fitting_2024-08-22/index_files/figure-html/residuals-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -2304,7 +2892,7 @@ font-style: inherit;">theme_bw</span>()</span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://corneliustanui.rbind.io/content/posts/2024-08-22/index_files/figure-html/visualise forecasts-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://corneliustanui.rbind.io/content/posts/ARIMA_Fitting_2024-08-22/index_files/figure-html/visualise forecasts-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -2321,7 +2909,7 @@ font-style: inherit;">theme_bw</span>()</span></code></pre></div>
   <category>R</category>
   <category>time-series</category>
   <category>Smoothing</category>
-  <guid>https://corneliustanui.rbind.io/content/posts/2024-08-22/</guid>
+  <guid>https://corneliustanui.rbind.io/content/posts/ARIMA_Fitting_2024-08-22/</guid>
   <pubDate>Mon, 08 Jan 2024 21:00:00 GMT</pubDate>
 </item>
 </channel>
