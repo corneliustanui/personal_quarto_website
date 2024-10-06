@@ -28,8 +28,8 @@
 </div>
 <section id="sec-intro" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
-<p>Simulation is a scientific process of creating an hypothetical situation that mirrors the real world phenomenon. In this article, we shall explore a few ways of generating hypothetical variables that closely resemble the data that may, for instance, be collected in a field survey. You may have asked yourself how a researcher would go about generating age values for a population without actually asking the respondents in a sample of a given population to fill a survey questionnaire asking for their ages. So, this is how.</p>
-<p>Different variables require different approaches of simulation, because of the underlying <strong>probability distribution.</strong> Simply put, a probability distribution defines the pattern to which the values of a variable conform. There is always a pattern that values follow, and for us to generate (simulate) the values for a variable, we are required to know what is pattern is like in advance. This prior knowledge of the characteristics of the pattern is known as <em>apriori</em>, because we know it in advance. This knowledge is largely extracted from literature. For example, if we want to simulate 100 age values in a population of epileptics, we need to ask these two questions:</p>
+<p>Simulation is the scientific process of creating an hypothetical situation that mirrors the real world phenomenon. In this article, we shall explore a few ways of generating hypothetical variables that closely resemble the data that may, for instance, be collected in a field survey. You may have asked yourself how a researcher can go about generating age values of a population without actually asking the respondents in a sample of the given population to fill a survey questionnaire asking for their ages. So, this is how.</p>
+<p>Different variables require different approaches of simulation, because of the underlying <strong>probability distribution.</strong> Simply put, a probability distribution defines the pattern to which the values of a variable conform. There is always a pattern that values follow, and for us to generate (simulate) the values of a variable, we are required to know what this pattern looks like in advance. This prior knowledge of the characteristics of the pattern is known as <em>apriori</em> information, because we know it in advance largely by reading the literature. For example, if we want to simulate 100 age values from a population of epileptics, we need to ask these two questions:-</p>
 <ol type="1">
 <li><p>What is the usual pattern of age like for the general population? We can use a histogram to get a hint of the underlying probability distribution for age. If the histogram reveals a bell-shaped pattern, we can roughly consider the <strong>normal distribution</strong> as the underlying probability distribution. There are many other probability distributions, and normal distribution is just one of them, which also happens to be the most common for numerical variables in the field of real numbers (x ∈ ℝ).</p></li>
 <li><p>What is the mean and standard deviation of the age of epileptics? The answer will allow us to reproduce the histogram in (2) above without going to the field to collect actual age data. Here, <em>mean</em> and <em>standard deviation</em> are the only parameters whose apriori values ae required.</p></li>
@@ -995,8 +995,8 @@ font-style: inherit;">"./Data/simulated_data.rds"</span>))</span></code></pre></
 </ol>
 </section></div> ]]></description>
   <category>R</category>
-  <category>simulation</category>
-  <category>mathematical statistical</category>
+  <category>Simulation</category>
+  <category>Mathematical Statistics</category>
   <guid>https://corneliustanui.rbind.io/content/posts/Simulation_2024-09-12/</guid>
   <pubDate>Wed, 11 Sep 2024 21:00:00 GMT</pubDate>
 </item>
@@ -1247,7 +1247,7 @@ font-style: inherit;">5</span>))</span></code></pre></div>
 <td style="text-align: left;">0</td>
 <td style="text-align: right;">7</td>
 <td style="text-align: right;">446018.0</td>
-<td style="text-align: left;">1</td>
+<td style="text-align: left;">3</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">1</td>
@@ -1258,7 +1258,7 @@ font-style: inherit;">5</span>))</span></code></pre></div>
 <td style="text-align: left;">0</td>
 <td style="text-align: right;">4</td>
 <td style="text-align: right;">488874.6</td>
-<td style="text-align: left;">1</td>
+<td style="text-align: left;">2</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">1</td>
@@ -1269,7 +1269,7 @@ font-style: inherit;">5</span>))</span></code></pre></div>
 <td style="text-align: left;">0</td>
 <td style="text-align: right;">5</td>
 <td style="text-align: right;">503376.7</td>
-<td style="text-align: left;">2</td>
+<td style="text-align: left;">1</td>
 </tr>
 </tbody>
 </table>
