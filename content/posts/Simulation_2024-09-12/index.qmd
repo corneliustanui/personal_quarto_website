@@ -35,11 +35,11 @@ Simulation is a scientific process of creating an hypothetical situation that mi
 
 Different variables require different approaches of simulation, because of the underlying **probability distribution.** Simply put, a probability distribution defines the pattern to which the values of a variable conform. There is always a pattern that values follow, and for us to generate (simulate) the values for a variable, we are required to know what is pattern is like in advance. This prior knowledge of the characteristics of the pattern is known as *apriori*, because we know it in advance. This knowledge is largely extracted from literature. For example, if we want to simulate 100 age values in a population of epileptics, we need to ask these two questions:
 
-1. What is the usual pattern of age like for the general population? We can use a histogram to get a hint of the underlying probability distribution for age. If the histogram reveals a bell-shaped pattern, we can roughly consider the **normal distribution** as the underlying probability distribution. There are many other probability distributions, and normal distribution is just one of them, which also happens to be the most common for numerical variables in the real space (x ∈ ℝ).
+1.  What is the usual pattern of age like for the general population? We can use a histogram to get a hint of the underlying probability distribution for age. If the histogram reveals a bell-shaped pattern, we can roughly consider the **normal distribution** as the underlying probability distribution. There are many other probability distributions, and normal distribution is just one of them, which also happens to be the most common for numerical variables in the field of real numbers (x ∈ ℝ).
 
-2. What is the mean and standard deviation age of epileptics? The answer will allow us to reproduce the histogram in (2) above without going to the field to collect actual age data. Here, *mean* and *standard deviation* are the only parameters whose apriori values ae required.
+2.  What is the mean and standard deviation of the age of epileptics? The answer will allow us to reproduce the histogram in (2) above without going to the field to collect actual age data. Here, *mean* and *standard deviation* are the only parameters whose apriori values ae required.
 
-In this article, we shall simulate variables whose values mirror the data for the means testing instrument (MTI) used by the Government of Kenya to place university students into 5 bands for award of scholarship. This follows from [my earlier article](https://corneliustanui.rbind.io/content/posts/MTI_Modeling_2024-09-06/) on using artificial intelligence as a more reliable alternative to the [new MTI-based university funding model in Kenya](https://www.universitiesfund.go.ke/new-higher-education-funding-model/).
+In this article, we shall simulate variables whose values mirror the data for the means testing instrument (MTI) used by the Government of Kenya to place university students into 5 bands for award of scholarships. This follows from [my earlier article](https://corneliustanui.rbind.io/content/posts/MTI_Modeling_2024-09-06/) on using artificial intelligence as a more reliable alternative to the [new MTI-based university funding model in Kenya](https://www.universitiesfund.go.ke/new-higher-education-funding-model/).
 
 ::: {.callout-important appearance="default" collapse="false"}
 ## Disclaimer!
@@ -49,10 +49,17 @@ The data is **simulated**, and therefore substantially differs with the actual s
 
 # Literature {#sec-lit_rev}
 
-There are are a number of factors[^1] that the new MTI-based university funding model in Kenya considers for placement of students into 5 the bands. We shall discuss each one of them as here and deduce the probable underlying probability distributions and their associated parametric values that will enable us to simulate these factors. We shall simulate the data for 1000 students, thus $x_i$, where $i = 1, 2, 3, ..., 1000$. Because the values are randomly generated, we shall seed random-number generator (RNG), for reciprocity purposes, to the arbitrary value of 44. Note that there is no real reason for this choice.
+There are a number of factors[^1] that the new MTI-based university funding model in Kenya considers for placement of students into the 5 bands. We shall discuss each one of them and deduce the probable underlying probability distributions and their associated parametric values that will enable us to simulate these factors. We shall simulate the data for 1000 students, thus $x_i$ where $i = 1, 2, 3, ..., 1000$. Because the values are randomly generated, we shall seed the random number generator (RNG), for reproducibility purposes, with the arbitrary value of 44. Note that there is no real reason for this choice.
+
+[^1]: https://kafu.ac.ke/images/2022/Academics/nfm/NEW_FUNDING_MODEL\_-\_6TH_AUGUST_2024.pdf
 
 ## Bands {#sec-bands}
-This is the outcome -- a categorical 5-point ordinal variable where 1 represents the most needy and 5 represents the least needy[^2], thus $x_{ij}$, where $j = \{1, 2, 3, ..., 5\}$. We will assume that each band has a fairly equal chance of occurring, i.e for $i^{th}$ student, $p(x_{i}) = 1/2$. We need a probability distribution function that draws 5 numbers between 1 to 5 for 1000 observations. We could use the `sample` function from `{base}` R package but the distribution of values would not be desirably skewed towards the  left -- it would lead to a near-uniform distribution. Remember that bands are a proxy for the socio-economic status of the household, and in Kenya -- as with most other countries[^3] -- the number of rich households is significantly lower than the number of poor households, therefore we need to expect more band 1 households than band 5 households.
+
+This is the outcome -- a categorical 5-point ordinal variable where 1 represents the most needy and 5 represents the least needy[^2], thus $x_{ij}$ where $j = \{1, 2, 3, ..., 5\}$. We will assume that each band has a fairly equal chance of occurring, i.e for the $i^{th}$ student, $p(x_{i}) = 1/2$. We need a probability distribution function that draws 5 numbers between 1 to 5 for 1000 observations. We could use the `sample` function from `{base}` R package but the distribution of values would not be desirably skewed towards the left -- it would lead to a near-uniform distribution. Remember that bands are a proxy for the socio-economic status of the household, and in Kenya -- as in most other countries[^3] -- the number of rich households is significantly lower than the number of poor households, therefore we need to expect more band 1 households than band 5 households.
+
+[^2]: https://www.universitiesfund.go.ke/wp-content/uploads/2024/03/Issue-December-2023.pdf
+
+[^3]: https://www.researchgate.net/figure/US-Distribution-of-Income-Actual-vs-Lognormal-model_fig1_327971358
 
 ```{r undesirable bands}
 
@@ -71,7 +78,10 @@ barplot(table(rbinom(n = 1000,size = 5, prob = 1/5) + 1),  xlab  = "Bands", main
 ```
 
 ## Gross Family Income
-Income, as with bands, is expected to be a positively skewed real-valued number ($x ∈ ℝ^+$) which can assume the negative binomial distribution with mean of KES 20,000[^4]. From this knowledge we can generate 1000 income values using `rnbinom` function from the package `{stats}` as below;
+
+Income, as with bands, is expected to be a positively skewed real-valued number ($x ∈ ℝ^+$) which can assume the negative binomial distribution with the mean of KES 20,000[^4]. From this knowledge we can generate 1000 income values using `rnbinom` function from the package `{stats}` as shown in the code below;
+
+[^4]: https://www.businessdailyafrica.com/bd/economy/kenyans-average-income-of-sh20-123-hits-six-year-high--4043204
 
 ```{r Gross Family Income}
 
@@ -79,7 +89,6 @@ set.seed(44)
 hist(rnbinom(n = 1000, size = 5, mu = 20000),  xlab  = "Income", main = "Histogram of Gross Family Income")
 
 ```
-
 
 ## Geographical Location
 
@@ -93,7 +102,8 @@ barplot(table(ceiling(runif(n = 1000, min = 1,  max = 47))), xlab  = "Geographic
 ```
 
 ## Poverty Probability Index {#sec-pov_prob_ind}
-We shall treat this as $x \sim N(\mu, s)$ which is in the field $x ∈ ℝ^+$. This is the so-called normal distribution, and both $\mu$ and $s$ are the mean and standard deviation apriori parameters. The probability density function itself is written as $f(x) = \frac{1}{\sigma \sqrt(2 \pi)}e^{\frac{-1}{2}(\frac{x-\mu}{\sigma})^2}$. According to [PPI tool](https://www.povertyindex.org/country/kenya), the mean index for Kenya is approximately 0.3 and the standard deviation is 0.2. With this apriori knowledge, we can plug the values into the `rnorm` function in the package `{stats}` as follows;
+
+We shall treat this as $x \sim N(\mu, s)$ which is in the field $x ∈ ℝ^+$. This is the so-called normal distribution, and both $\mu$ and $s$ are the mean and standard deviation apriori parameters. The probability density function itself is written as $f(x) = \frac{1}{\sigma \sqrt(2 \pi)}e^{\frac{-1}{2}(\frac{x-\mu}{\sigma})^2}$. According to the [PPI tool](https://www.povertyindex.org/country/kenya), the mean index poverty for Kenya is approximately 0.3 and the standard deviation is approximately 0.2. With this apriori knowledge, we can plug the values into the `rnorm` function in the package `{stats}` as follows;
 
 ```{r Poverty Probability Index}
 
@@ -101,8 +111,10 @@ set.seed(44)
 hist(abs(rnorm(n = 1000, mean = 0.3, sd = 0.2)), xlab  = "Poverty Probability Index", main = "Normal Distribution of Poverty Probability Index")
 
 ```
+
 ## Orphans
-This is a binary variable which indicates whether a student is an orphan or not, and therefore follows a binomial distribution with one trial (also called Bernoulli). We require the probability (rate/prevalence) of the status of being an orphan in Kenya for us to simulate the data for this variable. According to Lee *et al*. (2014), the 22.2% of children aged 15 to 17 were orphans and vulnerable (OVC). Students joining university are mostly aged 17 to 20 years, we shall therefore use the same rate of 0.222 to simulate this variable as shown below;
+
+This is a binary variable which indicates whether a student is an orphan or not, and therefore follows a binomial distribution with one trial (also called Bernoulli). We require the probability (rate/prevalence) of the status of being an orphan in Kenya for us to simulate the data for this variable. According to Lee *et al*. (2014), 22.2% of children aged 15 to 17 were orphans and vulnerable (OVC). Students joining university are mostly aged 17 to 20 years. We shall therefore use the rate of 0.222 to simulate this variable as shown below;
 
 ```{r Orphans}
 
@@ -112,7 +124,10 @@ barplot(table(rbinom(n = 1000, size = 1, prob = 0.222)), xlab  = "Orphan Status"
 ```
 
 ## Disability
-This is yet another binary variable which indicates whether a student has disability or not, and therefore follows a binomial distribution with one trial. We shall use the rate of 2.2%[^6]. Plugging this value in the `rbinom` formula, we get;
+
+This is yet another binary variable which indicates whether a student has disability or does not, and therefore follows a binomial distribution with one trial. We shall use the rate of 2.2%[^5]. Plugging this value in the `rbinom` formula, we get;
+
+[^5]: https://devinit-prod-static.ams3.cdn.digitaloceanspaces.com/media/documents/Status-of-disability-in-Kenya\_\_IF.pdf
 
 ```{r Disability}
 
@@ -120,8 +135,12 @@ set.seed(44)
 barplot(table(rbinom(n = 1000, size = 1, prob = 0.022)), xlab  = "Disability Status", main = "Bargraph of the Distribution of Disability Status")
 
 ```
+
 ## Number of Dependents
-The variable represents counts, and therefore $x ∈ ℕ^+$. Both Poisson and negative binomial could model the variable effectively, but we shall focus on the former. The probability mass function for Poisson distribution is given as $f(x) = \frac{e^{–λ} λ^x}{x!}$ where $λ$ is the parameter representing the average number of occurrences of a Poisson per unit space/time. In this context, it is the number of depends per household. We shall use 4 as the value of this parameter[^7] and plug into the function `rpois` in the package `{stats}` as follows;
+
+The variable represents counts, and therefore $x ∈ ℕ^+$. Both Poisson and negative binomial distributions could model the variable effectively, but this time round we shall focus on the former. The probability mass function for Poisson distribution is given as $f(x) = \frac{e^{–λ} λ^x}{x!}$ where $λ$ is the parameter representing the average number of occurrences of a Poisson event per unit space or time. In this context, it is the number of dependents per household. We shall use 4 as the value for this parameter[^6] and plug into the function `rpois` in the package `{stats}` as follows;
+
+[^6]: https://dhsprogram.com/pubs/pdf/SR277/SR277.pdf
 
 ```{r Number of Dependents}
 
@@ -131,6 +150,7 @@ barplot(table(rpois(n = 1000, lambda = 4)), xlab  = "Number of Dependents", main
 ```
 
 ## Program Costs (KES)
+
 Similar to @sec-pov_prob_ind, this variable is in the field $x ∈ ℝ^+$ where $x \sim N(\mu, s)$ with parameters taken to be $\mu = 500,000$ and $sd = 50,000$. Feeding these values into the normal distribution RNG, we get;
 
 ```{r Program Costs}
@@ -142,7 +162,9 @@ hist(abs(rnorm(n = 1000, mean = 500000, sd = 50000)), xlab  = "Program Costs", m
 
 ## Gender
 
-Similar to @sec-bands,this variable follows a binomial distribution with 3 trials; male (49.0%), female (50.0%), and intersex (0.01%)[^8]. Because of the small number of observations for the third category, we shall limit to 2 trials and and add 1 to remove 0 and introduce 3.
+Similar to @sec-bands,this variable follows a binomial distribution with 3 trials; male (49.0%), female (50.0%), and intersex (0.01%)[^7]. Because of the small number of observations for the third category, we shall limit the trials to just 2 and and add 1 to the result to remove 0 and introduce 3.
+
+[^7]: https://kenya.unfpa.org/en/topics/population-matters-0
 
 ```{r Gender}
 
@@ -163,7 +185,7 @@ library(tidyverse)
 
 ```
 
-Now, let's combine all the simulated data according to probability distributions and their associated parameters identified and considered in @sec-lit_rev into a data-frame. Notice that bands, gross family income, and  poverty probability index are sorted to ensure that households in lower bands (band 1) are correspondingly assigned lower gross income and higher poverty probability index (PPI). The higher the PPI the higher the likelihood that a household is considered poor. The rest of the variables must not be sorted.
+Now, let's combine all the simulated data according to probability distributions and their associated parameters identified and considered in @sec-lit_rev into a data-frame. Notice that bands, gross family income, and PPI are sorted to ensure that households in lower bands (band 1) are correspondingly assigned lower gross income and higher PPI. The higher the  PPI, the higher the likelihood that a household is considered poor. The rest of the variables must not be sorted.
 
 ```{r gen data}
 # table display setup
@@ -230,23 +252,11 @@ saveRDS(object = simulated_data, file = here::here("./Data/simulated_data.rds"))
 ```
 
 # Conclusion {#sec-concl}
-We have covered a few ways in which data can be generated based on their known probability distributions, and the values of the parameters of those distributions obtained from existing literature. 
 
-Each probability distribution has a corresponding Application Programming Interface (API), in the form of a function, that accesses the RNG. The API tells the RNG to generate random numbers in a particular manner that satisfies the conditions of the probability distribution (pattern). 
+We have covered a few ways in which data can be generated based on their known probability distributions, and the values of the parameters of those distributions obtained from existing literature.
 
-There are tens of other probability distributions that are outside the scope of this article. If you are interested in *mathematical statistics*, you may check them out. Each probability distribution describes a special phenomenon, with a wide range of real world applications. 
+Each probability distribution has a corresponding Application Programming Interface (API), in the form of a function, that accesses the RNG. The API instructs the RNG to generate random numbers in a particular manner that satisfies the conditions of the probability distribution (pattern).
+
+There are tens of other probability distributions that are outside the scope of this article. If you are interested in *mathematical statistics*, you may check them out. Each probability distribution describes a special phenomenon, with a wide range of real world applications.
 
 However, the real world scenario may be too complex to be described by just one probability distribution, and in such a case, several distributions may be combined to create a complex (mixed) distribution that may sufficiently describe the real world scenario.
-
-[^1]: https://kafu.ac.ke/images/2022/Academics/nfm/NEW_FUNDING_MODEL_-_6TH_AUGUST_2024.pdf
-[^2]: https://www.universitiesfund.go.ke/wp-content/uploads/2024/03/Issue-December-2023.pdf
-[^3]: https://www.researchgate.net/figure/US-Distribution-of-Income-Actual-vs-Lognormal-model_fig1_327971358
-[^4]: https://www.businessdailyafrica.com/bd/economy/kenyans-average-income-of-sh20-123-hits-six-year-high--4043204
-
-[^5]: Lee, V. C., Muriithi, P., Gilbert-Nandra, U., Kim, A. A., Schmitz, M. E., Odek, J., Mokaya, R., Galbraith, J. S., & Group, K. S. (2014). Orphans and Vulnerable Children in Kenya: Results From a Nationally Representative Population-Based Survey. Journal of Acquired Immune Deficiency Syndromes (1999), 66(Suppl 1), S89. https://doi.org/10.1097/QAI.0000000000000117
-
-[^6]: https://devinit-prod-static.ams3.cdn.digitaloceanspaces.com/media/documents/Status-of-disability-in-Kenya__IF.pdf
-
-[^7]: https://dhsprogram.com/pubs/pdf/SR277/SR277.pdf
-
-[^8]: https://kenya.unfpa.org/en/topics/population-matters-0
