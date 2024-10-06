@@ -185,7 +185,7 @@ library(tidyverse)
 
 ```
 
-Now, let's combine all the simulated data according to probability distributions and their associated parameters identified and considered in @sec-lit_rev into a data-frame. Notice that bands, gross family income, and PPI are sorted to ensure that households in lower bands (band 1) are correspondingly assigned lower gross income and higher PPI. The higher the  PPI, the higher the likelihood that a household is considered poor. The rest of the variables must not be sorted.
+Now, let's combine all the simulated data according to probability distributions and their associated parameters identified and considered in @sec-lit_rev into a data-frame. Notice that bands, gross family income, and PPI are sorted to ensure that households in lower bands (band 1) are correspondingly assigned lower gross income and higher PPI. The higher the PPI, the higher the likelihood that a household is considered poor. The rest of the variables must not be sorted.
 
 ```{r gen data}
 # table display setup
@@ -233,7 +233,7 @@ simulated_data <- data.frame(
   
   Gender = as.factor(rbinom(n = 1000,
                             size = 2,
-                            prob = c(0.49, 0.50, 0., 0.01)) + 1)
+                            prob = 1/3) + 1)
 )
 
 # view data (printed on your browser)

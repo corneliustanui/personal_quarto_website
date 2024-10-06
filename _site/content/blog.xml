@@ -31,10 +31,10 @@
 <p>Simulation is a scientific process of creating an hypothetical situation that mirrors the real world phenomenon. In this article, we shall explore a few ways of generating hypothetical variables that closely resemble the data that may, for instance, be collected in a field survey. You may have asked yourself how a researcher would go about generating age values for a population without actually asking the respondents in a sample of a given population to fill a survey questionnaire asking for their ages. So, this is how.</p>
 <p>Different variables require different approaches of simulation, because of the underlying <strong>probability distribution.</strong> Simply put, a probability distribution defines the pattern to which the values of a variable conform. There is always a pattern that values follow, and for us to generate (simulate) the values for a variable, we are required to know what is pattern is like in advance. This prior knowledge of the characteristics of the pattern is known as <em>apriori</em>, because we know it in advance. This knowledge is largely extracted from literature. For example, if we want to simulate 100 age values in a population of epileptics, we need to ask these two questions:</p>
 <ol type="1">
-<li><p>What is the usual pattern of age like for the general population? We can use a histogram to get a hint of the underlying probability distribution for age. If the histogram reveals a bell-shaped pattern, we can roughly consider the <strong>normal distribution</strong> as the underlying probability distribution. There are many other probability distributions, and normal distribution is just one of them, which also happens to be the most common for numerical variables in the real space (x ∈ ℝ).</p></li>
-<li><p>What is the mean and standard deviation age of epileptics? The answer will allow us to reproduce the histogram in (2) above without going to the field to collect actual age data. Here, <em>mean</em> and <em>standard deviation</em> are the only parameters whose apriori values ae required.</p></li>
+<li><p>What is the usual pattern of age like for the general population? We can use a histogram to get a hint of the underlying probability distribution for age. If the histogram reveals a bell-shaped pattern, we can roughly consider the <strong>normal distribution</strong> as the underlying probability distribution. There are many other probability distributions, and normal distribution is just one of them, which also happens to be the most common for numerical variables in the field of real numbers (x ∈ ℝ).</p></li>
+<li><p>What is the mean and standard deviation of the age of epileptics? The answer will allow us to reproduce the histogram in (2) above without going to the field to collect actual age data. Here, <em>mean</em> and <em>standard deviation</em> are the only parameters whose apriori values ae required.</p></li>
 </ol>
-<p>In this article, we shall simulate variables whose values mirror the data for the means testing instrument (MTI) used by the Government of Kenya to place university students into 5 bands for award of scholarship. This follows from <a href="https://corneliustanui.rbind.io/content/posts/MTI_Modeling_2024-09-06/">my earlier article</a> on using artificial intelligence as a more reliable alternative to the <a href="https://www.universitiesfund.go.ke/new-higher-education-funding-model/">new MTI-based university funding model in Kenya</a>.</p>
+<p>In this article, we shall simulate variables whose values mirror the data for the means testing instrument (MTI) used by the Government of Kenya to place university students into 5 bands for award of scholarships. This follows from <a href="https://corneliustanui.rbind.io/content/posts/MTI_Modeling_2024-09-06/">my earlier article</a> on using artificial intelligence as a more reliable alternative to the <a href="https://www.universitiesfund.go.ke/new-higher-education-funding-model/">new MTI-based university funding model in Kenya</a>.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -54,10 +54,10 @@ Disclaimer!
 </section>
 <section id="sec-lit_rev" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> Literature</h1>
-<p>There are are a number of factors<sup>1</sup> that the new MTI-based university funding model in Kenya considers for placement of students into 5 the bands. We shall discuss each one of them as here and deduce the probable underlying probability distributions and their associated parametric values that will enable us to simulate these factors. We shall simulate the data for 1000 students, thus <img src="https://latex.codecogs.com/png.latex?x_i">, where <img src="https://latex.codecogs.com/png.latex?i%20=%201,%202,%203,%20...,%201000">. Because the values are randomly generated, we shall seed random-number generator (RNG), for reciprocity purposes, to the arbitrary value of 44. Note that there is no real reason for this choice.</p>
+<p>There are a number of factors<sup>1</sup> that the new MTI-based university funding model in Kenya considers for placement of students into the 5 bands. We shall discuss each one of them and deduce the probable underlying probability distributions and their associated parametric values that will enable us to simulate these factors. We shall simulate the data for 1000 students, thus <img src="https://latex.codecogs.com/png.latex?x_i"> where <img src="https://latex.codecogs.com/png.latex?i%20=%201,%202,%203,%20...,%201000">. Because the values are randomly generated, we shall seed the random number generator (RNG), for reproducibility purposes, with the arbitrary value of 44. Note that there is no real reason for this choice.</p>
 <section id="sec-bands" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="sec-bands"><span class="header-section-number">2.1</span> Bands</h2>
-<p>This is the outcome – a categorical 5-point ordinal variable where 1 represents the most needy and 5 represents the least needy<sup>2</sup>, thus <img src="https://latex.codecogs.com/png.latex?x_%7Bij%7D">, where <img src="https://latex.codecogs.com/png.latex?j%20=%20%5C%7B1,%202,%203,%20...,%205%5C%7D">. We will assume that each band has a fairly equal chance of occurring, i.e for <img src="https://latex.codecogs.com/png.latex?i%5E%7Bth%7D"> student, <img src="https://latex.codecogs.com/png.latex?p(x_%7Bi%7D)%20=%201/2">. We need a probability distribution function that draws 5 numbers between 1 to 5 for 1000 observations. We could use the <code>sample</code> function from <code>{base}</code> R package but the distribution of values would not be desirably skewed towards the left – it would lead to a near-uniform distribution. Remember that bands are a proxy for the socio-economic status of the household, and in Kenya – as with most other countries<sup>3</sup> – the number of rich households is significantly lower than the number of poor households, therefore we need to expect more band 1 households than band 5 households.</p>
+<p>This is the outcome – a categorical 5-point ordinal variable where 1 represents the most needy and 5 represents the least needy<sup>2</sup>, thus <img src="https://latex.codecogs.com/png.latex?x_%7Bij%7D"> where <img src="https://latex.codecogs.com/png.latex?j%20=%20%5C%7B1,%202,%203,%20...,%205%5C%7D">. We will assume that each band has a fairly equal chance of occurring, i.e for the <img src="https://latex.codecogs.com/png.latex?i%5E%7Bth%7D"> student, <img src="https://latex.codecogs.com/png.latex?p(x_%7Bi%7D)%20=%201/2">. We need a probability distribution function that draws 5 numbers between 1 to 5 for 1000 observations. We could use the <code>sample</code> function from <code>{base}</code> R package but the distribution of values would not be desirably skewed towards the left – it would lead to a near-uniform distribution. Remember that bands are a proxy for the socio-economic status of the household, and in Kenya – as in most other countries<sup>3</sup> – the number of rich households is significantly lower than the number of poor households, therefore we need to expect more band 1 households than band 5 households.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -158,7 +158,7 @@ font-style: inherit;">"Histogram of Bands (Appropriately Positively Skewed)"</sp
 </section>
 <section id="gross-family-income" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="gross-family-income"><span class="header-section-number">2.2</span> Gross Family Income</h2>
-<p>Income, as with bands, is expected to be a positively skewed real-valued number (<img src="https://latex.codecogs.com/png.latex?x%20%E2%88%88%20%E2%84%9D%5E+">) which can assume the negative binomial distribution with mean of KES 20,000<sup>4</sup>. From this knowledge we can generate 1000 income values using <code>rnbinom</code> function from the package <code>{stats}</code> as below;</p>
+<p>Income, as with bands, is expected to be a positively skewed real-valued number (<img src="https://latex.codecogs.com/png.latex?x%20%E2%88%88%20%E2%84%9D%5E+">) which can assume the negative binomial distribution with the mean of KES 20,000<sup>4</sup>. From this knowledge we can generate 1000 income values using <code>rnbinom</code> function from the package <code>{stats}</code> as shown in the code below;</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -254,7 +254,7 @@ font-style: inherit;">"Discrete Uniform Distribution of Geographical Location"</
 </section>
 <section id="sec-pov_prob_ind" class="level2" data-number="2.4">
 <h2 data-number="2.4" class="anchored" data-anchor-id="sec-pov_prob_ind"><span class="header-section-number">2.4</span> Poverty Probability Index</h2>
-<p>We shall treat this as <img src="https://latex.codecogs.com/png.latex?x%20%5Csim%20N(%5Cmu,%20s)"> which is in the field <img src="https://latex.codecogs.com/png.latex?x%20%E2%88%88%20%E2%84%9D%5E+">. This is the so-called normal distribution, and both <img src="https://latex.codecogs.com/png.latex?%5Cmu"> and <img src="https://latex.codecogs.com/png.latex?s"> are the mean and standard deviation apriori parameters. The probability density function itself is written as <img src="https://latex.codecogs.com/png.latex?f(x)%20=%20%5Cfrac%7B1%7D%7B%5Csigma%20%5Csqrt(2%20%5Cpi)%7De%5E%7B%5Cfrac%7B-1%7D%7B2%7D(%5Cfrac%7Bx-%5Cmu%7D%7B%5Csigma%7D)%5E2%7D">. According to <a href="https://www.povertyindex.org/country/kenya">PPI tool</a>, the mean index for Kenya is approximately 0.3 and the standard deviation is 0.2. With this apriori knowledge, we can plug the values into the <code>rnorm</code> function in the package <code>{stats}</code> as follows;</p>
+<p>We shall treat this as <img src="https://latex.codecogs.com/png.latex?x%20%5Csim%20N(%5Cmu,%20s)"> which is in the field <img src="https://latex.codecogs.com/png.latex?x%20%E2%88%88%20%E2%84%9D%5E+">. This is the so-called normal distribution, and both <img src="https://latex.codecogs.com/png.latex?%5Cmu"> and <img src="https://latex.codecogs.com/png.latex?s"> are the mean and standard deviation apriori parameters. The probability density function itself is written as <img src="https://latex.codecogs.com/png.latex?f(x)%20=%20%5Cfrac%7B1%7D%7B%5Csigma%20%5Csqrt(2%20%5Cpi)%7De%5E%7B%5Cfrac%7B-1%7D%7B2%7D(%5Cfrac%7Bx-%5Cmu%7D%7B%5Csigma%7D)%5E2%7D">. According to the <a href="https://www.povertyindex.org/country/kenya">PPI tool</a>, the mean index poverty for Kenya is approximately 0.3 and the standard deviation is approximately 0.2. With this apriori knowledge, we can plug the values into the <code>rnorm</code> function in the package <code>{stats}</code> as follows;</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -302,7 +302,7 @@ font-style: inherit;">"Normal Distribution of Poverty Probability Index"</span>)
 </section>
 <section id="orphans" class="level2" data-number="2.5">
 <h2 data-number="2.5" class="anchored" data-anchor-id="orphans"><span class="header-section-number">2.5</span> Orphans</h2>
-<p>This is a binary variable which indicates whether a student is an orphan or not, and therefore follows a binomial distribution with one trial (also called Bernoulli). We require the probability (rate/prevalence) of the status of being an orphan in Kenya for us to simulate the data for this variable. According to Lee <em>et al</em>. (2014), the 22.2% of children aged 15 to 17 were orphans and vulnerable (OVC). Students joining university are mostly aged 17 to 20 years, we shall therefore use the same rate of 0.222 to simulate this variable as shown below;</p>
+<p>This is a binary variable which indicates whether a student is an orphan or not, and therefore follows a binomial distribution with one trial (also called Bernoulli). We require the probability (rate/prevalence) of the status of being an orphan in Kenya for us to simulate the data for this variable. According to Lee <em>et al</em>. (2014), 22.2% of children aged 15 to 17 were orphans and vulnerable (OVC). Students joining university are mostly aged 17 to 20 years. We shall therefore use the rate of 0.222 to simulate this variable as shown below;</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -350,7 +350,7 @@ font-style: inherit;">"Bargraph of the Distribution of Orphan Status"</span>)</s
 </section>
 <section id="disability" class="level2" data-number="2.6">
 <h2 data-number="2.6" class="anchored" data-anchor-id="disability"><span class="header-section-number">2.6</span> Disability</h2>
-<p>This is yet another binary variable which indicates whether a student has disability or not, and therefore follows a binomial distribution with one trial. We shall use the rate of 2.2%<sup>5</sup>. Plugging this value in the <code>rbinom</code> formula, we get;</p>
+<p>This is yet another binary variable which indicates whether a student has disability or does not, and therefore follows a binomial distribution with one trial. We shall use the rate of 2.2%<sup>5</sup>. Plugging this value in the <code>rbinom</code> formula, we get;</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -398,7 +398,7 @@ font-style: inherit;">"Bargraph of the Distribution of Disability Status"</span>
 </section>
 <section id="number-of-dependents" class="level2" data-number="2.7">
 <h2 data-number="2.7" class="anchored" data-anchor-id="number-of-dependents"><span class="header-section-number">2.7</span> Number of Dependents</h2>
-<p>The variable represents counts, and therefore <img src="https://latex.codecogs.com/png.latex?x%20%E2%88%88%20%E2%84%95%5E+">. Both Poisson and negative binomial could model the variable effectively, but we shall focus on the former. The probability mass function for Poisson distribution is given as <img src="https://latex.codecogs.com/png.latex?f(x)%20=%20%5Cfrac%7Be%5E%7B%E2%80%93%CE%BB%7D%20%CE%BB%5Ex%7D%7Bx!%7D"> where <img src="https://latex.codecogs.com/png.latex?%CE%BB"> is the parameter representing the average number of occurrences of a Poisson per unit space/time. In this context, it is the number of depends per household. We shall use 4 as the value of this parameter<sup>6</sup> and plug into the function <code>rpois</code> in the package <code>{stats}</code> as follows;</p>
+<p>The variable represents counts, and therefore <img src="https://latex.codecogs.com/png.latex?x%20%E2%88%88%20%E2%84%95%5E+">. Both Poisson and negative binomial distributions could model the variable effectively, but this time round we shall focus on the former. The probability mass function for Poisson distribution is given as <img src="https://latex.codecogs.com/png.latex?f(x)%20=%20%5Cfrac%7Be%5E%7B%E2%80%93%CE%BB%7D%20%CE%BB%5Ex%7D%7Bx!%7D"> where <img src="https://latex.codecogs.com/png.latex?%CE%BB"> is the parameter representing the average number of occurrences of a Poisson event per unit space or time. In this context, it is the number of dependents per household. We shall use 4 as the value for this parameter<sup>6</sup> and plug into the function <code>rpois</code> in the package <code>{stats}</code> as follows;</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -490,7 +490,7 @@ font-style: inherit;">"Histogram of Distribution of Program Costs (KES)"</span>)
 </section>
 <section id="gender" class="level2" data-number="2.9">
 <h2 data-number="2.9" class="anchored" data-anchor-id="gender"><span class="header-section-number">2.9</span> Gender</h2>
-<p>Similar to Section&nbsp;2.1,this variable follows a binomial distribution with 3 trials; male (49.0%), female (50.0%), and intersex (0.01%)<sup>7</sup>. Because of the small number of observations for the third category, we shall limit to 2 trials and and add 1 to remove 0 and introduce 3.</p>
+<p>Similar to Section&nbsp;2.1,this variable follows a binomial distribution with 3 trials; male (49.0%), female (50.0%), and intersex (0.01%)<sup>7</sup>. Because of the small number of observations for the third category, we shall limit the trials to just 2 and and add 1 to the result to remove 0 and introduce 3.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -562,7 +562,7 @@ background-color: null;
 font-style: inherit;">library</span>(tidyverse)</span></code></pre></div>
 </details>
 </div>
-<p>Now, let’s combine all the simulated data according to probability distributions and their associated parameters identified and considered in Section&nbsp;2 into a data-frame. Notice that bands, gross family income, and poverty probability index are sorted to ensure that households in lower bands (band 1) are correspondingly assigned lower gross income and higher poverty probability index (PPI). The higher the PPI the higher the likelihood that a household is considered poor. The rest of the variables must not be sorted.</p>
+<p>Now, let’s combine all the simulated data according to probability distributions and their associated parameters identified and considered in Section&nbsp;2 into a data-frame. Notice that bands, gross family income, and PPI are sorted to ensure that households in lower bands (band 1) are correspondingly assigned lower gross income and higher PPI. The higher the PPI, the higher the likelihood that a household is considered poor. The rest of the variables must not be sorted.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -815,17 +815,13 @@ background-color: null;
 font-style: inherit;">2</span>,</span>
 <span id="cb12-46">                            <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">prob =</span> <span class="fu" style="color: #4758AB;
+font-style: inherit;">prob =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">c</span>(<span class="fl" style="color: #AD0000;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">0.49</span>, <span class="fl" style="color: #AD0000;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">0.50</span>, <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.</span>, <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.01</span>)) <span class="sc" style="color: #5E5E5E;
+font-style: inherit;">3</span>) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
 background-color: null;
@@ -907,7 +903,7 @@ font-style: inherit;">5</span>))</span></code></pre></div>
 <td style="text-align: left;">0</td>
 <td style="text-align: right;">7</td>
 <td style="text-align: right;">446018.0</td>
-<td style="text-align: left;">1</td>
+<td style="text-align: left;">3</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">1</td>
@@ -918,7 +914,7 @@ font-style: inherit;">5</span>))</span></code></pre></div>
 <td style="text-align: left;">0</td>
 <td style="text-align: right;">4</td>
 <td style="text-align: right;">488874.6</td>
-<td style="text-align: left;">1</td>
+<td style="text-align: left;">2</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">1</td>
@@ -929,7 +925,7 @@ font-style: inherit;">5</span>))</span></code></pre></div>
 <td style="text-align: left;">0</td>
 <td style="text-align: right;">5</td>
 <td style="text-align: right;">503376.7</td>
-<td style="text-align: left;">2</td>
+<td style="text-align: left;">1</td>
 </tr>
 </tbody>
 </table>
@@ -978,7 +974,7 @@ font-style: inherit;">"./Data/simulated_data.rds"</span>))</span></code></pre></
 <section id="sec-concl" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> Conclusion</h1>
 <p>We have covered a few ways in which data can be generated based on their known probability distributions, and the values of the parameters of those distributions obtained from existing literature.</p>
-<p>Each probability distribution has a corresponding Application Programming Interface (API), in the form of a function, that accesses the RNG. The API tells the RNG to generate random numbers in a particular manner that satisfies the conditions of the probability distribution (pattern).</p>
+<p>Each probability distribution has a corresponding Application Programming Interface (API), in the form of a function, that accesses the RNG. The API instructs the RNG to generate random numbers in a particular manner that satisfies the conditions of the probability distribution (pattern).</p>
 <p>There are tens of other probability distributions that are outside the scope of this article. If you are interested in <em>mathematical statistics</em>, you may check them out. Each probability distribution describes a special phenomenon, with a wide range of real world applications.</p>
 <p>However, the real world scenario may be too complex to be described by just one probability distribution, and in such a case, several distributions may be combined to create a complex (mixed) distribution that may sufficiently describe the real world scenario.</p>
 
