@@ -2,9 +2,9 @@
   {
     "listing": "/content/blog.html",
     "items": [
-      "/content/posts/2024-09-12/index.html",
-      "/content/posts/2024-09-06/index.html",
-      "/content/posts/2024-08-22/index.html"
+      "/content/posts/Simulation_2024-09-12/index.html",
+      "/content/posts/MTI_Modeling_2024-09-06/index.html",
+      "/content/posts/ARIMA_Fitting_2024-08-22/index.html"
     ]
   }
 ]

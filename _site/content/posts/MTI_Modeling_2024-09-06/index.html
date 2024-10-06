@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.553">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -10,7 +10,7 @@
 <meta name="dcterms.date" content="2024-09-06">
 <meta name="description" content="Predicting the Household Economic Bands Into Which University Students Fall for Award of Financial Support from the Kenyan Government.">
 
-<title>Cornelius Tanui - Kenyan Household Bands Classifier</title>
+<title>Kenyan Household Bands Classifier – Cornelius Tanui</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -36,7 +36,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -136,7 +136,7 @@ cookieconsent.run({
 
 
 <link rel="stylesheet" href="../../../styles.css">
-<meta property="og:title" content="Cornelius Tanui - Kenyan Household Bands Classifier">
+<meta property="og:title" content="Kenyan Household Bands Classifier – Cornelius Tanui">
 <meta property="og:description" content="Predicting the Household Economic Bands Into Which University Students Fall for Award of Financial Support from the Kenyan Government.">
 <meta property="og:site_name" content="Cornelius Tanui">
 <meta property="og:locale" content="en-KE">
@@ -154,7 +154,7 @@ cookieconsent.run({
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -176,7 +176,7 @@ cookieconsent.run({
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -190,9 +190,23 @@ cookieconsent.run({
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#university-funding-in-kenya" id="toc-university-funding-in-kenya" class="nav-link active" data-scroll-target="#university-funding-in-kenya"><span class="header-section-number">0.1</span> University Funding in Kenya</a></li>
-  <li><a href="#ai-powered-approach-to-household-banding" id="toc-ai-powered-approach-to-household-banding" class="nav-link" data-scroll-target="#ai-powered-approach-to-household-banding"><span class="header-section-number">0.2</span> AI Powered Approach to Household Banding</a></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">0.3</span> Conclusion</a></li>
+  <li><a href="#university-funding-in-kenya" id="toc-university-funding-in-kenya" class="nav-link active" data-scroll-target="#university-funding-in-kenya"><span class="header-section-number">1</span> University Funding in Kenya</a>
+  <ul class="collapse">
+  <li><a href="#sec-shallow" id="toc-sec-shallow" class="nav-link" data-scroll-target="#sec-shallow"><span class="header-section-number">1.1</span> My Shallow Thoughts on MTI</a></li>
+  <li><a href="#background-to-mti" id="toc-background-to-mti" class="nav-link" data-scroll-target="#background-to-mti"><span class="header-section-number">1.2</span> Background to MTI</a></li>
+  </ul></li>
+  <li><a href="#ml-approach-to-household-banding" id="toc-ml-approach-to-household-banding" class="nav-link" data-scroll-target="#ml-approach-to-household-banding"><span class="header-section-number">2</span> ML Approach to Household Banding</a>
+  <ul class="collapse">
+  <li><a href="#data-simulation" id="toc-data-simulation" class="nav-link" data-scroll-target="#data-simulation"><span class="header-section-number">2.1</span> Data Simulation</a></li>
+  <li><a href="#descrpitive-analysis" id="toc-descrpitive-analysis" class="nav-link" data-scroll-target="#descrpitive-analysis"><span class="header-section-number">2.2</span> Descrpitive Analysis</a></li>
+  <li><a href="#model-creation" id="toc-model-creation" class="nav-link" data-scroll-target="#model-creation"><span class="header-section-number">2.3</span> Model Creation</a>
+  <ul class="collapse">
+  <li><a href="#model-fitting" id="toc-model-fitting" class="nav-link" data-scroll-target="#model-fitting"><span class="header-section-number">2.3.1</span> Model Fitting</a></li>
+  <li><a href="#model-diagnostics" id="toc-model-diagnostics" class="nav-link" data-scroll-target="#model-diagnostics"><span class="header-section-number">2.3.2</span> Model Diagnostics</a></li>
+  <li><a href="#band-prediction" id="toc-band-prediction" class="nav-link" data-scroll-target="#band-prediction"><span class="header-section-number">2.3.3</span> Band Prediction</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">3</span> Conclusion</a></li>
   </ul>
 </nav>
     </div>
@@ -241,39 +255,39 @@ cookieconsent.run({
 </header>
 
 
-<section id="university-funding-in-kenya" class="level3" data-number="0.1">
-<h3 data-number="0.1" class="anchored" data-anchor-id="university-funding-in-kenya"><span class="header-section-number">0.1</span> University Funding in Kenya</h3>
-<section id="sec-shallow" class="level5" data-number="0.1.0.1">
-<h5 data-number="0.1.0.1" class="anchored" data-anchor-id="sec-shallow"><span class="header-section-number">0.1.0.1</span> My Shallow Thoughts on MTI</h5>
-<p>When I first heard of MTI, my immediate thought was that the government of Kenya had finally embraced Artificial Intelligence on a larger scale and decided to award university students scholarships based on economic bands decided by some novel AI algorithm. Think, a combination of classification algorithms of ‘repute compute, high repute’. A pleasant thought, right? No.</p>
-<p>No because, later, I searched for MTI online and found out that it stands for ‘means testing instrument’, and if you are deep into data, you would think ‘means’ is hereby used to denote ‘average’. You see, ‘testing of means’ is not remotely uncommon, we come across it all the time in data analytics. T-test is a test of means, right? Right. I kid you not, ‘means’ in the context of MTI stands for ‘resources’, or ‘assets’, that a student has access to that could otherwise be used to fund their higher education. ‘Means’ can be a confusing word. Nonetheless, there are also ‘means of transport’, ‘by all means’, etc.</p>
-<p>As it turned out, MTI is a widely used concept in the education and social protection sectors, and I was embarrassingly waaay off in thinking that it had something to do with statistical averages</p>
-<p>I was waaay off in yet another aspect – think about it for a moment; the students joining university in September, 2024 as first-years/freshmen had never been banded before, and therefore, there would be no training data for my imagined novel AI model! This is the first time banding is happening in Kenya, so maybe, just maybe, there will be (enough) data to train a model in 2025, so that the freshmen of 2025 will have successfully been banded by the AI.</p>
+<section id="university-funding-in-kenya" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> University Funding in Kenya</h1>
+<section id="sec-shallow" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="sec-shallow"><span class="header-section-number">1.1</span> My Shallow Thoughts on MTI</h2>
+<p>When I first heard of MTI, my immediate thought was that the government of Kenya had finally embraced Artificial Intelligence on a larger scale and decided to award university students scholarships based on economic bands decided by some novel AI algorithm. Think, a combination of classification algorithms of ‘high compute, high repute’. A pleasant thought, right? No.</p>
+<p>No because, later on, I searched for MTI online and found out that it stands for ‘means testing instrument’, and if you are deep into data, you would think ‘means’ is hereby used to denote average. See, ‘testing of means’ is not remotely uncommon, we come across it all the time in data analytics. T-test is a test of means. However, ‘means’ in the context of MTI stands for resources, or assets’, that a student has access to that could be used to fund their higher education. ‘Means’ can be a confusing word. ‘Means of transport’, ‘by all means’, etc.</p>
+<p>As it turned out, MTI is a widely used concept in the education and social protection sectors, and I was embarrassingly waaay off in thinking that it had something to do with statistical averages.</p>
+<p>I was waaay off in yet, yet again, in a different aspect – the students joining university in September, 2024 as first-years/freshmen had never been banded before, and therefore, there would be no training data for my imagined AI model! This is the first time banding is happening in Kenya, as regards university funding, so maybe, there will be (enough) data to train a model in 2025, so that the freshmen of 2025 will have successfully been banded by AI.</p>
 </section>
-<section id="background-of-mti" class="level5" data-number="0.1.0.2">
-<h5 data-number="0.1.0.2" class="anchored" data-anchor-id="background-of-mti"><span class="header-section-number">0.1.0.2</span> Background of MTI</h5>
-<p>MTI has been around for a while now, with the first documented use in 1930s involving provision of relief to households by governments. If a home was deemed able to support itself by the source of income it had, the the government benefits were stopped or reduced<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. MTI has since been heavily employed in the social protection sector to provide targeted anti-poverty benefits to households, civil legal aid to individuals<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, communities, and geographies globally. The obvious reason for preference of MTI over universal provision of support – such as universal basic income – is that MTI offers the support to targeted beneficiaries, because with the universal approach, there may be recipients who do not genuinely require it<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
+<section id="background-to-mti" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="background-to-mti"><span class="header-section-number">1.2</span> Background to MTI</h2>
+<p>Globally, MTI has been around for a while now, with the first documented use in 1930s involving provision of relief to households by governments. If a home was deemed able to support itself by the source of income it had, the the government benefits were stopped or reduced<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. MTI has since been heavily employed in the social protection to provide targeted anti-poverty benefits to households, civil legal aid to individuals<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, communities, and geographies. The obvious reason for preference of MTI to universal provision of support – such as universal basic income – is that MTI offers the support to targeted beneficiaries, because with the universal approach, there may be recipients who do not genuinely require it<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
 <p>In Kenya, MTI has been used for a long time to identify households in marginalized communities that are eligible for benefit from cash transfers<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> under the National Safety Net Programmes (NSNP). One such safety programme is the Hunger Safety Net Programme (HSNP) that supports old persons, orphans and vulnerable children, and persons with severe disability.</p>
-<p>Literature indicates that MTI has worked successfully so far in Kenya as implemented under NSNP, but it is not without shortcomings. For example, the popular controversy around it is it discourages the target population from engaging in savings<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>, consequently promoting poverty, a concept known as ‘poverty trap’<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. In Kenya, MTI sustained an unmitigated uproar over it’s banding inaccuracy that led to placement of students from poor backgrounds into higher bands<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> that required them to dig deep into their pockets to fill the gap, pockets which they either do not have, or are torn. The bands run from 1 (least able) to 5 (most able.)</p>
-<p>Under the hood, MTI is mainly a regression model – such as a tobit model – that aggregates various variables together and provides a value<sup>3</sup> which is then compared to a threshold that determines whether the candidate qualifiers for the benefit or does not. Principal components analysis models have also been deployed to this cause<sup>4</sup>.</p>
-<p>Now, let us explore how an Artificial Intelligence classifier could be used as an alternative to MTI to award financial support to university students in Kenya.</p>
+<p>Literature indicates that MTI has worked successfully so far in Kenya as implemented under NSNP, yet it is not without shortcomings. For example, the popular controversy around it is, it discourages the target population from engaging in financial savings<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>, consequently promoting poverty, a concept known as poverty trap<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. MTI sustained an unmitigated uproar over it’s banding inaccuracy<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> that led to placement of students from poor backgrounds into higher bands that require them to dig deep into their pockets to fill the gap, pockets which they either do not have, or are torn. The bands range from 1 (least able) to 5 (most able.)</p>
+<p>Under the hood, MTI is mainly a regression model – such as a tobit model – that aggregates various variables together and provides a value<sup>3</sup> which is then compared to a threshold that determines whether the candidate qualifies for the benefit, or does not. Principal components analysis models have also been deployed to this cause<sup>4</sup>.</p>
+<p>Now, let us explore how a machine learning (ML) classifier could be used as an alternative to MTI to award financial support to university students in Kenya.</p>
 </section>
 </section>
-<section id="ai-powered-approach-to-household-banding" class="level3" data-number="0.2">
-<h3 data-number="0.2" class="anchored" data-anchor-id="ai-powered-approach-to-household-banding"><span class="header-section-number">0.2</span> AI Powered Approach to Household Banding</h3>
-<p>As noted in <a href="#sec-shallow" class="quarto-xref">Section&nbsp;0.1.0.1</a>, AI requires massive training on before it can be deployed for use, just a student requires a couple of lessons before sitting an exam.</p>
-<p>It is not too clear how and which factors were considered to create the 5 bands, although gross family income, geographical location poverty probability index, special circumstances such as orphans and students with disability, number of dependents, program costs, and gender are some of the factors that have been mentioned<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>. Because I do not have readily available data covering these factors, I am going to use simulate them and use R<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>, <a href="https://https://www.tidyverse.org//">{tidyverse}</a>, <a href="https://www.tidymodels.org/">{tidymodels}</a> and other packages to develop a data processing, modelling, and prediction pipeline using a machine learning multi-class classification (MCC)<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> model of our choice. Note that the outcome should be in discrete ordinal scale.</p>
-<section id="data-simulation" class="level5" data-number="0.2.0.1">
-<h5 data-number="0.2.0.1" class="anchored" data-anchor-id="data-simulation"><span class="header-section-number">0.2.0.1</span> Data Simulation</h5>
+<section id="ml-approach-to-household-banding" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> ML Approach to Household Banding</h1>
+<p>It goes without saying that a student requires a couple of lessons before sitting an exam, so does a ML model require massive – yet meticulous – training before it can be deployed for use, as noted in <a href="#sec-shallow" class="quarto-xref">Section&nbsp;1.1</a>.</p>
+<p>It is not too clear how and which factors were considered to create the 5 bands, although gross family income, geographical location poverty probability index, special circumstances such as orphans and students with disability, number of dependents, program costs, and gender are some of the variables that have been mentioned<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>. Because I do not have readily available data covering these variables, I am going to simulate them and use R<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>, <a href="https://https://www.tidyverse.org//">{tidyverse}</a>, <a href="https://www.tidymodels.org/">{tidymodels}</a> and other R packages to develop a data processing, modelling, and prediction pipeline using a ML multi-class classification (MCC)<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> model of our choice. Note that the outcome should be in discrete ordinal scale.</p>
+<section id="data-simulation" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="data-simulation"><span class="header-section-number">2.1</span> Data Simulation</h2>
 <p>Simulation of these data is outside the scope of this article and will be covered in a later post.</p>
 <p>The table below shows the properties of the variables are;</p>
-<div id="tbl-properties" class="striped hover primary bordered quarto-float anchored">
+<div id="tbl-properties" class="striped hover primary bordered quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-properties-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;1: Properties of variables
 </figcaption>
 <div aria-describedby="tbl-properties-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="table-striped table-hover table-primary table-bordered table">
+<table class="table-striped table-hover table-primary table-bordered caption-top table">
 <thead>
 <tr class="header">
 <th>Variable</th>
@@ -333,8 +347,8 @@ Table&nbsp;1: Properties of variables
 </figure>
 </div>
 </section>
-<section id="descrpitive-analysis" class="level5" data-number="0.2.0.2">
-<h5 data-number="0.2.0.2" class="anchored" data-anchor-id="descrpitive-analysis"><span class="header-section-number">0.2.0.2</span> Descrpitive Analysis</h5>
+<section id="descrpitive-analysis" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="descrpitive-analysis"><span class="header-section-number">2.2</span> Descrpitive Analysis</h2>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -347,7 +361,7 @@ Disclaimer!
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
-<p>The data is <strong>simulated</strong>, and therefore substantially differs with the actual scenario! The data is for learning purposes only, and the statistical estimates reported MUST NOT be taken as true reflection of the real-word situation.</p>
+<p>The data is <strong>simulated</strong>, and therefore substantially differs with the actual scenario! The data is meant for learning purposes only, and the statistical estimates reported MUST NOT be taken as true reflection of the real-word situation.</p>
 </div>
 </div>
 </div>
@@ -362,7 +376,7 @@ Disclaimer!
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>The data;</p>
+<p>The simulated data looks like this;</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -378,107 +392,107 @@ Disclaimer!
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(<span class="at">x =</span> simulated_data, <span class="at">n =</span> <span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 4%">
-<col style="width: 14%">
-<col style="width: 15%">
+<col style="width: 13%">
+<col style="width: 16%">
 <col style="width: 18%">
-<col style="width: 5%">
-<col style="width: 7%">
-<col style="width: 15%">
+<col style="width: 6%">
+<col style="width: 8%">
+<col style="width: 14%">
 <col style="width: 12%">
 <col style="width: 5%">
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: right;">Bands</th>
-<th style="text-align: right;">Gross_Family_Income</th>
-<th style="text-align: left;">Geographical_Location</th>
-<th style="text-align: right;">Poverty_Probability_Index</th>
+<th style="text-align: left;">Bands</th>
+<th style="text-align: right;">GrossFamilyIncome</th>
+<th style="text-align: left;">GeographicalLocation</th>
+<th style="text-align: right;">PovertyProbabilityIndex</th>
 <th style="text-align: left;">Orphans</th>
 <th style="text-align: left;">Disability</th>
-<th style="text-align: right;">Number_of_Dependents</th>
-<th style="text-align: right;">Program_Costs_KES</th>
+<th style="text-align: right;">NumberOfDependents</th>
+<th style="text-align: right;">ProgramCostsKES</th>
 <th style="text-align: left;">Gender</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">18621</td>
-<td style="text-align: left;">36</td>
-<td style="text-align: right;">0.1751991</td>
 <td style="text-align: left;">1</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">510735.4</td>
-<td style="text-align: left;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">6235</td>
-<td style="text-align: left;">39</td>
-<td style="text-align: right;">0.2081443</td>
-<td style="text-align: left;">1</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">466547.2</td>
-<td style="text-align: left;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">33812</td>
-<td style="text-align: left;">33</td>
-<td style="text-align: right;">0.5994036</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">458893.0</td>
-<td style="text-align: left;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">30154</td>
-<td style="text-align: left;">22</td>
-<td style="text-align: right;">0.3511708</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">554462.2</td>
-<td style="text-align: left;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">27145</td>
-<td style="text-align: left;">14</td>
-<td style="text-align: right;">0.1675043</td>
+<td style="text-align: right;">1154</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: right;">0.9187172</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: right;">5</td>
-<td style="text-align: right;">464203.2</td>
+<td style="text-align: right;">536555.6</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">1</td>
+<td style="text-align: right;">3127</td>
+<td style="text-align: left;">47</td>
+<td style="text-align: right;">0.9179034</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">505307.0</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">3582</td>
+<td style="text-align: left;">3</td>
+<td style="text-align: right;">0.8995892</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">446018.0</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">3691</td>
+<td style="text-align: left;">24</td>
+<td style="text-align: right;">0.8663438</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">488874.6</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">4082</td>
+<td style="text-align: left;">7</td>
+<td style="text-align: right;">0.8652463</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">503376.7</td>
+<td style="text-align: left;">2</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 </section>
-<section id="model-creation" class="level5" data-number="0.2.0.3">
-<h5 data-number="0.2.0.3" class="anchored" data-anchor-id="model-creation"><span class="header-section-number">0.2.0.3</span> Model Creation</h5>
-<section id="model-fitting" class="level7">
-<p class="heading">Model Fitting</p>
+<section id="model-creation" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="model-creation"><span class="header-section-number">2.3</span> Model Creation</h2>
+<section id="model-fitting" class="level3" data-number="2.3.1">
+<h3 data-number="2.3.1" class="anchored" data-anchor-id="model-fitting"><span class="header-section-number">2.3.1</span> Model Fitting</h3>
 </section>
-<section id="model-diagnostics" class="level7">
-<p class="heading">Model Diagnostics</p>
+<section id="model-diagnostics" class="level3" data-number="2.3.2">
+<h3 data-number="2.3.2" class="anchored" data-anchor-id="model-diagnostics"><span class="header-section-number">2.3.2</span> Model Diagnostics</h3>
 </section>
-<section id="band-prediction" class="level7">
-<p class="heading">Band Prediction</p>
+<section id="band-prediction" class="level3" data-number="2.3.3">
+<h3 data-number="2.3.3" class="anchored" data-anchor-id="band-prediction"><span class="header-section-number">2.3.3</span> Band Prediction</h3>
 </section>
 </section>
 </section>
-<section id="conclusion" class="level3" data-number="0.3">
-<h3 data-number="0.3" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">0.3</span> Conclusion</h3>
+<section id="conclusion" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Conclusion</h1>
 
 
 </section>
@@ -534,18 +548,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -577,15 +580,37 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/corneliustanui\.rbind\.io");
+      var filterRegex = new RegExp("https:\/\/corneliustanui\.rbind\.io\/");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
