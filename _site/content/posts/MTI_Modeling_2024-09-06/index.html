@@ -218,8 +218,8 @@ cookieconsent.run({
 <h1 class="title">Kenyan Household Bands Classifier</h1>
   <div class="quarto-categories">
     <div class="quarto-category">R</div>
-    <div class="quarto-category">classification</div>
-    <div class="quarto-category">prediction</div>
+    <div class="quarto-category">Classification</div>
+    <div class="quarto-category">Prediction</div>
     <div class="quarto-category">MTI</div>
   </div>
   </div>
@@ -255,6 +255,12 @@ cookieconsent.run({
 </header>
 
 
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="ImagineArt_University_Students_in_Kenya.png" style="width:80.0%;height:100.0%" alt="Statistical Data simulation" class="figure-img"></p>
+<figcaption>Image source: Imagine Art</figcaption>
+</figure>
+</div>
 <section id="university-funding-in-kenya" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> University Funding in Kenya</h1>
 <section id="sec-shallow" class="level2" data-number="1.1">
@@ -279,7 +285,7 @@ cookieconsent.run({
 <p>It is not too clear how and which factors were considered to create the 5 bands, although gross family income, geographical location poverty probability index, special circumstances such as orphans and students with disability, number of dependents, program costs, and gender are some of the variables that have been mentioned<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>. Because I do not have readily available data covering these variables, I am going to simulate them and use R<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>, <a href="https://https://www.tidyverse.org//">{tidyverse}</a>, <a href="https://www.tidymodels.org/">{tidymodels}</a> and other R packages to develop a data processing, modelling, and prediction pipeline using a ML multi-class classification (MCC)<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> model of our choice. Note that the outcome should be in discrete ordinal scale.</p>
 <section id="data-simulation" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="data-simulation"><span class="header-section-number">2.1</span> Data Simulation</h2>
-<p>Simulation of these data is outside the scope of this article and will be covered in a later post.</p>
+<p>Simulation of these data is outside the scope of this article and is <a href="https://corneliustanui.rbind.io/content/posts/Simulation_2024-09-12/">covered in my other post</a>.</p>
 <p>The table below shows the properties of the variables are;</p>
 <div id="tbl-properties" class="striped hover primary bordered quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -288,58 +294,63 @@ Table&nbsp;1: Properties of variables
 </figcaption>
 <div aria-describedby="tbl-properties-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="table-striped table-hover table-primary table-bordered caption-top table">
+<colgroup>
+<col style="width: 56%">
+<col style="width: 15%">
+<col style="width: 27%">
+</colgroup>
 <thead>
 <tr class="header">
-<th>Variable</th>
-<th>Data type</th>
-<th>Distribution</th>
+<th style="text-align: left;">Variable</th>
+<th style="text-align: left;">Data type</th>
+<th style="text-align: left;">Distribution</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Bands</td>
-<td>Ordinal</td>
-<td></td>
+<td style="text-align: left;">Bands</td>
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">Multinomial</td>
 </tr>
 <tr class="even">
-<td>Gross family income</td>
-<td>x ∈ ℝ<sup>+</sup></td>
-<td></td>
+<td style="text-align: left;">Gross family income</td>
+<td style="text-align: left;">x ∈ ℝ<sup>+</sup></td>
+<td style="text-align: left;">Negative Binomial</td>
 </tr>
 <tr class="odd">
-<td>Geographical location</td>
-<td>Nominal</td>
-<td></td>
+<td style="text-align: left;">Geographical location</td>
+<td style="text-align: left;">Nominal</td>
+<td style="text-align: left;">Uniform</td>
 </tr>
 <tr class="even">
-<td>Poverty probability index</td>
-<td>x ∈ ℝ<sup>+</sup></td>
-<td></td>
+<td style="text-align: left;">Poverty probability index</td>
+<td style="text-align: left;">x ∈ ℝ<sup>+</sup></td>
+<td style="text-align: left;">Skewed Normal</td>
 </tr>
 <tr class="odd">
-<td>Special circumstances such as orphans</td>
-<td>Binary</td>
-<td></td>
+<td style="text-align: left;">Special circumstances such as orphans</td>
+<td style="text-align: left;">Binary</td>
+<td style="text-align: left;">Binomial</td>
 </tr>
 <tr class="even">
-<td>Students with disability</td>
-<td>Binary</td>
-<td></td>
+<td style="text-align: left;">Students with disability</td>
+<td style="text-align: left;">Binary</td>
+<td style="text-align: left;">Binomial</td>
 </tr>
 <tr class="odd">
-<td>Number of dependents</td>
-<td>x ∈ ℕ<sup>+</sup></td>
-<td></td>
+<td style="text-align: left;">Number of dependents</td>
+<td style="text-align: left;">x ∈ ℕ<sup>+</sup></td>
+<td style="text-align: left;">Poisson</td>
 </tr>
 <tr class="even">
-<td>Program costs</td>
-<td>x ∈ ℝ<sup>+</sup></td>
-<td></td>
+<td style="text-align: left;">Program costs</td>
+<td style="text-align: left;">x ∈ ℝ<sup>+</sup></td>
+<td style="text-align: left;">Skewed Normal</td>
 </tr>
 <tr class="odd">
-<td>Gender</td>
-<td>Nominal</td>
-<td></td>
+<td style="text-align: left;">Gender</td>
+<td style="text-align: left;">Nominal</td>
+<td style="text-align: left;">Multinomial</td>
 </tr>
 </tbody>
 </table>
@@ -369,11 +380,16 @@ Disclaimer!
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## load packages</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(xlsx)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)  <span class="co"># data processing packages</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels) <span class="co"># model definition packages</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(parsnip)    <span class="co"># model manipulation functions</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glmnet)     <span class="co"># model processing engine</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># library(spark)      # model processing engine</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(keras)      <span class="co"># model processing engine (requires package tensorflow)</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tensorflow) <span class="co"># The Python Module needs to be installed</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nnet)       <span class="co"># model processing engine</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brulee)     <span class="co"># model processing engine (requires libtorch distro of PyTorch)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>The simulated data looks like this;</p>
@@ -421,56 +437,56 @@ Disclaimer!
 <tr class="odd">
 <td style="text-align: left;">1</td>
 <td style="text-align: right;">1154</td>
-<td style="text-align: left;">2</td>
-<td style="text-align: right;">0.9187172</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">536555.6</td>
-<td style="text-align: left;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">1</td>
-<td style="text-align: right;">3127</td>
-<td style="text-align: left;">47</td>
+<td style="text-align: left;">30</td>
 <td style="text-align: right;">0.9179034</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">505307.0</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">488193.9</td>
 <td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">1</td>
-<td style="text-align: right;">3582</td>
-<td style="text-align: left;">3</td>
-<td style="text-align: right;">0.8995892</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">446018.0</td>
-<td style="text-align: left;">3</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">1</td>
-<td style="text-align: right;">3691</td>
-<td style="text-align: left;">24</td>
+<td style="text-align: right;">3069</td>
+<td style="text-align: left;">25</td>
 <td style="text-align: right;">0.8663438</td>
-<td style="text-align: left;">1</td>
 <td style="text-align: left;">0</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">488874.6</td>
-<td style="text-align: left;">2</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">546991.2</td>
+<td style="text-align: left;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">1</td>
-<td style="text-align: right;">4082</td>
-<td style="text-align: left;">7</td>
+<td style="text-align: right;">3127</td>
+<td style="text-align: left;">44</td>
 <td style="text-align: right;">0.8652463</td>
-<td style="text-align: left;">1</td>
 <td style="text-align: left;">0</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">503376.7</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">514901.7</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">3582</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: right;">0.8356267</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">393526.7</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">3691</td>
+<td style="text-align: left;">22</td>
+<td style="text-align: right;">0.8293217</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">499307.9</td>
 <td style="text-align: left;">1</td>
 </tr>
 </tbody>
@@ -480,6 +496,59 @@ Disclaimer!
 </section>
 <section id="model-creation" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="model-creation"><span class="header-section-number">2.3</span> Model Creation</h2>
+<p>For a start, we shall define the the model pipeline using the conventional <em>tidymodels</em> steps, and specify <em>keras</em> as the engine. Later on we will try other engines such as <em>brulee</em>, <em>glmnet</em>, and <em>nnet</em>.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## create training and testing sets</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># set seed for reproducibility</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">44</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>data_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(simulated_data, <span class="at">prop =</span> <span class="fl">0.75</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 75% of records</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>train_data <span class="ot">&lt;-</span> <span class="fu">training</span>(data_split) </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 25% of records</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>test_data  <span class="ot">&lt;-</span> <span class="fu">testing</span>(data_split)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># create the null model</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>multinom_reg_keras_spec <span class="ot">&lt;-</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">multinom_reg</span>(</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">mode =</span> <span class="st">"classification"</span>,</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">penalty =</span> <span class="cn">NULL</span>,</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">mixture =</span> <span class="cn">NULL</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">'keras'</span>)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co"># create the recipe</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>multinom_recipe <span class="ot">&lt;-</span> </span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># specify the outcome variable</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(Bands <span class="sc">~</span> ., <span class="at">data =</span> train_data) <span class="sc">|&gt;</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># specify predictors to be one-hot-encoded</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(GeographicalLocation, Gender, Orphans, Disability) <span class="sc">|&gt;</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># center all normally distributed predictors  </span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_center</span>(GrossFamilyIncome, PovertyProbabilityIndex, NumberOfDependents, ProgramCostsKES) <span class="sc">|&gt;</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># scale all normally distributed predictors </span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_scale</span>(GrossFamilyIncome, PovertyProbabilityIndex, NumberOfDependents, ProgramCostsKES) <span class="sc">|&gt;</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># normalize all numeric variables</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(GrossFamilyIncome, PovertyProbabilityIndex, NumberOfDependents, ProgramCostsKES)</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the workflow</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>multinom_workflow <span class="ot">&lt;-</span> </span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(multinom_reg_keras_spec) <span class="sc">|&gt;</span> </span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(multinom_recipe)</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="co"># train model</span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="co"># multinom_fit &lt;- </span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a><span class="co">#   multinom_workflow |&gt;</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a><span class="co">#   fit(data = train_data)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 <section id="model-fitting" class="level3" data-number="2.3.1">
 <h3 data-number="2.3.1" class="anchored" data-anchor-id="model-fitting"><span class="header-section-number">2.3.1</span> Model Fitting</h3>
 </section>

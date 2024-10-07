@@ -16,7 +16,7 @@ format:
     number-sections: true
 
 slug: classification
-categories: [R, classification, prediction, MTI]
+categories: [R, Classification, Prediction, MTI]
 ---
 
 ```{r chunk options, include = FALSE}
@@ -25,6 +25,8 @@ knitr::opts_chunk$set(warning = FALSE,
                       message = FALSE)
 
 ```
+
+![Image source: Imagine Art](ImagineArt_University_Students_in_Kenya.png){fig-alt="Statistical Data simulation" width="80%" height="100%"}
 
 # University Funding in Kenya
 
@@ -70,7 +72,7 @@ It goes without saying that a student requires a couple of lessons before sittin
 
 It is not too clear how and which factors were considered to create the 5 bands, although gross family income, geographical location poverty probability index, special circumstances such as orphans and students with disability, number of dependents, program costs, and gender are some of the variables that have been mentioned[^8]. Because I do not have readily available data covering these variables, I am going to simulate them and use R[^9], [{tidyverse}](https://https://www.tidyverse.org//), [{tidymodels}](https://www.tidymodels.org/) and other R packages to develop a data processing, modelling, and prediction pipeline using a ML multi-class classification (MCC)[^10] model of our choice. Note that the outcome should be in discrete ordinal scale.
 
-[^8]: https://kafu.ac.ke/images/2022/Academics/nfm/NEW_FUNDING_MODEL_-_6TH_AUGUST_2024.pdf
+[^8]: https://kafu.ac.ke/images/2022/Academics/nfm/NEW_FUNDING_MODEL\_-\_6TH_AUGUST_2024.pdf
 
 [^9]: R Core Team (2021). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.
 
@@ -78,21 +80,21 @@ It is not too clear how and which factors were considered to create the 5 bands,
 
 ## Data Simulation
 
-Simulation of these data is outside the scope of this article and will be covered in a later post.
+Simulation of these data is outside the scope of this article and is [covered in my other post](https://corneliustanui.rbind.io/content/posts/Simulation_2024-09-12/).
 
 The table below shows the properties of the variables are;
 
-| Variable                              | Data type | Distribution |
-|---------------------------------------|-----------|--------------|
-| Bands                                 | Ordinal   |              |
-| Gross family income                   | x ∈ ℝ^+^  |              |
-| Geographical location                 | Nominal   |              |
-| Poverty probability index             | x ∈ ℝ^+^  |              |
-| Special circumstances such as orphans | Binary    |              |
-| Students with disability              | Binary    |              |
-| Number of dependents                  | x ∈ ℕ^+^  |              |
-| Program costs                         | x ∈ ℝ^+^  |              |
-| Gender                                | Nominal   |              |
+| Variable                              | Data type | Distribution      |
+|:--------------------------------------|:----------|:------------------|
+| Bands                                 | Ordinal   | Multinomial       |
+| Gross family income                   | x ∈ ℝ^+^  | Negative Binomial |
+| Geographical location                 | Nominal   | Uniform           |
+| Poverty probability index             | x ∈ ℝ^+^  | Skewed Normal     |
+| Special circumstances such as orphans | Binary    | Binomial          |
+| Students with disability              | Binary    | Binomial          |
+| Number of dependents                  | x ∈ ℕ^+^  | Poisson           |
+| Program costs                         | x ∈ ℝ^+^  | Skewed Normal     |
+| Gender                                | Nominal   | Multinomial       |
 
 : Properties of variables {#tbl-properties .striped .hover .primary .bordered}
 
@@ -107,11 +109,16 @@ The data is **simulated**, and therefore substantially differs with the actual s
 ```{r load packages}
 
 ## load packages
-library(xlsx)
-library(here)
+library(tidyverse)  # data processing packages
+library(tidymodels) # model definition packages
+library(parsnip)    # model manipulation functions
 
-library(tidyverse)
-library(tidymodels)
+library(glmnet)     # model processing engine
+# library(spark)      # model processing engine
+library(keras)      # model processing engine (requires package tensorflow)
+library(tensorflow) # The Python Module needs to be installed
+library(nnet)       # model processing engine
+library(brulee)     # model processing engine (requires libtorch distro of PyTorch)
 
 ```
 
@@ -133,6 +140,60 @@ knitr::kable(head(x = simulated_data, n = 5))
 ```
 
 ## Model Creation
+
+For a start, we shall define the the model pipeline using the conventional *tidymodels* steps, and specify *keras* as the engine. Later on we will try other engines such as *brulee*, *glmnet*, and *nnet*.
+
+```{r Model Creation}
+
+## create training and testing sets
+# set seed for reproducibility
+set.seed(44)
+data_split <- initial_split(simulated_data, prop = 0.75)
+
+# 75% of records
+train_data <- training(data_split) 
+
+# 25% of records
+test_data  <- testing(data_split)
+
+# create the null model
+multinom_reg_keras_spec <-
+  multinom_reg(
+    mode = "classification",
+    penalty = NULL,
+    mixture = NULL) |>
+  set_engine('keras')
+
+# create the recipe
+multinom_recipe <- 
+  
+  # specify the outcome variable
+  recipe(Bands ~ ., data = train_data) |>
+  
+  # specify predictors to be one-hot-encoded
+  step_dummy(GeographicalLocation, Gender, Orphans, Disability) |>
+  
+  # center all normally distributed predictors  
+  step_center(GrossFamilyIncome, PovertyProbabilityIndex, NumberOfDependents, ProgramCostsKES) |>
+  
+  # scale all normally distributed predictors 
+  step_scale(GrossFamilyIncome, PovertyProbabilityIndex, NumberOfDependents, ProgramCostsKES) |>
+  
+  # normalize all numeric variables
+  step_normalize(GrossFamilyIncome, PovertyProbabilityIndex, NumberOfDependents, ProgramCostsKES)
+  
+# Create the workflow
+multinom_workflow <- 
+  workflow() |>
+  add_model(multinom_reg_keras_spec) |> 
+  add_recipe(multinom_recipe)
+
+# train model
+# multinom_fit <- 
+#   multinom_workflow |>
+#   fit(data = train_data)
+
+```
 
 ### Model Fitting
 

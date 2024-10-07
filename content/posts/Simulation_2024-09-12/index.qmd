@@ -27,7 +27,7 @@ knitr::opts_chunk$set(warning = FALSE,
 
 ```
 
-![Statistical Data simulation. Image source: OpenArt](openart-image_colorful_statistical_data_simulation.jpg){fig-alt="Statistical Data simulation" width="80%" height="100%"}
+![Image source: OpenArt](openart-image_colorful_statistical_data_simulation.jpg){fig-alt="Statistical Data simulation" width="80%" height="100%"}
 
 # Introduction {#sec-intro}
 
@@ -55,7 +55,9 @@ There are a number of factors[^1] that the new MTI-based university funding mode
 
 ## Bands {#sec-bands}
 
-This is the outcome -- a categorical 5-point ordinal variable where 1 represents the most needy and 5 represents the least needy[^2], thus $x_{ij}$ where $j = \{1, 2, 3, ..., 5\}$. We will assume that each band has a fairly equal chance of occurring, i.e for the $i^{th}$ student, $p(x_{i}) = 1/2$. We need a probability distribution function that draws 5 numbers between 1 to 5 for 1000 observations. We could use the `sample` function from `{base}` R package but the distribution of values would not be desirably skewed towards the left -- it would lead to a near-uniform distribution. Remember that bands are a proxy for the socio-economic status of the household, and in Kenya -- as in most other countries[^3] -- the number of rich households is significantly lower than the number of poor households, therefore we need to expect more band 1 households than band 5 households.
+This is the outcome -- a categorical 5-point ordinal variable where 1 represents the most needy and 5 represents the least needy[^2], thus $x_{ij}$ where $j = \{1, 2, 3, ..., 5\}$. We will assume that the first 2 or 3 bands have a fairly higher chance of occurring compared to the last bands, i.e for the $i^{th}$ student, $p(x_{i1}) > p(x_{i2}) >... >p(x_{i5})$. We need a probability distribution function that draws 5 numbers between 1 to 5 for 1000 observations. A multinomial distribution will do just that. We simply need to specify $n = 1$ (create 1 vector), $size = 1000$ (number of observations), and $prob = p(x_{ij})$ (vector of probabilities) in the function `rmultinom` from the package `{stats}`. The function is the Application Programming Interface (API) to the RNG for multinomial distribution.
+
+If we use a uniform probability of $p(x_{ij}) = 1/5$ we will end up with a uniform distribution, but we desire a distribution that is skewed to the left. Remember that the bands are a proxy for the socio-economic status of the household, and in Kenya -- as in most other countries[^3] -- the number of rich households is significantly lower than the number of poor households, therefore we need to expect more band 1 households than band 5 households.
 
 [^2]: https://www.universitiesfund.go.ke/wp-content/uploads/2024/03/Issue-December-2023.pdf
 
@@ -63,17 +65,45 @@ This is the outcome -- a categorical 5-point ordinal variable where 1 represents
 
 ```{r undesirable bands}
 
+# generate 5 bands via multinomial distribution with equal probabilities
 set.seed(44)
-barplot(table(sample(1:5, 1000, replace = TRUE)), xlab  = "Bands", main = "Histogram of Bands (Almost Uniform)")
+sample1 <- rmultinom(n = 1,
+                     size = 1000,
+                     prob = rep(1/5, 5)) |> 
+  as.data.frame() |>
+  dplyr::mutate(Counts = dplyr::row_number()) |>
+  dplyr::rename(Summary = V1)
+
+# expand the Counts by Summary
+sample2 <- rep(sample1$Counts, sample1$Summary)
+
+# visualize results
+barplot(table(sample2), xlab  = "Bands", main = "Histogram of Bands (Almost Uniform)")
 
 ```
+We could specify the 5 distinct probabilities $p(x_{ij})$ by trial and error, but the most effective way to get better probabilities is to think of each observation as a sum of 5 binomial trials ($p(x) = (_x^n)p^xq^{n-x}$) --not to be confused with multinomial -- with the probability of success in each trial being $p(x_{ij}) = 1/5$. Each trial results in either a success (1) or a fail (0). Summing these outcomes, the lowest possible value will be 0 (all fails), and the highest will be 5 (all successes). Therefore, each student will be assigned a value between 0 and 5 (inclusive). As it turns out, 4s and 5s are significantly fewer than 0s and 1s, regardless of the seed value of the RNG. This is exactly what we want. Finally, declare $x$ as an ordered factor because there is an intrinsic element of order or natural rank among the bands.
 
-The function `rbinom` from the package `{stats}` does exactly that -- we simply need to specify n = 1000, size = 5, and prob = 1/5 in the arguments and add 1 to the result to remove 0 and introduce 5. The resulting values assume a binomial distribution ($p(x) = (_x^n)p^xq^{n-x}$) with 5 trials for each observation, and the resulting value between 1 and 5 (inclusive) indicate a success for the $j^{th}$ trial. Finally, declare $x$ as an ordered factor.
 
 ```{r desirable bands}
 
+# generate probabilities via 5 binomial trails with p = 1/5
+# 1 is added to remove band 0 and introduce band 5
 set.seed(44)
-barplot(table(rbinom(n = 1000,size = 5, prob = 1/5) + 1),  xlab  = "Bands", main = "Histogram of Bands (Appropriately Positively Skewed)")
+prob <- prop.table(table(rbinom(n = 1000, size = 5, prob = 1/5) + 1)) 
+
+# generate 5 bands via multinomial distribution
+set.seed(44)
+sample1 <- rmultinom(n = 1,
+                     size = 1000,
+                     prob = prob) |> 
+  as.data.frame() |>
+  dplyr::mutate(Counts = dplyr::row_number()) |>
+  dplyr::rename(Summary = V1)
+
+# expand the Counts by Summary
+sample2 <- rep(sample1$Counts, sample1$Summary)
+
+barplot(table(sample2),  xlab  = "Bands", main = "Histogram of Bands (Appropriately Positively Skewed)")
 
 ```
 
@@ -151,7 +181,7 @@ barplot(table(rpois(n = 1000, lambda = 4)), xlab  = "Number of Dependents", main
 
 ## Program Costs (KES)
 
-Similar to @sec-pov_prob_ind, this variable is in the field $x ∈ ℝ^+$ where $x \sim N(\mu, s)$ with parameters taken to be $\mu = 500,000$ and $sd = 50,000$. Feeding these values into the normal distribution RNG, we get;
+Similar to @sec-pov_prob_ind, this variable is in the field $x ∈ ℝ^+$ where $x \sim N(\mu, s)$ with parameters taken to be $\mu = 500,000$ and $s = 50,000$. Feeding these values into the normal distribution RNG, we get;
 
 ```{r Program Costs}
 
@@ -162,14 +192,28 @@ hist(abs(rnorm(n = 1000, mean = 500000, sd = 50000)), xlab  = "Program Costs", m
 
 ## Gender
 
-Similar to @sec-bands,this variable follows a binomial distribution with 3 trials; male (49.0%), female (50.0%), and intersex (0.01%)[^7]. Because of the small number of observations for the third category, we shall limit the trials to just 2 and and add 1 to the result to remove 0 and introduce 3.
+Similar to @sec-bands,this variable follows a multinomial distribution with 3 outcomes. This time round, we know the three probabilities $p(x_{ij})$ from literature; male (49.0%), female (50.0%), and intersex (0.01%)[^7].
 
 [^7]: https://kenya.unfpa.org/en/topics/population-matters-0
 
 ```{r Gender}
 
+# declare probabilities (values gotten from existing literature)
+prob <- c(0.49, 0.50, 0.01)
+
+# generate 3 outcomes via multinomial distribution
 set.seed(44)
-barplot(table(rbinom(n = 1000, size = 2, prob = 1/3) + 1), xlab  = "Gender", main = "Bargraph of Gender")
+sample1 <- rmultinom(n = 1,
+                     size = 1000,
+                     prob = prob) |> 
+  as.data.frame() |>
+  dplyr::mutate(Counts = dplyr::row_number()) |>
+  dplyr::rename(Summary = V1)
+  
+# expand Counts by Summary
+sample2 <- rep(sample1$Counts, sample1$Summary)
+
+barplot(table(sample2), xlab  = "Gender", main = "Bargraph of Gender")
           
 ```
 
@@ -193,14 +237,48 @@ Now, let's combine all the simulated data according to probability distributions
 #| tbl-cap: "Simulated data"
 #| tbl-cap-location: bottom 
 
+### bands
+# generate probabilities via 5 binomial trials with p = 1/5
+# 1 is added to remove band 0 and introduce band 5
+set.seed(44)
+prob_bands <- prop.table(table(rbinom(n = 1000, size = 5, prob = 1/5) + 1)) 
+
+# generate 5 bands via multinomial distribution
+set.seed(44)
+bands1 <- rmultinom(n = 1,
+                     size = 1000,
+                     prob = prob_bands) |> 
+  as.data.frame() |>
+  dplyr::mutate(Counts = dplyr::row_number()) |>
+  dplyr::rename(Summary = V1)
+
+# expand the Counts by Summary
+bands2 <- rep(bands1$Counts, bands1$Summary)
+
+
+### gender
+# declare probabilities (values gotten from existing literature)
+prob_gender <- c(0.49, 0.50, 0.01)
+
+# generate 3 outcomes via multinomial distribution
+set.seed(44)
+gender1 <- rmultinom(n = 1,
+                     size = 1000,
+                     prob = prob_gender) |> 
+  as.data.frame() |>
+  dplyr::mutate(Counts = dplyr::row_number()) |>
+  dplyr::rename(Summary = V1)
+  
+# expand Counts by Summary
+gender2 <- rep(gender1$Counts, gender1$Summary)
+
+### wrap everything up in a data-frame
 # for reproducibility
 set.seed(44)
 simulated_data <- data.frame(
   
   # sorting is necessary 
-  Bands = sort(as.ordered(rbinom(n = 1000,
-                                 size = 5,
-                                 prob = 1/5) + 1), decreasing = FALSE),
+  Bands = sort(as.ordered(bands2), decreasing = FALSE),
   
   # sorting is necessary
   GrossFamilyIncome = sort(rnbinom(n = 1000,
@@ -231,9 +309,7 @@ simulated_data <- data.frame(
                               mean = 500000,
                               sd = 50000)),
   
-  Gender = as.factor(rbinom(n = 1000,
-                            size = 2,
-                            prob = 1/3) + 1)
+  Gender = as.factor(gender2)
 )
 
 # view data (printed on your browser)
@@ -255,7 +331,7 @@ saveRDS(object = simulated_data, file = here::here("./Data/simulated_data.rds"))
 
 We have covered a few ways in which data can be generated based on their known probability distributions, and the values of the parameters of those distributions obtained from existing literature.
 
-Each probability distribution has a corresponding Application Programming Interface (API), in the form of a function, that accesses the RNG. The API instructs the RNG to generate random numbers in a particular manner that satisfies the conditions of the probability distribution (pattern).
+Each probability distribution has a corresponding API, in the form of a function, that accesses the RNG. The API instructs the RNG to generate random numbers in a particular manner that satisfies the conditions of the probability distribution (pattern).
 
 There are tens of other probability distributions that are outside the scope of this article. If you are interested in *mathematical statistics*, you may check them out. Each probability distribution describes a special phenomenon, with a wide range of real world applications.
 
