@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Cornelius Tanui">
-<meta name="dcterms.date" content="2024-09-06">
+<meta name="dcterms.date" content="2024-08-06">
 <meta name="description" content="Predicting the Household Economic Bands Into Which University Students Fall for Award of Financial Support from the Kenyan Government.">
 
-<title>Kenyan Household Bands Classifier – Cornelius Tanui</title>
+<title>Machine Learning Classifier for Banding University Students in Kenya – Cornelius Tanui</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -134,9 +134,52 @@ cookieconsent.run({
 </script> 
   
 
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../../styles.css">
-<meta property="og:title" content="Kenyan Household Bands Classifier – Cornelius Tanui">
+<meta property="og:title" content="Machine Learning Classifier for Banding University Students in Kenya – Cornelius Tanui">
 <meta property="og:description" content="Predicting the Household Economic Bands Into Which University Students Fall for Award of Financial Support from the Kenyan Government.">
 <meta property="og:site_name" content="Cornelius Tanui">
 <meta property="og:locale" content="en-KE">
@@ -199,12 +242,18 @@ cookieconsent.run({
   <ul class="collapse">
   <li><a href="#data-simulation" id="toc-data-simulation" class="nav-link" data-scroll-target="#data-simulation"><span class="header-section-number">2.1</span> Data Simulation</a></li>
   <li><a href="#descrpitive-analysis" id="toc-descrpitive-analysis" class="nav-link" data-scroll-target="#descrpitive-analysis"><span class="header-section-number">2.2</span> Descrpitive Analysis</a></li>
-  <li><a href="#model-creation" id="toc-model-creation" class="nav-link" data-scroll-target="#model-creation"><span class="header-section-number">2.3</span> Model Creation</a>
+  <li><a href="#inferential-model-creation" id="toc-inferential-model-creation" class="nav-link" data-scroll-target="#inferential-model-creation"><span class="header-section-number">2.3</span> Inferential Model Creation</a></li>
+  <li><a href="#prediction-model-creation" id="toc-prediction-model-creation" class="nav-link" data-scroll-target="#prediction-model-creation"><span class="header-section-number">2.4</span> Prediction Model Creation</a>
   <ul class="collapse">
-  <li><a href="#model-fitting" id="toc-model-fitting" class="nav-link" data-scroll-target="#model-fitting"><span class="header-section-number">2.3.1</span> Model Fitting</a></li>
-  <li><a href="#model-diagnostics" id="toc-model-diagnostics" class="nav-link" data-scroll-target="#model-diagnostics"><span class="header-section-number">2.3.2</span> Model Diagnostics</a></li>
-  <li><a href="#band-prediction" id="toc-band-prediction" class="nav-link" data-scroll-target="#band-prediction"><span class="header-section-number">2.3.3</span> Band Prediction</a></li>
+  <li><a href="#generate-training-and-testing-datasets" id="toc-generate-training-and-testing-datasets" class="nav-link" data-scroll-target="#generate-training-and-testing-datasets"><span class="header-section-number">2.4.1</span> Generate Training and Testing Datasets</a></li>
+  <li><a href="#create-initial-model" id="toc-create-initial-model" class="nav-link" data-scroll-target="#create-initial-model"><span class="header-section-number">2.4.2</span> Create Initial Model</a></li>
+  <li><a href="#recipe-definition" id="toc-recipe-definition" class="nav-link" data-scroll-target="#recipe-definition"><span class="header-section-number">2.4.3</span> Recipe Definition</a></li>
+  <li><a href="#workflow-definition" id="toc-workflow-definition" class="nav-link" data-scroll-target="#workflow-definition"><span class="header-section-number">2.4.4</span> Workflow Definition</a></li>
   </ul></li>
+  <li><a href="#model-training" id="toc-model-training" class="nav-link" data-scroll-target="#model-training"><span class="header-section-number">2.5</span> Model Training</a></li>
+  <li><a href="#model-performance-diagnostics" id="toc-model-performance-diagnostics" class="nav-link" data-scroll-target="#model-performance-diagnostics"><span class="header-section-number">2.6</span> Model Performance Diagnostics</a></li>
+  <li><a href="#hyperparameter-tuning" id="toc-hyperparameter-tuning" class="nav-link" data-scroll-target="#hyperparameter-tuning"><span class="header-section-number">2.7</span> Hyperparameter Tuning</a></li>
+  <li><a href="#band-prediction" id="toc-band-prediction" class="nav-link" data-scroll-target="#band-prediction"><span class="header-section-number">2.8</span> Band Prediction</a></li>
   </ul></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">3</span> Conclusion</a></li>
   </ul>
@@ -215,7 +264,7 @@ cookieconsent.run({
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Kenyan Household Bands Classifier</h1>
+<h1 class="title">Machine Learning Classifier for Banding University Students in Kenya</h1>
   <div class="quarto-categories">
     <div class="quarto-category">R</div>
     <div class="quarto-category">Classification</div>
@@ -243,7 +292,7 @@ cookieconsent.run({
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 6, 2024</p>
+      <p class="date">August 6, 2024</p>
     </div>
   </div>
   
@@ -257,7 +306,7 @@ cookieconsent.run({
 
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="ImagineArt_University_Students_in_Kenya.png" style="width:80.0%;height:100.0%" alt="Statistical Data simulation" class="figure-img"></p>
+<p><img src="ImagineArt_University_Students_in_Kenya.png" style="width:80.0%;height:100.0%" alt="Machine Learning Classifier for Banding University Students in Kenya" class="figure-img"></p>
 <figcaption>Image source: Imagine Art</figcaption>
 </figure>
 </div>
@@ -376,36 +425,20 @@ Disclaimer!
 </div>
 </div>
 </div>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## load packages</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)  <span class="co"># data processing packages</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels) <span class="co"># model definition packages</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(parsnip)    <span class="co"># model manipulation functions</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glmnet)     <span class="co"># model processing engine</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># library(spark)      # model processing engine</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(keras)      <span class="co"># model processing engine (requires package tensorflow)</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tensorflow) <span class="co"># The Python Module needs to be installed</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nnet)       <span class="co"># model processing engine</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brulee)     <span class="co"># model processing engine (requires libtorch distro of PyTorch)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
 <p>The simulated data looks like this;</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># table display setup</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-simulated_data .striped .hover .primary .bordered</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Simulated data"</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap-location: bottom </span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># load data</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>simulated_data <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"./Data/simulated_data.rds"</span>))</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># view data (printed on your browser)</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(<span class="at">x =</span> simulated_data, <span class="at">n =</span> <span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># table display setup</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-simulated_data .striped .hover .primary .bordered</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Simulated data"</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap-location: bottom </span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># load data</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>simulated_data <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"./Data/simulated_data.rds"</span>))</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># view data (printed on your browser)</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(<span class="at">x =</span> simulated_data, <span class="at">n =</span> <span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -437,56 +470,56 @@ Disclaimer!
 <tr class="odd">
 <td style="text-align: left;">1</td>
 <td style="text-align: right;">1154</td>
-<td style="text-align: left;">30</td>
-<td style="text-align: right;">0.9179034</td>
+<td style="text-align: left;">9</td>
+<td style="text-align: right;">1.0563022</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">488193.9</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">509734.8</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">1</td>
-<td style="text-align: right;">3069</td>
-<td style="text-align: left;">25</td>
-<td style="text-align: right;">0.8663438</td>
+<td style="text-align: right;">2400</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: right;">0.9868637</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">546991.2</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">469997.6</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">1</td>
-<td style="text-align: right;">3127</td>
-<td style="text-align: left;">44</td>
-<td style="text-align: right;">0.8652463</td>
+<td style="text-align: right;">2411</td>
+<td style="text-align: left;">27</td>
+<td style="text-align: right;">0.9790371</td>
+<td style="text-align: left;">1</td>
 <td style="text-align: left;">0</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">514901.7</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">547886.0</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">1</td>
-<td style="text-align: right;">3582</td>
-<td style="text-align: left;">10</td>
-<td style="text-align: right;">0.8356267</td>
+<td style="text-align: right;">2494</td>
+<td style="text-align: left;">22</td>
+<td style="text-align: right;">0.9679570</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: right;">3</td>
-<td style="text-align: right;">393526.7</td>
+<td style="text-align: right;">420495.4</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">1</td>
-<td style="text-align: right;">3691</td>
-<td style="text-align: left;">22</td>
-<td style="text-align: right;">0.8293217</td>
+<td style="text-align: right;">2559</td>
+<td style="text-align: left;">41</td>
+<td style="text-align: right;">0.9642283</td>
+<td style="text-align: left;">1</td>
 <td style="text-align: left;">0</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">499307.9</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">530990.7</td>
 <td style="text-align: left;">1</td>
 </tr>
 </tbody>
@@ -494,74 +527,371 @@ Disclaimer!
 </div>
 </div>
 </section>
-<section id="model-creation" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="model-creation"><span class="header-section-number">2.3</span> Model Creation</h2>
-<p>For a start, we shall define the the model pipeline using the conventional <em>tidymodels</em> steps, and specify <em>keras</em> as the engine. Later on we will try other engines such as <em>brulee</em>, <em>glmnet</em>, and <em>nnet</em>.</p>
+<section id="inferential-model-creation" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="inferential-model-creation"><span class="header-section-number">2.3</span> Inferential Model Creation</h2>
+<p>Before we create a model that predicts or assigns bands, let’s first explore the relationship between the outcome (Bands) and all the predictors.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## create training and testing sets</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># set seed for reproducibility</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">44</span>)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>data_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(simulated_data, <span class="at">prop =</span> <span class="fl">0.75</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 75% of records</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>train_data <span class="ot">&lt;-</span> <span class="fu">training</span>(data_split) </span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 25% of records</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>test_data  <span class="ot">&lt;-</span> <span class="fu">testing</span>(data_split)</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># create the null model</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>multinom_reg_keras_spec <span class="ot">&lt;-</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">multinom_reg</span>(</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">mode =</span> <span class="st">"classification"</span>,</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">penalty =</span> <span class="cn">NULL</span>,</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">mixture =</span> <span class="cn">NULL</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">'keras'</span>)</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co"># create the recipe</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>multinom_recipe <span class="ot">&lt;-</span> </span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># specify the outcome variable</span></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(Bands <span class="sc">~</span> ., <span class="at">data =</span> train_data) <span class="sc">|&gt;</span></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># specify predictors to be one-hot-encoded</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(GeographicalLocation, Gender, Orphans, Disability) <span class="sc">|&gt;</span></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># center all normally distributed predictors  </span></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_center</span>(GrossFamilyIncome, PovertyProbabilityIndex, NumberOfDependents, ProgramCostsKES) <span class="sc">|&gt;</span></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># scale all normally distributed predictors </span></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_scale</span>(GrossFamilyIncome, PovertyProbabilityIndex, NumberOfDependents, ProgramCostsKES) <span class="sc">|&gt;</span></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># normalize all numeric variables</span></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(GrossFamilyIncome, PovertyProbabilityIndex, NumberOfDependents, ProgramCostsKES)</span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the workflow</span></span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>multinom_workflow <span class="ot">&lt;-</span> </span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(multinom_reg_keras_spec) <span class="sc">|&gt;</span> </span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(multinom_recipe)</span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="co"># train model</span></span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="co"># multinom_fit &lt;- </span></span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a><span class="co">#   multinom_workflow |&gt;</span></span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a><span class="co">#   fit(data = train_data)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mti_model_fit <span class="ot">&lt;-</span> parsnip<span class="sc">::</span><span class="fu">multinom_reg</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  parsnip<span class="sc">::</span><span class="fu">fit</span>(Bands <span class="sc">~</span> ., <span class="at">data =</span> simulated_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<section id="model-fitting" class="level3" data-number="2.3.1">
-<h3 data-number="2.3.1" class="anchored" data-anchor-id="model-fitting"><span class="header-section-number">2.3.1</span> Model Fitting</h3>
+<p>Now, we can extract the meaning from the information contained in the model created above. Instead of reporting log of odds, we can report just odd, as that make sit easier to interpret;-</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>model_results <span class="ot">&lt;-</span> broom<span class="sc">::</span><span class="fu">tidy</span>(mti_model_fit, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>, <span class="at">conf.int =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="at">Bands =</span> y.level, </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">Predictors =</span> term,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">Odds =</span> estimate,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">StandardError =</span> std.error,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">Statistic =</span> statistic,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                <span class="st">`</span><span class="at">P-value</span><span class="st">`</span> <span class="ot">=</span> p.value,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">Lower95 =</span> conf.low,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">Upper95 =</span> conf.high</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>                ) <span class="sc">|&gt;</span> </span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Odds =</span> <span class="fu">round</span>(Odds, <span class="dv">4</span>),</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">Lower95 =</span> <span class="fu">round</span>(Lower95, <span class="dv">4</span>),</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">Upper95 =</span> <span class="fu">round</span>(Upper95, <span class="dv">4</span>))</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>model_results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 216 × 8
+   Bands Predictors             Odds StandardError Statistic `P-value`   Lower95
+   &lt;chr&gt; &lt;chr&gt;                 &lt;dbl&gt;         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+ 1 2     (Intercept)       Inf            1.02e- 7   8.92e10         0 Inf      
+ 2 2     GrossFamilyIncome   8.08e-1      5.51e- 4  -3.88e 2         0   8.07e-1
+ 3 2     GeographicalLoca…   5.48e+0      1.47e- 8   1.16e 8         0   5.48e+0
+ 4 2     GeographicalLoca…   5.75e+3      1.13e- 9   7.66e 9         0   5.75e+3
+ 5 2     GeographicalLoca…   4   e-4      3.44e- 8  -2.27e 8         0   4   e-4
+ 6 2     GeographicalLoca…   2.73e+2      1.36e- 9   4.14e 9         0   2.73e+2
+ 7 2     GeographicalLoca…   1.37e+2      5.31e- 9   9.26e 8         0   1.37e+2
+ 8 2     GeographicalLoca…   8.7 e-3      2.86e- 8  -1.66e 8         0   8.7 e-3
+ 9 2     GeographicalLoca…   0            3.19e- 8  -4.16e 8         0   0      
+10 2     GeographicalLoca…   1.66e+6      1.40e-16   1.02e17         0   1.66e+6
+# ℹ 206 more rows
+# ℹ 1 more variable: Upper95 &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>A multinomial regression is, under the hood, an ensemble of several “binary logistic regressions”. As we can see from the results above, the outcome <code>Bands</code> contains all the outcome bands (technically called ‘classes’). Each class creates a binary logistic regression, and that is why we see all the <code>Predictors</code> for each class. Band 1 (class 1) is not reported because it is taken as the reference group. Any class can be made a reference groub by relevelling the factors. For example, to make band 5 the reference class, <code>simulated_data$Bands &lt;- relevel(simulated_data$Bands, ref = "5")</code>.</p>
+<p>Looking at the p-values at 95% level of confidence, some independent indicators are significant predictors of certain bands. For instance, gross family income is significant at all bands (p-value &lt;0.0001) respectively.) Therefore, a unit increase of a gross family income increases the odds of the family being in band 4 than being in band 1 by 25.07%, holding all other predictors constant. The value of 25.07% is gotten by <span class="math inline">(1.2507 - 1)*100 = 25.07\%</span>.</p>
 </section>
-<section id="model-diagnostics" class="level3" data-number="2.3.2">
-<h3 data-number="2.3.2" class="anchored" data-anchor-id="model-diagnostics"><span class="header-section-number">2.3.2</span> Model Diagnostics</h3>
+<section id="prediction-model-creation" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="prediction-model-creation"><span class="header-section-number">2.4</span> Prediction Model Creation</h2>
+<p>For a start, we shall define the the model pipeline using the conventional <em>tidymodels</em> process workflow with <a href="https://parsnip.tidymodels.org/">parsnip</a>, and specify <em>glmnet</em> as the engine. Later on, maybe in a separate post, we will explore other engines such as <em>brulee</em>, <em>nnet</em>, and <em>keras</em>. The keras engine is a Python library that depends on <em>tensorflow</em>, another Python library that must be installed. To install keras and tensorflow, open <strong>Anaconda Command Prompt</strong> and run the commands <code>pip install keras</code>, and <code>pip install tensorflow</code> and then load the R package equivalents of the two python libraries, along with other necessary packages, as follows: -</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## load packages</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)  <span class="co"># data processing packages</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels) <span class="co"># model definition packages</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(parsnip)    <span class="co"># model manipulation functions</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glmnet)     <span class="co"># model processing engine</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># library(spark)      # model processing engine</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># library(keras)      # model processing engine (requires package tensorflow)</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># library(tensorflow) # The Python package needs to be installed</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co"># library(nnet)       # model processing engine</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co"># library(brulee)     # model processing engine (requires libtorch distro of PyTorch)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="generate-training-and-testing-datasets" class="level3" data-number="2.4.1">
+<h3 data-number="2.4.1" class="anchored" data-anchor-id="generate-training-and-testing-datasets"><span class="header-section-number">2.4.1</span> Generate Training and Testing Datasets</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## create training and testing sets</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># set seed for reproducibility of the sets</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">44</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>data_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(simulated_data, <span class="at">prop =</span> <span class="fl">0.75</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 75% of records</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>train_data <span class="ot">&lt;-</span> <span class="fu">training</span>(data_split) </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 25% of records</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>test_data  <span class="ot">&lt;-</span> <span class="fu">testing</span>(data_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </section>
-<section id="band-prediction" class="level3" data-number="2.3.3">
-<h3 data-number="2.3.3" class="anchored" data-anchor-id="band-prediction"><span class="header-section-number">2.3.3</span> Band Prediction</h3>
+<section id="create-initial-model" class="level3" data-number="2.4.2">
+<h3 data-number="2.4.2" class="anchored" data-anchor-id="create-initial-model"><span class="header-section-number">2.4.2</span> Create Initial Model</h3>
+<p>In this model, there are only two (hyper)parameters that need to be specified: penalty and mixture. The value of the penalty defines the degree to which <em>regularization</em> is applied to the model. Regularization is a technique used to control overfitting by adding a penalty (error) term to the model. On the other hand, mixture is the value that species how the penalty term is added. There are three ways of adding this penalty<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a>;</p>
+<ol type="1">
+<li>Lasso (also called L1 regularization): The penalty term added to the model is the sum of absolute coefficients of the predictors, multiplied by some constant – <span class="math inline">λ∑ |β|</span>. If <span class="math inline">mixture = 1</span> then the resulting model is pure L1.</li>
+<li>Ridge (also called L2 regularization): The penalty term added to the model is the sum of squares of coefficients of the predictors, multiplied by some constant – <span class="math inline">λ∑ β^2</span>. If <span class="math inline">mixture = 0</span> then the resulting model is pure L2.</li>
+<li>Elastic net (a mix of L1 and L2): The penalty term added to the model is the sum of L1 and L2 – <span class="math inline">λ∑ |β| + λ∑ β²</span>. If <span class="math inline">0 &lt; mixture &lt; 1</span> then the resulting model is elastic net.</li>
+</ol>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create the null model</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>multinom_reg_glmnet_spec <span class="ot">&lt;-</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># parsnip::multinom_reg(penalty = tune(), mixture = tune()) |&gt; # to be tuned later</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  parsnip<span class="sc">::</span><span class="fu">multinom_reg</span>(<span class="at">penalty =</span> <span class="fu">double</span>(<span class="dv">1</span>), <span class="at">mixture =</span> <span class="fu">double</span>(<span class="dv">1</span>)) <span class="sc">|&gt;</span> <span class="co"># manual starting values</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">'glmnet'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </section>
+<section id="recipe-definition" class="level3" data-number="2.4.3">
+<h3 data-number="2.4.3" class="anchored" data-anchor-id="recipe-definition"><span class="header-section-number">2.4.3</span> Recipe Definition</h3>
+<p>Create pre-processing steps for the predictors (also called features.);</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create the recipe</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>multinom_recipe <span class="ot">&lt;-</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># specify the outcome variable</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(Bands <span class="sc">~</span> ., <span class="at">data =</span> train_data) <span class="sc">|&gt;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># specify predictors to be one-hot-encoded</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(GeographicalLocation, Gender, Orphans, Disability) <span class="sc">|&gt;</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># center all normally distributed predictors  </span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_center</span>(GrossFamilyIncome, PovertyProbabilityIndex, NumberOfDependents, ProgramCostsKES) <span class="sc">|&gt;</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># scale all normally distributed predictors </span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_scale</span>(GrossFamilyIncome, PovertyProbabilityIndex, NumberOfDependents, ProgramCostsKES) <span class="sc">|&gt;</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># normalize all numeric variables</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(GrossFamilyIncome, PovertyProbabilityIndex, NumberOfDependents, ProgramCostsKES)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="workflow-definition" class="level3" data-number="2.4.4">
+<h3 data-number="2.4.4" class="anchored" data-anchor-id="workflow-definition"><span class="header-section-number">2.4.4</span> Workflow Definition</h3>
+<p>A workflow defines the order in which the model is build by sequentially combining pre-processing steps (recipe) and other pipeline elements into a workflow;</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the workflow</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>multinom_workflow <span class="ot">&lt;-</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(multinom_recipe) <span class="sc">|&gt;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(multinom_reg_glmnet_spec)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
+<section id="model-training" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="model-training"><span class="header-section-number">2.5</span> Model Training</h2>
+<p>We can now train(fit) the model using the training data as follows;</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># train model</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>multinom_fit <span class="ot">&lt;-</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  multinom_workflow <span class="sc">|&gt;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  parsnip<span class="sc">::</span><span class="fu">fit</span>(<span class="at">data =</span> train_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="model-performance-diagnostics" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="model-performance-diagnostics"><span class="header-section-number">2.6</span> Model Performance Diagnostics</h2>
+<p>Now that we have a ‘bare bones’ model, let’s find out it’s performance using metrics from the <a href="https://yardstick.tidymodels.org/">yardstick</a> package, which is part of tidymodels. There are many ways to calculate multiclass metrics, such as using confusion matrix and accuracy level. Note that ROC (receiver operating characteristic) curve is used for binary classifiers, not multiclass classifiers which is the focus of this article.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create new data (can be completely new or use training data without resposne variable)</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>predictors_data <span class="ot">&lt;-</span> test_data <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>Bands)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># use the model and the training data to get predictions of bands</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>bands_data <span class="ot">&lt;-</span> test_data</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>bands_data<span class="sc">$</span>Bands_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(multinom_fit, <span class="at">new_data =</span> predictors_data, <span class="at">type =</span> <span class="st">"class"</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>bands_data<span class="sc">$</span>Bands_pred <span class="ot">&lt;-</span> bands_data<span class="sc">$</span>Bands_pred<span class="sc">$</span>.pred_class</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>bands_data <span class="ot">&lt;-</span> bands_data <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">select</span>(Bands, Bands_pred)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="do">## measure performance</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 1) confusion matrix</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="fu">conf_mat</span>(<span class="at">data =</span> bands_data, <span class="at">truth =</span> Bands, <span class="at">estimate =</span> Bands_pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>          Truth
+Prediction   1   2   3   4   5
+         1 819  83   0   0   0
+         2   3 931 135   0   0
+         3   0   0 382 120   0
+         4   0   0   0   1   2
+         5   0   0   0   2  22</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2) kappa and accuracy</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">metrics</span>(<span class="at">data =</span> bands_data, <span class="at">truth =</span> Bands, <span class="at">estimate =</span> Bands_pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  .metric  .estimator .estimate
+  &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;
+1 accuracy multiclass     0.862
+2 kap      multiclass     0.793</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 3) precision (same as accuracy)</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">precision</span>(<span class="at">data =</span> bands_data, <span class="at">truth =</span> Bands, <span class="at">estimate =</span> Bands_pred, <span class="at">estimator =</span> <span class="st">"micro"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  .metric   .estimator .estimate
+  &lt;chr&gt;     &lt;chr&gt;          &lt;dbl&gt;
+1 precision micro          0.862</code></pre>
+</div>
+</div>
+<p>There you go; a model accuracy of 0.862 is pretty high, given that the data was <em>simulated</em>! So much good news here, almost too good to be true. And what’s more, this is a basic model, i.e.&nbsp;the (hyper)parameters <em>penalty</em> and <em>mixture</em> have the conservative values of <code>doubel(1)</code>. Are we able to improve the accuracy further by changing these values, i.e.&nbsp;by tuning them? Let’s find out below.</p>
+</section>
+<section id="hyperparameter-tuning" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="hyperparameter-tuning"><span class="header-section-number">2.7</span> Hyperparameter Tuning</h2>
+<p>Note that the mixture and penalty levels (values) are arbitrarily set to 3 and 2 respectively – these are simply starting points, and can be any numbers but the closer they are to the optimal values the quicker it is for the grid search to converge to those optimal values, which saves the computer tonnes of processing resources and time. The same goes for cross-validation of 3 folds.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define model</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>multinom_reg_glmnet_spec_tuned <span class="ot">&lt;-</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  parsnip<span class="sc">::</span><span class="fu">multinom_reg</span>(<span class="at">penalty =</span> <span class="fu">tune</span>(), <span class="at">mixture =</span> <span class="fu">tune</span>()) <span class="sc">|&gt;</span> <span class="co"># to be tuned</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">'glmnet'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># define grid search</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>multinom_grid <span class="ot">&lt;-</span> <span class="fu">grid_regular</span>(<span class="fu">mixture</span>(), <span class="fu">penalty</span>(), <span class="at">levels =</span> <span class="fu">c</span>(<span class="at">mixture =</span> <span class="dv">3</span>, <span class="at">penalty =</span> <span class="dv">2</span>))</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co"># define work flow</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>multinom_wf <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(multinom_recipe) <span class="sc">|&gt;</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(multinom_reg_glmnet_spec_tuned)</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="co"># define 3-fold CV resamples from which to search best parameter values</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>multinom_3f_cv_folds <span class="ot">&lt;-</span> <span class="fu">vfold_cv</span>(<span class="at">data =</span> train_data, <span class="at">v =</span> <span class="dv">3</span>)</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="co"># tune the hyperparameters using the grid search</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>multinom_tuned <span class="ot">&lt;-</span> <span class="fu">tune_grid</span>(</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>  multinom_wf,</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">resamples =</span> multinom_3f_cv_folds,</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">grid =</span> multinom_grid,</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">control_grid</span>(<span class="at">save_pred =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a><span class="fu">select_best</span>(multinom_tuned, <span class="at">metric =</span> <span class="st">"accuracy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+       penalty mixture .config             
+         &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;               
+1 0.0000000001       1 Preprocessor1_Model5</code></pre>
+</div>
+</div>
+<p>From the above grid search, we got <span class="math inline">penalty = 0.0000000001</span> and <span class="math inline">mixture = 1</span>. Let’s plug these values into the model and see if the accuracy has improved;</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create the null model</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>multinom_reg_glmnet_spec <span class="ot">&lt;-</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  parsnip<span class="sc">::</span><span class="fu">multinom_reg</span>(<span class="at">penalty =</span> <span class="fl">0.0000000001</span>, <span class="at">mixture =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">'glmnet'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co"># rerun the workflow now that model has been updated</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>multinom_workflow <span class="ot">&lt;-</span> </span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(multinom_recipe) <span class="sc">|&gt;</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(multinom_reg_glmnet_spec)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="co"># re-train the model based on new parameters</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>multinom_fit <span class="ot">&lt;-</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>  multinom_workflow <span class="sc">|&gt;</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>  parsnip<span class="sc">::</span><span class="fu">fit</span>(<span class="at">data =</span> train_data)</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="do">## measure performance of new model</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="co"># create new data (can be completely new or use training data without resposne variable)</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>predictors_data <span class="ot">&lt;-</span> test_data <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>Bands)</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="co"># use the model and the training data to get predictions of bands</span></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>bands_data <span class="ot">&lt;-</span> test_data</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>bands_data<span class="sc">$</span>Bands_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(multinom_fit, <span class="at">new_data =</span> predictors_data, <span class="at">type =</span> <span class="st">"class"</span>)</span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>bands_data<span class="sc">$</span>Bands_pred <span class="ot">&lt;-</span> bands_data<span class="sc">$</span>Bands_pred<span class="sc">$</span>.pred_class</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>bands_data <span class="ot">&lt;-</span> bands_data <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">select</span>(Bands, Bands_pred)</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a><span class="do">## measure performance</span></span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a><span class="co"># 1) confusion matrix</span></span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a><span class="fu">conf_mat</span>(<span class="at">data =</span> bands_data, <span class="at">truth =</span> Bands, <span class="at">estimate =</span> Bands_pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>          Truth
+Prediction    1    2    3    4    5
+         1  817    2    0    0    0
+         2    5 1006    6    0    0
+         3    0    6  506    2    0
+         4    0    0    5  121    0
+         5    0    0    0    0   24</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2) kappa and accuracy</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">metrics</span>(<span class="at">data =</span> bands_data, <span class="at">truth =</span> Bands, <span class="at">estimate =</span> Bands_pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  .metric  .estimator .estimate
+  &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;
+1 accuracy multiclass     0.990
+2 kap      multiclass     0.985</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 3) precision (same as accuracy)</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">precision</span>(<span class="at">data =</span> bands_data, <span class="at">truth =</span> Bands, <span class="at">estimate =</span> Bands_pred, <span class="at">estimator =</span> <span class="st">"micro"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  .metric   .estimator .estimate
+  &lt;chr&gt;     &lt;chr&gt;          &lt;dbl&gt;
+1 precision micro          0.990</code></pre>
+</div>
+</div>
+<p>There is a huge improvement on model performance; we went from an accuracy of 0.862 to an accuracy of 0.9896! This is no small feat at all. Wonder if this can be improved further? Maybe, maybe not. At this point, there is no sensible need to go further.</p>
+</section>
+<section id="band-prediction" class="level2" data-number="2.8">
+<h2 data-number="2.8" class="anchored" data-anchor-id="band-prediction"><span class="header-section-number">2.8</span> Band Prediction</h2>
+<p>Now that we have a reasonably reliable model, we can ask it to place a student into bands. All we need to do is provide the values of “GrossFamilyIncome”, “GeographicalLocation”, “PovertyProbabilityIndex”, “Orphans”, “Disability”, “NumberOfDependents”, “ProgramCostsKES”, and “Gender” for a particular student in the <code>new_data</code> argument of the <code>predict</code> function, as follows;</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># enter new student data</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>new_student_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">GrossFamilyIncome =</span> <span class="dv">3000</span>,</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">GeographicalLocation =</span> <span class="fu">factor</span>(<span class="dv">5</span>),</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">PovertyProbabilityIndex =</span> <span class="fl">0.7</span>,</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">Orphans =</span> <span class="fu">factor</span>(<span class="dv">1</span>), </span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">Disability =</span> <span class="fu">factor</span>(<span class="dv">1</span>), </span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">NumberOfDependents =</span> <span class="dv">5</span>, </span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">ProgramCostsKES =</span> <span class="dv">500000</span>, </span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">Gender =</span> <span class="fu">factor</span>(<span class="dv">1</span>)</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a><span class="co"># predict new student band</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>new_student_band <span class="ot">&lt;-</span> <span class="fu">predict</span>(multinom_fit, <span class="at">new_data =</span> new_student_data, <span class="at">type =</span> <span class="st">"class"</span>)</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>new_student_band</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+  .pred_class
+  &lt;fct&gt;      
+1 1          </code></pre>
+</div>
+</div>
+<p>The new student above, as reasonably expected, is assigned band 1. “Reasonably expected’ because the student comes from a family of low gross income, high poverty probability index, and is orphaned and disabled.</p>
 </section>
 </section>
 <section id="conclusion" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Conclusion</h1>
+<p>As we have seen, this is an advanced, machine learning way to create bands for students seeking to join the university. As an alternative to MTI, the ML model is scientifically sound, reliable, faster, and scalable. It gets even better as more and more training data becomes available over time, which enables the ML model to “learn” more about what it is excepted to do, therefore improving the banding accuracy.</p>
 
 
 </section>
@@ -580,6 +910,7 @@ Disclaimer!
 <li id="fn8"><p>https://kafu.ac.ke/images/2022/Academics/nfm/NEW_FUNDING_MODEL_-_6TH_AUGUST_2024.pdf<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn9"><p>R Core Team (2021). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn10"><p>Kook, L., Herzog, L., Hothorn, T., Dürr, O., &amp; Sick, B. (2022). Deep and interpretable regression models for ordinal outcomes. Pattern Recognition, 122, 108263.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>https://www.geeksforgeeks.org/lasso-vs-ridge-vs-elastic-net-ml/<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

@@ -54,10 +54,10 @@ Disclaimer!
 </section>
 <section id="sec-lit_rev" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> Literature</h1>
-<p>There are a number of factors<sup>1</sup> that the new MTI-based university funding model in Kenya considers for placement of students into the 5 bands. We shall discuss each one of them and deduce the probable underlying probability distributions and their associated parametric values that will enable us to simulate these factors. We shall simulate the data for 1000 students, thus <img src="https://latex.codecogs.com/png.latex?x_i"> where <img src="https://latex.codecogs.com/png.latex?i%20=%201,%202,%203,%20...,%201000">. Because the values are randomly generated, we shall seed the random number generator (RNG), for reproducibility purposes, with the arbitrary value of 44. Note that there is no real reason for this choice.</p>
+<p>There are a number of factors<sup>1</sup> that the new MTI-based university funding model in Kenya considers for placement of students into the 5 bands. We shall discuss each one of them and deduce the probable underlying probability distributions and their associated parametric values that will enable us to simulate these factors. We shall simulate the data for 10000 students, thus <img src="https://latex.codecogs.com/png.latex?x_i"> where <img src="https://latex.codecogs.com/png.latex?i%20=%201,%202,%203,%20...,%2010000">. Because the values are randomly generated, we shall seed the random number generator (RNG), for reproducibility purposes, with the arbitrary value of 44. Note that there is no real reason for this choice.</p>
 <section id="sec-bands" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="sec-bands"><span class="header-section-number">2.1</span> Bands</h2>
-<p>This is the outcome – a categorical 5-point ordinal variable where 1 represents the most needy and 5 represents the least needy<sup>2</sup>, thus <img src="https://latex.codecogs.com/png.latex?x_%7Bij%7D"> where <img src="https://latex.codecogs.com/png.latex?j%20=%20%5C%7B1,%202,%203,%20...,%205%5C%7D">. We will assume that the first 2 or 3 bands have a fairly higher chance of occurring compared to the last bands, i.e for the <img src="https://latex.codecogs.com/png.latex?i%5E%7Bth%7D"> student, <img src="https://latex.codecogs.com/png.latex?p(x_%7Bi1%7D)%20%3E%20p(x_%7Bi2%7D)%20%3E...%20%3Ep(x_%7Bi5%7D)">. We need a probability distribution function that draws 5 numbers between 1 to 5 for 1000 observations. A multinomial distribution will do just that. We simply need to specify <img src="https://latex.codecogs.com/png.latex?n%20=%201"> (create 1 vector), <img src="https://latex.codecogs.com/png.latex?size%20=%201000"> (number of observations), and <img src="https://latex.codecogs.com/png.latex?prob%20=%20p(x_%7Bij%7D)"> (vector of probabilities) in the function <code>rmultinom</code> from the package <code>{stats}</code>. The function is the Application Programming Interface (API) to the RNG for multinomial distribution.</p>
+<p>This is the outcome – a categorical 5-point ordinal variable where 1 represents the most needy and 5 represents the least needy<sup>2</sup>, thus <img src="https://latex.codecogs.com/png.latex?x_%7Bij%7D"> where <img src="https://latex.codecogs.com/png.latex?j%20=%20%5C%7B1,%202,%203,%20...,%205%5C%7D">. We will assume that the first 2 or 3 bands have a fairly higher chance of occurring compared to the last bands, i.e for the <img src="https://latex.codecogs.com/png.latex?i%5E%7Bth%7D"> student, <img src="https://latex.codecogs.com/png.latex?p(x_%7Bi1%7D)%20%3E%20p(x_%7Bi2%7D)%20%3E...%20%3Ep(x_%7Bi5%7D)">. We need a probability distribution function that draws 5 numbers between 1 to 5 for 10000 observations. A multinomial distribution will do just that. We simply need to specify <img src="https://latex.codecogs.com/png.latex?n%20=%201"> (create 1 vector), <img src="https://latex.codecogs.com/png.latex?size%20=%2010000"> (number of observations), and <img src="https://latex.codecogs.com/png.latex?prob%20=%20p(x_%7Bij%7D)"> (vector of probabilities) in the function <code>rmultinom</code> from the package <code>{stats}</code>. The function is the Application Programming Interface (API) to the RNG for multinomial distribution.</p>
 <p>If we use a uniform probability of <img src="https://latex.codecogs.com/png.latex?p(x_%7Bij%7D)%20=%201/5"> we will end up with a uniform distribution, but we desire a distribution that is skewed to the left. Remember that the bands are a proxy for the socio-economic status of the household, and in Kenya – as in most other countries<sup>3</sup> – the number of rich households is significantly lower than the number of poor households, therefore we need to expect more band 1 households than band 5 households.</p>
 <div class="cell">
 <details class="code-fold">
@@ -83,7 +83,7 @@ font-style: inherit;">1</span>,</span>
 background-color: null;
 font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span>,</span>
+font-style: inherit;">10000</span>,</span>
 <span id="cb1-5">                     <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">prob =</span> <span class="fu" style="color: #4758AB;
@@ -190,7 +190,7 @@ font-style: inherit;">rbinom</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span>, <span class="at" style="color: #657422;
+font-style: inherit;">10000</span>, <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
@@ -229,7 +229,7 @@ font-style: inherit;">1</span>,</span>
 background-color: null;
 font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span>,</span>
+font-style: inherit;">10000</span>,</span>
 <span id="cb2-10">                     <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">prob =</span> prob) <span class="sc" style="color: #5E5E5E;
@@ -299,7 +299,7 @@ font-style: inherit;">"Histogram of Bands (Appropriately Positively Skewed)"</sp
 </section>
 <section id="gross-family-income" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="gross-family-income"><span class="header-section-number">2.2</span> Gross Family Income</h2>
-<p>Income, as with bands, is expected to be a positively skewed real-valued number (<img src="https://latex.codecogs.com/png.latex?x%20%E2%88%88%20%E2%84%9D%5E+">) which can assume the negative binomial distribution with the mean of KES 20,000<sup>4</sup>. From this knowledge we can generate 1000 income values using <code>rnbinom</code> function from the package <code>{stats}</code> as shown in the code below;</p>
+<p>Income, as with bands, is expected to be a positively skewed real-valued number (<img src="https://latex.codecogs.com/png.latex?x%20%E2%88%88%20%E2%84%9D%5E+">) which can assume the negative binomial distribution with the mean of KES 20,000<sup>4</sup>. From this knowledge we can generate 10000 income values using <code>rnbinom</code> function from the package <code>{stats}</code> as shown in the code below;</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -316,7 +316,7 @@ font-style: inherit;">rnbinom</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span>, <span class="at" style="color: #657422;
+font-style: inherit;">10000</span>, <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
@@ -366,7 +366,7 @@ font-style: inherit;">runif</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span>, <span class="at" style="color: #657422;
+font-style: inherit;">10000</span>, <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">min =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
@@ -414,7 +414,7 @@ font-style: inherit;">rnorm</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span>, <span class="at" style="color: #657422;
+font-style: inherit;">10000</span>, <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">mean =</span> <span class="fl" style="color: #AD0000;
 background-color: null;
@@ -462,7 +462,7 @@ font-style: inherit;">rbinom</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span>, <span class="at" style="color: #657422;
+font-style: inherit;">10000</span>, <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
@@ -510,7 +510,7 @@ font-style: inherit;">rbinom</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span>, <span class="at" style="color: #657422;
+font-style: inherit;">10000</span>, <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
@@ -558,7 +558,7 @@ font-style: inherit;">rpois</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span>, <span class="at" style="color: #657422;
+font-style: inherit;">10000</span>, <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">lambda =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
@@ -602,7 +602,7 @@ font-style: inherit;">rnorm</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span>, <span class="at" style="color: #657422;
+font-style: inherit;">10000</span>, <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">mean =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
@@ -671,7 +671,7 @@ font-style: inherit;">1</span>,</span>
 background-color: null;
 font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span>,</span>
+font-style: inherit;">10000</span>,</span>
 <span id="cb10-8">                     <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">prob =</span> prob) <span class="sc" style="color: #5E5E5E;
@@ -800,7 +800,7 @@ font-style: inherit;">rbinom</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span>, <span class="at" style="color: #657422;
+font-style: inherit;">10000</span>, <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
@@ -839,7 +839,7 @@ font-style: inherit;">1</span>,</span>
 background-color: null;
 font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span>,</span>
+font-style: inherit;">10000</span>,</span>
 <span id="cb12-16">                     <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">prob =</span> prob_bands) <span class="sc" style="color: #5E5E5E;
@@ -924,7 +924,7 @@ font-style: inherit;">1</span>,</span>
 background-color: null;
 font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span>,</span>
+font-style: inherit;">10000</span>,</span>
 <span id="cb12-33">                     <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">prob =</span> prob_gender) <span class="sc" style="color: #5E5E5E;
@@ -1014,7 +1014,7 @@ font-style: inherit;">rnbinom</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span>,</span>
+font-style: inherit;">10000</span>,</span>
 <span id="cb12-51">                                   <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
@@ -1042,7 +1042,7 @@ font-style: inherit;">runif</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span>,</span>
+font-style: inherit;">10000</span>,</span>
 <span id="cb12-55">                                                 <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">min =</span> <span class="dv" style="color: #AD0000;
@@ -1069,7 +1069,7 @@ font-style: inherit;">rnorm</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span>,</span>
+font-style: inherit;">10000</span>,</span>
 <span id="cb12-60">                                      <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">mean =</span> <span class="fl" style="color: #AD0000;
@@ -1095,7 +1095,7 @@ font-style: inherit;">rbinom</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span>,</span>
+font-style: inherit;">10000</span>,</span>
 <span id="cb12-64">                             <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
@@ -1117,7 +1117,7 @@ font-style: inherit;">rbinom</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span>,</span>
+font-style: inherit;">10000</span>,</span>
 <span id="cb12-68">                                <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
@@ -1137,7 +1137,7 @@ font-style: inherit;">rpois</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span>,</span>
+font-style: inherit;">10000</span>,</span>
 <span id="cb12-72">                             <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">lambda =</span> <span class="dv" style="color: #AD0000;
@@ -1154,7 +1154,7 @@ font-style: inherit;">rnorm</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span>,</span>
+font-style: inherit;">10000</span>,</span>
 <span id="cb12-75">                              <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">mean =</span> <span class="dv" style="color: #AD0000;
@@ -1220,56 +1220,56 @@ font-style: inherit;">5</span>))</span></code></pre></div>
 <tr class="odd">
 <td style="text-align: left;">1</td>
 <td style="text-align: right;">1154</td>
-<td style="text-align: left;">30</td>
-<td style="text-align: right;">0.9179034</td>
+<td style="text-align: left;">9</td>
+<td style="text-align: right;">1.0563022</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">488193.9</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">509734.8</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">1</td>
-<td style="text-align: right;">3069</td>
-<td style="text-align: left;">25</td>
-<td style="text-align: right;">0.8663438</td>
+<td style="text-align: right;">2400</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: right;">0.9868637</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">546991.2</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">469997.6</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">1</td>
-<td style="text-align: right;">3127</td>
-<td style="text-align: left;">44</td>
-<td style="text-align: right;">0.8652463</td>
+<td style="text-align: right;">2411</td>
+<td style="text-align: left;">27</td>
+<td style="text-align: right;">0.9790371</td>
+<td style="text-align: left;">1</td>
 <td style="text-align: left;">0</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">514901.7</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">547886.0</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">1</td>
-<td style="text-align: right;">3582</td>
-<td style="text-align: left;">10</td>
-<td style="text-align: right;">0.8356267</td>
+<td style="text-align: right;">2494</td>
+<td style="text-align: left;">22</td>
+<td style="text-align: right;">0.9679570</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: right;">3</td>
-<td style="text-align: right;">393526.7</td>
+<td style="text-align: right;">420495.4</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">1</td>
-<td style="text-align: right;">3691</td>
-<td style="text-align: left;">22</td>
-<td style="text-align: right;">0.8293217</td>
+<td style="text-align: right;">2559</td>
+<td style="text-align: left;">41</td>
+<td style="text-align: right;">0.9642283</td>
+<td style="text-align: left;">1</td>
 <td style="text-align: left;">0</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">499307.9</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">530990.7</td>
 <td style="text-align: left;">1</td>
 </tr>
 </tbody>
@@ -1346,7 +1346,7 @@ font-style: inherit;">"./Data/simulated_data.rds"</span>))</span></code></pre></
   <pubDate>Wed, 11 Sep 2024 21:00:00 GMT</pubDate>
 </item>
 <item>
-  <title>Kenyan Household Bands Classifier</title>
+  <title>Machine Learning Classifier for Banding University Students in Kenya</title>
   <dc:creator>Cornelius Tanui</dc:creator>
   <link>https://corneliustanui.rbind.io/content/posts/MTI_Modeling_2024-09-06/</link>
   <description><![CDATA[ 
@@ -1356,7 +1356,7 @@ font-style: inherit;">"./Data/simulated_data.rds"</span>))</span></code></pre></
 
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://corneliustanui.rbind.io/content/posts/MTI_Modeling_2024-09-06/ImagineArt_University_Students_in_Kenya.png" style="width:80.0%;height:100.0%" alt="Statistical Data simulation" class="figure-img"></p>
+<p><img src="https://corneliustanui.rbind.io/content/posts/MTI_Modeling_2024-09-06/ImagineArt_University_Students_in_Kenya.png" style="width:80.0%;height:100.0%" alt="Machine Learning Classifier for Banding University Students in Kenya" class="figure-img"></p>
 <figcaption>Image source: Imagine Art</figcaption>
 </figure>
 </div>
@@ -1475,79 +1475,27 @@ Disclaimer!
 </div>
 </div>
 </div>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="do" style="color: #5E5E5E;
-background-color: null;
-font-style: italic;">## load packages</span></span>
-<span id="cb1-2"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">library</span>(tidyverse)  <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># data processing packages</span></span>
-<span id="cb1-3"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">library</span>(tidymodels) <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># model definition packages</span></span>
-<span id="cb1-4"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">library</span>(parsnip)    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># model manipulation functions</span></span>
-<span id="cb1-5"></span>
-<span id="cb1-6"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">library</span>(glmnet)     <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># model processing engine</span></span>
-<span id="cb1-7"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># library(spark)      # model processing engine</span></span>
-<span id="cb1-8"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">library</span>(keras)      <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># model processing engine (requires package tensorflow)</span></span>
-<span id="cb1-9"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">library</span>(tensorflow) <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># The Python Module needs to be installed</span></span>
-<span id="cb1-10"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">library</span>(nnet)       <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># model processing engine</span></span>
-<span id="cb1-11"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">library</span>(brulee)     <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># model processing engine (requires libtorch distro of PyTorch)</span></span></code></pre></div>
-</details>
-</div>
 <p>The simulated data looks like this;</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># table display setup</span></span>
-<span id="cb2-2"><span class="co" style="color: #5E5E5E;
+<span id="cb1-2"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">#| label: tbl-simulated_data .striped .hover .primary .bordered</span></span>
-<span id="cb2-3"><span class="co" style="color: #5E5E5E;
+<span id="cb1-3"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">#| tbl-cap: "Simulated data"</span></span>
-<span id="cb2-4"><span class="co" style="color: #5E5E5E;
+<span id="cb1-4"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">#| tbl-cap-location: bottom </span></span>
-<span id="cb2-5"></span>
-<span id="cb2-6"><span class="co" style="color: #5E5E5E;
+<span id="cb1-5"></span>
+<span id="cb1-6"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># load data</span></span>
-<span id="cb2-7">simulated_data <span class="ot" style="color: #003B4F;
+<span id="cb1-7">simulated_data <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1558,11 +1506,11 @@ background-color: null;
 font-style: inherit;">here</span>(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"./Data/simulated_data.rds"</span>))</span>
-<span id="cb2-8"></span>
-<span id="cb2-9"><span class="co" style="color: #5E5E5E;
+<span id="cb1-8"></span>
+<span id="cb1-9"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># view data (printed on your browser)</span></span>
-<span id="cb2-10">knitr<span class="sc" style="color: #5E5E5E;
+<span id="cb1-10">knitr<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1606,56 +1554,56 @@ font-style: inherit;">5</span>))</span></code></pre></div>
 <tr class="odd">
 <td style="text-align: left;">1</td>
 <td style="text-align: right;">1154</td>
-<td style="text-align: left;">30</td>
-<td style="text-align: right;">0.9179034</td>
+<td style="text-align: left;">9</td>
+<td style="text-align: right;">1.0563022</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">488193.9</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">509734.8</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">1</td>
-<td style="text-align: right;">3069</td>
-<td style="text-align: left;">25</td>
-<td style="text-align: right;">0.8663438</td>
+<td style="text-align: right;">2400</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: right;">0.9868637</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">546991.2</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">469997.6</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">1</td>
-<td style="text-align: right;">3127</td>
-<td style="text-align: left;">44</td>
-<td style="text-align: right;">0.8652463</td>
+<td style="text-align: right;">2411</td>
+<td style="text-align: left;">27</td>
+<td style="text-align: right;">0.9790371</td>
+<td style="text-align: left;">1</td>
 <td style="text-align: left;">0</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">514901.7</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">547886.0</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">1</td>
-<td style="text-align: right;">3582</td>
-<td style="text-align: left;">10</td>
-<td style="text-align: right;">0.8356267</td>
+<td style="text-align: right;">2494</td>
+<td style="text-align: left;">22</td>
+<td style="text-align: right;">0.9679570</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: right;">3</td>
-<td style="text-align: right;">393526.7</td>
+<td style="text-align: right;">420495.4</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">1</td>
-<td style="text-align: right;">3691</td>
-<td style="text-align: left;">22</td>
-<td style="text-align: right;">0.8293217</td>
+<td style="text-align: right;">2559</td>
+<td style="text-align: left;">41</td>
+<td style="text-align: right;">0.9642283</td>
+<td style="text-align: left;">1</td>
 <td style="text-align: left;">0</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">499307.9</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">530990.7</td>
 <td style="text-align: left;">1</td>
 </tr>
 </tbody>
@@ -1663,24 +1611,204 @@ font-style: inherit;">5</span>))</span></code></pre></div>
 </div>
 </div>
 </section>
-<section id="model-creation" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="model-creation"><span class="header-section-number">2.3</span> Model Creation</h2>
-<p>For a start, we shall define the the model pipeline using the conventional <em>tidymodels</em> steps, and specify <em>keras</em> as the engine. Later on we will try other engines such as <em>brulee</em>, <em>glmnet</em>, and <em>nnet</em>.</p>
+<section id="inferential-model-creation" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="inferential-model-creation"><span class="header-section-number">2.3</span> Inferential Model Creation</h2>
+<p>Before we create a model that predicts or assigns bands, let’s first explore the relationship between the outcome (Bands) and all the predictors.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="do" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1">mti_model_fit <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> parsnip<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">multinom_reg</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb2-2">  parsnip<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fit</span>(Bands <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> ., <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> simulated_data)</span></code></pre></div>
+</details>
+</div>
+<p>Now, we can extract the meaning from the information contained in the model created above. Instead of reporting log of odds, we can report just odd, as that make sit easier to interpret;-</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">model_results <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> broom<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tidy</span>(mti_model_fit, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">exponentiate =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">conf.int =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb3-2">  dplyr<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">select</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Bands =</span> y.level, </span>
+<span id="cb3-3">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Predictors =</span> term,</span>
+<span id="cb3-4">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Odds =</span> estimate,</span>
+<span id="cb3-5">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">StandardError =</span> std.error,</span>
+<span id="cb3-6">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Statistic =</span> statistic,</span>
+<span id="cb3-7">                <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">`</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">P-value</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">`</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> p.value,</span>
+<span id="cb3-8">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Lower95 =</span> conf.low,</span>
+<span id="cb3-9">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Upper95 =</span> conf.high</span>
+<span id="cb3-10">                ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb3-11">  </span>
+<span id="cb3-12">  dplyr<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Odds =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">round</span>(Odds, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>),</span>
+<span id="cb3-13">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Lower95 =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">round</span>(Lower95, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>),</span>
+<span id="cb3-14">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Upper95 =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">round</span>(Upper95, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>))</span>
+<span id="cb3-15"></span>
+<span id="cb3-16">model_results</span></code></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 216 × 8
+   Bands Predictors             Odds StandardError Statistic `P-value`   Lower95
+   &lt;chr&gt; &lt;chr&gt;                 &lt;dbl&gt;         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+ 1 2     (Intercept)       Inf            1.02e- 7   8.92e10         0 Inf      
+ 2 2     GrossFamilyIncome   8.08e-1      5.51e- 4  -3.88e 2         0   8.07e-1
+ 3 2     GeographicalLoca…   5.48e+0      1.47e- 8   1.16e 8         0   5.48e+0
+ 4 2     GeographicalLoca…   5.75e+3      1.13e- 9   7.66e 9         0   5.75e+3
+ 5 2     GeographicalLoca…   4   e-4      3.44e- 8  -2.27e 8         0   4   e-4
+ 6 2     GeographicalLoca…   2.73e+2      1.36e- 9   4.14e 9         0   2.73e+2
+ 7 2     GeographicalLoca…   1.37e+2      5.31e- 9   9.26e 8         0   1.37e+2
+ 8 2     GeographicalLoca…   8.7 e-3      2.86e- 8  -1.66e 8         0   8.7 e-3
+ 9 2     GeographicalLoca…   0            3.19e- 8  -4.16e 8         0   0      
+10 2     GeographicalLoca…   1.66e+6      1.40e-16   1.02e17         0   1.66e+6
+# ℹ 206 more rows
+# ℹ 1 more variable: Upper95 &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>A multinomial regression is, under the hood, an ensemble of several “binary logistic regressions”. As we can see from the results above, the outcome <code>Bands</code> contains all the outcome bands (technically called ‘classes’). Each class creates a binary logistic regression, and that is why we see all the <code>Predictors</code> for each class. Band 1 (class 1) is not reported because it is taken as the reference group. Any class can be made a reference groub by relevelling the factors. For example, to make band 5 the reference class, <code>simulated_data$Bands &lt;- relevel(simulated_data$Bands, ref = "5")</code>.</p>
+<p>Looking at the p-values at 95% level of confidence, some independent indicators are significant predictors of certain bands. For instance, gross family income is significant at all bands (p-value &lt;0.0001) respectively.) Therefore, a unit increase of a gross family income increases the odds of the family being in band 4 than being in band 1 by 25.07%, holding all other predictors constant. The value of 25.07% is gotten by <img src="https://latex.codecogs.com/png.latex?(1.2507%20-%201)*100%20=%2025.07%5C%25">.</p>
+</section>
+<section id="prediction-model-creation" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="prediction-model-creation"><span class="header-section-number">2.4</span> Prediction Model Creation</h2>
+<p>For a start, we shall define the the model pipeline using the conventional <em>tidymodels</em> process workflow with <a href="https://parsnip.tidymodels.org/">parsnip</a>, and specify <em>glmnet</em> as the engine. Later on, maybe in a separate post, we will explore other engines such as <em>brulee</em>, <em>nnet</em>, and <em>keras</em>. The keras engine is a Python library that depends on <em>tensorflow</em>, another Python library that must be installed. To install keras and tensorflow, open <strong>Anaconda Command Prompt</strong> and run the commands <code>pip install keras</code>, and <code>pip install tensorflow</code> and then load the R package equivalents of the two python libraries, along with other necessary packages, as follows: -</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">## load packages</span></span>
+<span id="cb5-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(tidyverse)  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># data processing packages</span></span>
+<span id="cb5-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(tidymodels) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># model definition packages</span></span>
+<span id="cb5-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(parsnip)    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># model manipulation functions</span></span>
+<span id="cb5-5"></span>
+<span id="cb5-6"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(glmnet)     <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># model processing engine</span></span>
+<span id="cb5-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># library(spark)      # model processing engine</span></span>
+<span id="cb5-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># library(keras)      # model processing engine (requires package tensorflow)</span></span>
+<span id="cb5-9"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># library(tensorflow) # The Python package needs to be installed</span></span>
+<span id="cb5-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># library(nnet)       # model processing engine</span></span>
+<span id="cb5-11"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># library(brulee)     # model processing engine (requires libtorch distro of PyTorch)</span></span></code></pre></div>
+</details>
+</div>
+<section id="generate-training-and-testing-datasets" class="level3" data-number="2.4.1">
+<h3 data-number="2.4.1" class="anchored" data-anchor-id="generate-training-and-testing-datasets"><span class="header-section-number">2.4.1</span> Generate Training and Testing Datasets</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="do" style="color: #5E5E5E;
 background-color: null;
 font-style: italic;">## create training and testing sets</span></span>
-<span id="cb3-2"><span class="co" style="color: #5E5E5E;
+<span id="cb6-2"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;"># set seed for reproducibility</span></span>
-<span id="cb3-3"><span class="fu" style="color: #4758AB;
+font-style: inherit;"># set seed for reproducibility of the sets</span></span>
+<span id="cb6-3"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">set.seed</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">44</span>)</span>
-<span id="cb3-4">data_split <span class="ot" style="color: #003B4F;
+<span id="cb6-4">data_split <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1689,68 +1817,100 @@ background-color: null;
 font-style: inherit;">prop =</span> <span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0.75</span>)</span>
-<span id="cb3-5"></span>
-<span id="cb3-6"><span class="co" style="color: #5E5E5E;
+<span id="cb6-5"></span>
+<span id="cb6-6"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># 75% of records</span></span>
-<span id="cb3-7">train_data <span class="ot" style="color: #003B4F;
+<span id="cb6-7">train_data <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">training</span>(data_split) </span>
-<span id="cb3-8"></span>
-<span id="cb3-9"><span class="co" style="color: #5E5E5E;
+<span id="cb6-8"></span>
+<span id="cb6-9"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># 25% of records</span></span>
-<span id="cb3-10">test_data  <span class="ot" style="color: #003B4F;
+<span id="cb6-10">test_data  <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">testing</span>(data_split)</span>
-<span id="cb3-11"></span>
-<span id="cb3-12"><span class="co" style="color: #5E5E5E;
+font-style: inherit;">testing</span>(data_split)</span></code></pre></div>
+</details>
+</div>
+</section>
+<section id="create-initial-model" class="level3" data-number="2.4.2">
+<h3 data-number="2.4.2" class="anchored" data-anchor-id="create-initial-model"><span class="header-section-number">2.4.2</span> Create Initial Model</h3>
+<p>In this model, there are only two (hyper)parameters that need to be specified: penalty and mixture. The value of the penalty defines the degree to which <em>regularization</em> is applied to the model. Regularization is a technique used to control overfitting by adding a penalty (error) term to the model. On the other hand, mixture is the value that species how the penalty term is added. There are three ways of adding this penalty<sup>11</sup>;</p>
+<ol type="1">
+<li>Lasso (also called L1 regularization): The penalty term added to the model is the sum of absolute coefficients of the predictors, multiplied by some constant – <img src="https://latex.codecogs.com/png.latex?%CE%BB%E2%88%91%20%7C%CE%B2%7C">. If <img src="https://latex.codecogs.com/png.latex?mixture%20=%201"> then the resulting model is pure L1.</li>
+<li>Ridge (also called L2 regularization): The penalty term added to the model is the sum of squares of coefficients of the predictors, multiplied by some constant – <img src="https://latex.codecogs.com/png.latex?%CE%BB%E2%88%91%20%CE%B2%5E2">. If <img src="https://latex.codecogs.com/png.latex?mixture%20=%200"> then the resulting model is pure L2.</li>
+<li>Elastic net (a mix of L1 and L2): The penalty term added to the model is the sum of L1 and L2 – <img src="https://latex.codecogs.com/png.latex?%CE%BB%E2%88%91%20%7C%CE%B2%7C%20+%20%CE%BB%E2%88%91%20%CE%B2%C2%B2">. If <img src="https://latex.codecogs.com/png.latex?0%20%3C%20mixture%20%3C%201"> then the resulting model is elastic net.</li>
+</ol>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># create the null model</span></span>
-<span id="cb3-13">multinom_reg_keras_spec <span class="ot" style="color: #003B4F;
+<span id="cb7-2">multinom_reg_glmnet_spec <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span></span>
-<span id="cb3-14">  <span class="fu" style="color: #4758AB;
+<span id="cb7-3">  <span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">multinom_reg</span>(</span>
-<span id="cb3-15">    <span class="at" style="color: #657422;
+font-style: inherit;"># parsnip::multinom_reg(penalty = tune(), mixture = tune()) |&gt; # to be tuned later</span></span>
+<span id="cb7-4">  parsnip<span class="sc" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">mode =</span> <span class="st" style="color: #20794D;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">"classification"</span>,</span>
-<span id="cb3-16">    <span class="at" style="color: #657422;
+font-style: inherit;">multinom_reg</span>(<span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">penalty =</span> <span class="cn" style="color: #8f5902;
+font-style: inherit;">penalty =</span> <span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">NULL</span>,</span>
-<span id="cb3-17">    <span class="at" style="color: #657422;
+font-style: inherit;">double</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">mixture =</span> <span class="cn" style="color: #8f5902;
+font-style: inherit;">1</span>), <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">NULL</span>) <span class="sc" style="color: #5E5E5E;
+font-style: inherit;">mixture =</span> <span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">|&gt;</span></span>
-<span id="cb3-18">  <span class="fu" style="color: #4758AB;
+font-style: inherit;">double</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># manual starting values</span></span>
+<span id="cb7-5">  <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">set_engine</span>(<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">'keras'</span>)</span>
-<span id="cb3-19"></span>
-<span id="cb3-20"><span class="co" style="color: #5E5E5E;
+font-style: inherit;">'glmnet'</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb7-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">set_mode</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"classification"</span>)</span></code></pre></div>
+</details>
+</div>
+</section>
+<section id="recipe-definition" class="level3" data-number="2.4.3">
+<h3 data-number="2.4.3" class="anchored" data-anchor-id="recipe-definition"><span class="header-section-number">2.4.3</span> Recipe Definition</h3>
+<p>Create pre-processing steps for the predictors (also called features.);</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># create the recipe</span></span>
-<span id="cb3-21">multinom_recipe <span class="ot" style="color: #003B4F;
+<span id="cb8-2">multinom_recipe <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> </span>
-<span id="cb3-22">  </span>
-<span id="cb3-23">  <span class="co" style="color: #5E5E5E;
+<span id="cb8-3">  </span>
+<span id="cb8-4">  <span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># specify the outcome variable</span></span>
-<span id="cb3-24">  <span class="fu" style="color: #4758AB;
+<span id="cb8-5">  <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">recipe</span>(Bands <span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -1759,88 +1919,675 @@ background-color: null;
 font-style: inherit;">data =</span> train_data) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb3-25">  </span>
-<span id="cb3-26">  <span class="co" style="color: #5E5E5E;
+<span id="cb8-6">  </span>
+<span id="cb8-7">  <span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># specify predictors to be one-hot-encoded</span></span>
-<span id="cb3-27">  <span class="fu" style="color: #4758AB;
+<span id="cb8-8">  <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">step_dummy</span>(GeographicalLocation, Gender, Orphans, Disability) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb3-28">  </span>
-<span id="cb3-29">  <span class="co" style="color: #5E5E5E;
+<span id="cb8-9">  </span>
+<span id="cb8-10">  <span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># center all normally distributed predictors  </span></span>
-<span id="cb3-30">  <span class="fu" style="color: #4758AB;
+<span id="cb8-11">  <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">step_center</span>(GrossFamilyIncome, PovertyProbabilityIndex, NumberOfDependents, ProgramCostsKES) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb3-31">  </span>
-<span id="cb3-32">  <span class="co" style="color: #5E5E5E;
+<span id="cb8-12">  </span>
+<span id="cb8-13">  <span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># scale all normally distributed predictors </span></span>
-<span id="cb3-33">  <span class="fu" style="color: #4758AB;
+<span id="cb8-14">  <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">step_scale</span>(GrossFamilyIncome, PovertyProbabilityIndex, NumberOfDependents, ProgramCostsKES) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb3-34">  </span>
-<span id="cb3-35">  <span class="co" style="color: #5E5E5E;
+<span id="cb8-15">  </span>
+<span id="cb8-16">  <span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># normalize all numeric variables</span></span>
-<span id="cb3-36">  <span class="fu" style="color: #4758AB;
+<span id="cb8-17">  <span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">step_normalize</span>(GrossFamilyIncome, PovertyProbabilityIndex, NumberOfDependents, ProgramCostsKES)</span>
-<span id="cb3-37">  </span>
-<span id="cb3-38"><span class="co" style="color: #5E5E5E;
+font-style: inherit;">step_normalize</span>(GrossFamilyIncome, PovertyProbabilityIndex, NumberOfDependents, ProgramCostsKES)</span></code></pre></div>
+</details>
+</div>
+</section>
+<section id="workflow-definition" class="level3" data-number="2.4.4">
+<h3 data-number="2.4.4" class="anchored" data-anchor-id="workflow-definition"><span class="header-section-number">2.4.4</span> Workflow Definition</h3>
+<p>A workflow defines the order in which the model is build by sequentially combining pre-processing steps (recipe) and other pipeline elements into a workflow;</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Create the workflow</span></span>
-<span id="cb3-39">multinom_workflow <span class="ot" style="color: #003B4F;
+<span id="cb9-2">multinom_workflow <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> </span>
-<span id="cb3-40">  <span class="fu" style="color: #4758AB;
+<span id="cb9-3">  <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">workflow</span>() <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb3-41">  <span class="fu" style="color: #4758AB;
+<span id="cb9-4">  <span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">add_model</span>(multinom_reg_keras_spec) <span class="sc" style="color: #5E5E5E;
+font-style: inherit;">add_recipe</span>(multinom_recipe) <span class="sc" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">|&gt;</span> </span>
-<span id="cb3-42">  <span class="fu" style="color: #4758AB;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb9-5">  <span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">add_recipe</span>(multinom_recipe)</span>
-<span id="cb3-43"></span>
-<span id="cb3-44"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># train model</span></span>
-<span id="cb3-45"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># multinom_fit &lt;- </span></span>
-<span id="cb3-46"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">#   multinom_workflow |&gt;</span></span>
-<span id="cb3-47"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">#   fit(data = train_data)</span></span></code></pre></div>
+font-style: inherit;">add_model</span>(multinom_reg_glmnet_spec)  </span></code></pre></div>
 </details>
 </div>
-<section id="model-fitting" class="level3" data-number="2.3.1">
-<h3 data-number="2.3.1" class="anchored" data-anchor-id="model-fitting"><span class="header-section-number">2.3.1</span> Model Fitting</h3>
 </section>
-<section id="model-diagnostics" class="level3" data-number="2.3.2">
-<h3 data-number="2.3.2" class="anchored" data-anchor-id="model-diagnostics"><span class="header-section-number">2.3.2</span> Model Diagnostics</h3>
 </section>
-<section id="band-prediction" class="level3" data-number="2.3.3">
-<h3 data-number="2.3.3" class="anchored" data-anchor-id="band-prediction"><span class="header-section-number">2.3.3</span> Band Prediction</h3>
+<section id="model-training" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="model-training"><span class="header-section-number">2.5</span> Model Training</h2>
+<p>We can now train(fit) the model using the training data as follows;</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># train model</span></span>
+<span id="cb10-2">multinom_fit <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span></span>
+<span id="cb10-3">  multinom_workflow <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb10-4">  parsnip<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fit</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> train_data)</span></code></pre></div>
+</details>
+</div>
 </section>
+<section id="model-performance-diagnostics" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="model-performance-diagnostics"><span class="header-section-number">2.6</span> Model Performance Diagnostics</h2>
+<p>Now that we have a ‘bare bones’ model, let’s find out it’s performance using metrics from the <a href="https://yardstick.tidymodels.org/">yardstick</a> package, which is part of tidymodels. There are many ways to calculate multiclass metrics, such as using confusion matrix and accuracy level. Note that ROC (receiver operating characteristic) curve is used for binary classifiers, not multiclass classifiers which is the focus of this article.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># create new data (can be completely new or use training data without resposne variable)</span></span>
+<span id="cb11-2">predictors_data <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> test_data <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> dplyr<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">select</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>Bands)</span>
+<span id="cb11-3"></span>
+<span id="cb11-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># use the model and the training data to get predictions of bands</span></span>
+<span id="cb11-5">bands_data <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> test_data</span>
+<span id="cb11-6">bands_data<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Bands_pred <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">predict</span>(multinom_fit, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">new_data =</span> predictors_data, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">type =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"class"</span>)</span>
+<span id="cb11-7">bands_data<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Bands_pred <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> bands_data<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Bands_pred<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>.pred_class</span>
+<span id="cb11-8"></span>
+<span id="cb11-9">bands_data <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> bands_data <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> dplyr<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">select</span>(Bands, Bands_pred)</span>
+<span id="cb11-10"></span>
+<span id="cb11-11"><span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">## measure performance</span></span>
+<span id="cb11-12"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 1) confusion matrix</span></span>
+<span id="cb11-13"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">conf_mat</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> bands_data, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">truth =</span> Bands, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">estimate =</span> Bands_pred)</span></code></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>          Truth
+Prediction   1   2   3   4   5
+         1 819  83   0   0   0
+         2   3 931 135   0   0
+         3   0   0 382 120   0
+         4   0   0   0   1   2
+         5   0   0   0   2  22</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 2) kappa and accuracy</span></span>
+<span id="cb13-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">metrics</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> bands_data, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">truth =</span> Bands, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">estimate =</span> Bands_pred)</span></code></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  .metric  .estimator .estimate
+  &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;
+1 accuracy multiclass     0.862
+2 kap      multiclass     0.793</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 3) precision (same as accuracy)</span></span>
+<span id="cb15-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">precision</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> bands_data, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">truth =</span> Bands, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">estimate =</span> Bands_pred, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">estimator =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"micro"</span>)</span></code></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  .metric   .estimator .estimate
+  &lt;chr&gt;     &lt;chr&gt;          &lt;dbl&gt;
+1 precision micro          0.862</code></pre>
+</div>
+</div>
+<p>There you go; a model accuracy of 0.862 is pretty high, given that the data was <em>simulated</em>! So much good news here, almost too good to be true. And what’s more, this is a basic model, i.e.&nbsp;the (hyper)parameters <em>penalty</em> and <em>mixture</em> have the conservative values of <code>doubel(1)</code>. Are we able to improve the accuracy further by changing these values, i.e.&nbsp;by tuning them? Let’s find out below.</p>
+</section>
+<section id="hyperparameter-tuning" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="hyperparameter-tuning"><span class="header-section-number">2.7</span> Hyperparameter Tuning</h2>
+<p>Note that the mixture and penalty levels (values) are arbitrarily set to 3 and 2 respectively – these are simply starting points, and can be any numbers but the closer they are to the optimal values the quicker it is for the grid search to converge to those optimal values, which saves the computer tonnes of processing resources and time. The same goes for cross-validation of 3 folds.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># define model</span></span>
+<span id="cb17-2">multinom_reg_glmnet_spec_tuned <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span></span>
+<span id="cb17-3">  parsnip<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">multinom_reg</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">penalty =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tune</span>(), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mixture =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tune</span>()) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># to be tuned</span></span>
+<span id="cb17-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">set_engine</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'glmnet'</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb17-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">set_mode</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"classification"</span>)</span>
+<span id="cb17-6"></span>
+<span id="cb17-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># define grid search</span></span>
+<span id="cb17-8">multinom_grid <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">grid_regular</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mixture</span>(), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">penalty</span>(), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">levels =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mixture =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">penalty =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>))</span>
+<span id="cb17-9"></span>
+<span id="cb17-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># define work flow</span></span>
+<span id="cb17-11">multinom_wf <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">workflow</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb17-12">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">add_recipe</span>(multinom_recipe) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb17-13">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">add_model</span>(multinom_reg_glmnet_spec_tuned)</span>
+<span id="cb17-14"></span>
+<span id="cb17-15"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># define 3-fold CV resamples from which to search best parameter values</span></span>
+<span id="cb17-16">multinom_3f_cv_folds <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">vfold_cv</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> train_data, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">v =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>)</span>
+<span id="cb17-17"></span>
+<span id="cb17-18"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># tune the hyperparameters using the grid search</span></span>
+<span id="cb17-19">multinom_tuned <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tune_grid</span>(</span>
+<span id="cb17-20">  multinom_wf,</span>
+<span id="cb17-21">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">resamples =</span> multinom_3f_cv_folds,</span>
+<span id="cb17-22">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">grid =</span> multinom_grid,</span>
+<span id="cb17-23">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">control =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">control_grid</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">save_pred =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)</span>
+<span id="cb17-24">)</span>
+<span id="cb17-25"></span>
+<span id="cb17-26"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">select_best</span>(multinom_tuned, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">metric =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"accuracy"</span>)</span></code></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+       penalty mixture .config             
+         &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;               
+1 0.0000000001       1 Preprocessor1_Model5</code></pre>
+</div>
+</div>
+<p>From the above grid search, we got <img src="https://latex.codecogs.com/png.latex?penalty%20=%200.0000000001"> and <img src="https://latex.codecogs.com/png.latex?mixture%20=%201">. Let’s plug these values into the model and see if the accuracy has improved;</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># create the null model</span></span>
+<span id="cb19-2">multinom_reg_glmnet_spec <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span></span>
+<span id="cb19-3">  parsnip<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">multinom_reg</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">penalty =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0000000001</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mixture =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb19-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">set_engine</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'glmnet'</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb19-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">set_mode</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"classification"</span>)</span>
+<span id="cb19-6"></span>
+<span id="cb19-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># rerun the workflow now that model has been updated</span></span>
+<span id="cb19-8">multinom_workflow <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> </span>
+<span id="cb19-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">workflow</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb19-10">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">add_recipe</span>(multinom_recipe) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb19-11">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">add_model</span>(multinom_reg_glmnet_spec)</span>
+<span id="cb19-12"></span>
+<span id="cb19-13"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># re-train the model based on new parameters</span></span>
+<span id="cb19-14">multinom_fit <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span></span>
+<span id="cb19-15">  multinom_workflow <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb19-16">  parsnip<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fit</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> train_data)</span>
+<span id="cb19-17"></span>
+<span id="cb19-18"><span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">## measure performance of new model</span></span>
+<span id="cb19-19"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># create new data (can be completely new or use training data without resposne variable)</span></span>
+<span id="cb19-20">predictors_data <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> test_data <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> dplyr<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">select</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>Bands)</span>
+<span id="cb19-21"></span>
+<span id="cb19-22"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># use the model and the training data to get predictions of bands</span></span>
+<span id="cb19-23">bands_data <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> test_data</span>
+<span id="cb19-24">bands_data<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Bands_pred <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">predict</span>(multinom_fit, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">new_data =</span> predictors_data, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">type =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"class"</span>)</span>
+<span id="cb19-25">bands_data<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Bands_pred <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> bands_data<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Bands_pred<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>.pred_class</span>
+<span id="cb19-26"></span>
+<span id="cb19-27">bands_data <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> bands_data <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> dplyr<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">select</span>(Bands, Bands_pred)</span>
+<span id="cb19-28"></span>
+<span id="cb19-29"><span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">## measure performance</span></span>
+<span id="cb19-30"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 1) confusion matrix</span></span>
+<span id="cb19-31"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">conf_mat</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> bands_data, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">truth =</span> Bands, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">estimate =</span> Bands_pred)</span></code></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>          Truth
+Prediction    1    2    3    4    5
+         1  817    2    0    0    0
+         2    5 1006    6    0    0
+         3    0    6  506    2    0
+         4    0    0    5  121    0
+         5    0    0    0    0   24</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 2) kappa and accuracy</span></span>
+<span id="cb21-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">metrics</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> bands_data, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">truth =</span> Bands, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">estimate =</span> Bands_pred)</span></code></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  .metric  .estimator .estimate
+  &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;
+1 accuracy multiclass     0.990
+2 kap      multiclass     0.985</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 3) precision (same as accuracy)</span></span>
+<span id="cb23-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">precision</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> bands_data, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">truth =</span> Bands, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">estimate =</span> Bands_pred, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">estimator =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"micro"</span>)</span></code></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  .metric   .estimator .estimate
+  &lt;chr&gt;     &lt;chr&gt;          &lt;dbl&gt;
+1 precision micro          0.990</code></pre>
+</div>
+</div>
+<p>There is a huge improvement on model performance; we went from an accuracy of 0.862 to an accuracy of 0.9896! This is no small feat at all. Wonder if this can be improved further? Maybe, maybe not. At this point, there is no sensible need to go further.</p>
+</section>
+<section id="band-prediction" class="level2" data-number="2.8">
+<h2 data-number="2.8" class="anchored" data-anchor-id="band-prediction"><span class="header-section-number">2.8</span> Band Prediction</h2>
+<p>Now that we have a reasonably reliable model, we can ask it to place a student into bands. All we need to do is provide the values of “GrossFamilyIncome”, “GeographicalLocation”, “PovertyProbabilityIndex”, “Orphans”, “Disability”, “NumberOfDependents”, “ProgramCostsKES”, and “Gender” for a particular student in the <code>new_data</code> argument of the <code>predict</code> function, as follows;</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb25" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># enter new student data</span></span>
+<span id="cb25-2">new_student_data <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data.frame</span>(</span>
+<span id="cb25-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">GrossFamilyIncome =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3000</span>,</span>
+<span id="cb25-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">GeographicalLocation =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factor</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>),</span>
+<span id="cb25-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">PovertyProbabilityIndex =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.7</span>,</span>
+<span id="cb25-6">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Orphans =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factor</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>), </span>
+<span id="cb25-7">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Disability =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factor</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>), </span>
+<span id="cb25-8">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">NumberOfDependents =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, </span>
+<span id="cb25-9">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ProgramCostsKES =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">500000</span>, </span>
+<span id="cb25-10">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Gender =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factor</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb25-11">)</span>
+<span id="cb25-12"></span>
+<span id="cb25-13"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># predict new student band</span></span>
+<span id="cb25-14">new_student_band <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">predict</span>(multinom_fit, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">new_data =</span> new_student_data, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">type =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"class"</span>)</span>
+<span id="cb25-15"></span>
+<span id="cb25-16">new_student_band</span></code></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+  .pred_class
+  &lt;fct&gt;      
+1 1          </code></pre>
+</div>
+</div>
+<p>The new student above, as reasonably expected, is assigned band 1. “Reasonably expected’ because the student comes from a family of low gross income, high poverty probability index, and is orphaned and disabled.</p>
 </section>
 </section>
 <section id="conclusion" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Conclusion</h1>
+<p>As we have seen, this is an advanced, machine learning way to create bands for students seeking to join the university. As an alternative to MTI, the ML model is scientifically sound, reliable, faster, and scalable. It gets even better as more and more training data becomes available over time, which enables the ML model to “learn” more about what it is excepted to do, therefore improving the banding accuracy.</p>
 
 
 </section>
@@ -1859,6 +2606,7 @@ font-style: inherit;">#   fit(data = train_data)</span></span></code></pre></div
 <li id="fn8"><p>https://kafu.ac.ke/images/2022/Academics/nfm/NEW_FUNDING_MODEL_-_6TH_AUGUST_2024.pdf↩︎</p></li>
 <li id="fn9"><p>R Core Team (2021). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.↩︎</p></li>
 <li id="fn10"><p>Kook, L., Herzog, L., Hothorn, T., Dürr, O., &amp; Sick, B. (2022). Deep and interpretable regression models for ordinal outcomes. Pattern Recognition, 122, 108263.↩︎</p></li>
+<li id="fn11"><p>https://www.geeksforgeeks.org/lasso-vs-ridge-vs-elastic-net-ml/↩︎</p></li>
 </ol>
 </section></div> ]]></description>
   <category>R</category>
@@ -1866,7 +2614,7 @@ font-style: inherit;">#   fit(data = train_data)</span></span></code></pre></div
   <category>Prediction</category>
   <category>MTI</category>
   <guid>https://corneliustanui.rbind.io/content/posts/MTI_Modeling_2024-09-06/</guid>
-  <pubDate>Thu, 05 Sep 2024 21:00:00 GMT</pubDate>
+  <pubDate>Mon, 05 Aug 2024 21:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Modelling CPI Using ARIMA(p,d,q)</title>
@@ -1877,6 +2625,12 @@ font-style: inherit;">#   fit(data = train_data)</span></span></code></pre></div
 
 
 
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://corneliustanui.rbind.io/content/posts/ARIMA_Fitting_2024-08-22/ImagineArt_TimeSeriesGraph.png" style="width:80.0%;height:100.0%" alt="Modelling CPI Using ARIMA(p,d,q)" class="figure-img"></p>
+<figcaption>Image source: Imagine Art</figcaption>
+</figure>
+</div>
 <section id="why-cpi-is-time-series" class="level3">
 <h3 class="anchored" data-anchor-id="why-cpi-is-time-series">1) Why CPI is Time Series</h3>
 <p>Consumer Price Index (CPI) is defined as a measure of the weighted aggregate change in retail prices paid by consumers for a given basket of goods and services.</p>

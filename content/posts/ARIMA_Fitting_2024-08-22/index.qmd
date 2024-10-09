@@ -13,6 +13,8 @@ knitr::opts_chunk$set(warning = FALSE,
 
 ```
 
+![Image source: Imagine Art](ImagineArt_TimeSeriesGraph.png){fig-alt="Modelling CPI Using ARIMA(p,d,q)" width="80%" height="100%"}
+
 ### 1) Why CPI is Time Series
 
 Consumer Price Index (CPI) is defined as a measure of the weighted aggregate change in retail prices paid by consumers for a given basket of goods and services.

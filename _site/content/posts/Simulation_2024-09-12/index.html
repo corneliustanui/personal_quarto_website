@@ -329,10 +329,10 @@ Disclaimer!
 </section>
 <section id="sec-lit_rev" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> Literature</h1>
-<p>There are a number of factors<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> that the new MTI-based university funding model in Kenya considers for placement of students into the 5 bands. We shall discuss each one of them and deduce the probable underlying probability distributions and their associated parametric values that will enable us to simulate these factors. We shall simulate the data for 1000 students, thus <span class="math inline">x_i</span> where <span class="math inline">i = 1, 2, 3, ..., 1000</span>. Because the values are randomly generated, we shall seed the random number generator (RNG), for reproducibility purposes, with the arbitrary value of 44. Note that there is no real reason for this choice.</p>
+<p>There are a number of factors<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> that the new MTI-based university funding model in Kenya considers for placement of students into the 5 bands. We shall discuss each one of them and deduce the probable underlying probability distributions and their associated parametric values that will enable us to simulate these factors. We shall simulate the data for 10000 students, thus <span class="math inline">x_i</span> where <span class="math inline">i = 1, 2, 3, ..., 10000</span>. Because the values are randomly generated, we shall seed the random number generator (RNG), for reproducibility purposes, with the arbitrary value of 44. Note that there is no real reason for this choice.</p>
 <section id="sec-bands" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="sec-bands"><span class="header-section-number">2.1</span> Bands</h2>
-<p>This is the outcome – a categorical 5-point ordinal variable where 1 represents the most needy and 5 represents the least needy<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, thus <span class="math inline">x_{ij}</span> where <span class="math inline">j = \{1, 2, 3, ..., 5\}</span>. We will assume that the first 2 or 3 bands have a fairly higher chance of occurring compared to the last bands, i.e for the <span class="math inline">i^{th}</span> student, <span class="math inline">p(x_{i1}) &gt; p(x_{i2}) &gt;... &gt;p(x_{i5})</span>. We need a probability distribution function that draws 5 numbers between 1 to 5 for 1000 observations. A multinomial distribution will do just that. We simply need to specify <span class="math inline">n = 1</span> (create 1 vector), <span class="math inline">size = 1000</span> (number of observations), and <span class="math inline">prob = p(x_{ij})</span> (vector of probabilities) in the function <code>rmultinom</code> from the package <code>{stats}</code>. The function is the Application Programming Interface (API) to the RNG for multinomial distribution.</p>
+<p>This is the outcome – a categorical 5-point ordinal variable where 1 represents the most needy and 5 represents the least needy<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, thus <span class="math inline">x_{ij}</span> where <span class="math inline">j = \{1, 2, 3, ..., 5\}</span>. We will assume that the first 2 or 3 bands have a fairly higher chance of occurring compared to the last bands, i.e for the <span class="math inline">i^{th}</span> student, <span class="math inline">p(x_{i1}) &gt; p(x_{i2}) &gt;... &gt;p(x_{i5})</span>. We need a probability distribution function that draws 5 numbers between 1 to 5 for 10000 observations. A multinomial distribution will do just that. We simply need to specify <span class="math inline">n = 1</span> (create 1 vector), <span class="math inline">size = 10000</span> (number of observations), and <span class="math inline">prob = p(x_{ij})</span> (vector of probabilities) in the function <code>rmultinom</code> from the package <code>{stats}</code>. The function is the Application Programming Interface (API) to the RNG for multinomial distribution.</p>
 <p>If we use a uniform probability of <span class="math inline">p(x_{ij}) = 1/5</span> we will end up with a uniform distribution, but we desire a distribution that is skewed to the left. Remember that the bands are a proxy for the socio-economic status of the household, and in Kenya – as in most other countries<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> – the number of rich households is significantly lower than the number of poor households, therefore we need to expect more band 1 households than band 5 households.</p>
 <div class="cell">
 <details class="code-fold">
@@ -340,7 +340,7 @@ Disclaimer!
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generate 5 bands via multinomial distribution with equal probabilities</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">44</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>sample1 <span class="ot">&lt;-</span> <span class="fu">rmultinom</span>(<span class="at">n =</span> <span class="dv">1</span>,</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">size =</span> <span class="dv">1000</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">size =</span> <span class="dv">10000</span>,</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">prob =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">5</span>, <span class="dv">5</span>)) <span class="sc">|&gt;</span> </span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">|&gt;</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Counts =</span> dplyr<span class="sc">::</span><span class="fu">row_number</span>()) <span class="sc">|&gt;</span></span>
@@ -367,12 +367,12 @@ Disclaimer!
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generate probabilities via 5 binomial trails with p = 1/5</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 1 is added to remove band 0 and introduce band 5</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">44</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>prob <span class="ot">&lt;-</span> <span class="fu">prop.table</span>(<span class="fu">table</span>(<span class="fu">rbinom</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">size =</span> <span class="dv">5</span>, <span class="at">prob =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">5</span>) <span class="sc">+</span> <span class="dv">1</span>)) </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>prob <span class="ot">&lt;-</span> <span class="fu">prop.table</span>(<span class="fu">table</span>(<span class="fu">rbinom</span>(<span class="at">n =</span> <span class="dv">10000</span>, <span class="at">size =</span> <span class="dv">5</span>, <span class="at">prob =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">5</span>) <span class="sc">+</span> <span class="dv">1</span>)) </span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># generate 5 bands via multinomial distribution</span></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">44</span>)</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>sample1 <span class="ot">&lt;-</span> <span class="fu">rmultinom</span>(<span class="at">n =</span> <span class="dv">1</span>,</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">size =</span> <span class="dv">1000</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">size =</span> <span class="dv">10000</span>,</span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">prob =</span> prob) <span class="sc">|&gt;</span> </span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">|&gt;</span></span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Counts =</span> dplyr<span class="sc">::</span><span class="fu">row_number</span>()) <span class="sc">|&gt;</span></span>
@@ -394,12 +394,12 @@ Disclaimer!
 </section>
 <section id="gross-family-income" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="gross-family-income"><span class="header-section-number">2.2</span> Gross Family Income</h2>
-<p>Income, as with bands, is expected to be a positively skewed real-valued number (<span class="math inline">x ∈ ℝ^+</span>) which can assume the negative binomial distribution with the mean of KES 20,000<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. From this knowledge we can generate 1000 income values using <code>rnbinom</code> function from the package <code>{stats}</code> as shown in the code below;</p>
+<p>Income, as with bands, is expected to be a positively skewed real-valued number (<span class="math inline">x ∈ ℝ^+</span>) which can assume the negative binomial distribution with the mean of KES 20,000<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. From this knowledge we can generate 10000 income values using <code>rnbinom</code> function from the package <code>{stats}</code> as shown in the code below;</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">44</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">rnbinom</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">size =</span> <span class="dv">5</span>, <span class="at">mu =</span> <span class="dv">20000</span>),  <span class="at">xlab  =</span> <span class="st">"Income"</span>, <span class="at">main =</span> <span class="st">"Histogram of Gross Family Income"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">rnbinom</span>(<span class="at">n =</span> <span class="dv">10000</span>, <span class="at">size =</span> <span class="dv">5</span>, <span class="at">mu =</span> <span class="dv">20000</span>),  <span class="at">xlab  =</span> <span class="st">"Income"</span>, <span class="at">main =</span> <span class="st">"Histogram of Gross Family Income"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -417,7 +417,7 @@ Disclaimer!
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">44</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(<span class="fu">ceiling</span>(<span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">min =</span> <span class="dv">1</span>,  <span class="at">max =</span> <span class="dv">47</span>))), <span class="at">xlab  =</span> <span class="st">"Geographical Location"</span>, <span class="at">main =</span> <span class="st">"Discrete Uniform Distribution of Geographical Location"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(<span class="fu">ceiling</span>(<span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">10000</span>, <span class="at">min =</span> <span class="dv">1</span>,  <span class="at">max =</span> <span class="dv">47</span>))), <span class="at">xlab  =</span> <span class="st">"Geographical Location"</span>, <span class="at">main =</span> <span class="st">"Discrete Uniform Distribution of Geographical Location"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -435,7 +435,7 @@ Disclaimer!
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">44</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">abs</span>(<span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">mean =</span> <span class="fl">0.3</span>, <span class="at">sd =</span> <span class="fl">0.2</span>)), <span class="at">xlab  =</span> <span class="st">"Poverty Probability Index"</span>, <span class="at">main =</span> <span class="st">"Normal Distribution of Poverty Probability Index"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">abs</span>(<span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">10000</span>, <span class="at">mean =</span> <span class="fl">0.3</span>, <span class="at">sd =</span> <span class="fl">0.2</span>)), <span class="at">xlab  =</span> <span class="st">"Poverty Probability Index"</span>, <span class="at">main =</span> <span class="st">"Normal Distribution of Poverty Probability Index"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -453,7 +453,7 @@ Disclaimer!
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">44</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(<span class="fu">rbinom</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> <span class="fl">0.222</span>)), <span class="at">xlab  =</span> <span class="st">"Orphan Status"</span>, <span class="at">main =</span> <span class="st">"Bargraph of the Distribution of Orphan Status"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(<span class="fu">rbinom</span>(<span class="at">n =</span> <span class="dv">10000</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> <span class="fl">0.222</span>)), <span class="at">xlab  =</span> <span class="st">"Orphan Status"</span>, <span class="at">main =</span> <span class="st">"Bargraph of the Distribution of Orphan Status"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -471,7 +471,7 @@ Disclaimer!
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">44</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(<span class="fu">rbinom</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> <span class="fl">0.022</span>)), <span class="at">xlab  =</span> <span class="st">"Disability Status"</span>, <span class="at">main =</span> <span class="st">"Bargraph of the Distribution of Disability Status"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(<span class="fu">rbinom</span>(<span class="at">n =</span> <span class="dv">10000</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> <span class="fl">0.022</span>)), <span class="at">xlab  =</span> <span class="st">"Disability Status"</span>, <span class="at">main =</span> <span class="st">"Bargraph of the Distribution of Disability Status"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -489,7 +489,7 @@ Disclaimer!
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">44</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(<span class="fu">rpois</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">lambda =</span> <span class="dv">4</span>)), <span class="at">xlab  =</span> <span class="st">"Number of Dependents"</span>, <span class="at">main =</span> <span class="st">"Bargraph of the Distribution of Number of Dependents"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(<span class="fu">rpois</span>(<span class="at">n =</span> <span class="dv">10000</span>, <span class="at">lambda =</span> <span class="dv">4</span>)), <span class="at">xlab  =</span> <span class="st">"Number of Dependents"</span>, <span class="at">main =</span> <span class="st">"Bargraph of the Distribution of Number of Dependents"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -507,7 +507,7 @@ Disclaimer!
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">44</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">abs</span>(<span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">mean =</span> <span class="dv">500000</span>, <span class="at">sd =</span> <span class="dv">50000</span>)), <span class="at">xlab  =</span> <span class="st">"Program Costs"</span>, <span class="at">main =</span> <span class="st">"Histogram of Distribution of Program Costs (KES)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">abs</span>(<span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">10000</span>, <span class="at">mean =</span> <span class="dv">500000</span>, <span class="at">sd =</span> <span class="dv">50000</span>)), <span class="at">xlab  =</span> <span class="st">"Program Costs"</span>, <span class="at">main =</span> <span class="st">"Histogram of Distribution of Program Costs (KES)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -530,7 +530,7 @@ Disclaimer!
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># generate 3 outcomes via multinomial distribution</span></span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">44</span>)</span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>sample1 <span class="ot">&lt;-</span> <span class="fu">rmultinom</span>(<span class="at">n =</span> <span class="dv">1</span>,</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">size =</span> <span class="dv">1000</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">size =</span> <span class="dv">10000</span>,</span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>                     <span class="at">prob =</span> prob) <span class="sc">|&gt;</span> </span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">|&gt;</span></span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Counts =</span> dplyr<span class="sc">::</span><span class="fu">row_number</span>()) <span class="sc">|&gt;</span></span>
@@ -575,12 +575,12 @@ Disclaimer!
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># generate probabilities via 5 binomial trials with p = 1/5</span></span>
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 1 is added to remove band 0 and introduce band 5</span></span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">44</span>)</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>prob_bands <span class="ot">&lt;-</span> <span class="fu">prop.table</span>(<span class="fu">table</span>(<span class="fu">rbinom</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">size =</span> <span class="dv">5</span>, <span class="at">prob =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">5</span>) <span class="sc">+</span> <span class="dv">1</span>)) </span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>prob_bands <span class="ot">&lt;-</span> <span class="fu">prop.table</span>(<span class="fu">table</span>(<span class="fu">rbinom</span>(<span class="at">n =</span> <span class="dv">10000</span>, <span class="at">size =</span> <span class="dv">5</span>, <span class="at">prob =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">5</span>) <span class="sc">+</span> <span class="dv">1</span>)) </span>
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co"># generate 5 bands via multinomial distribution</span></span>
 <span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">44</span>)</span>
 <span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>bands1 <span class="ot">&lt;-</span> <span class="fu">rmultinom</span>(<span class="at">n =</span> <span class="dv">1</span>,</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>                     <span class="at">size =</span> <span class="dv">1000</span>,</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>                     <span class="at">size =</span> <span class="dv">10000</span>,</span>
 <span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>                     <span class="at">prob =</span> prob_bands) <span class="sc">|&gt;</span> </span>
 <span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">|&gt;</span></span>
 <span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Counts =</span> dplyr<span class="sc">::</span><span class="fu">row_number</span>()) <span class="sc">|&gt;</span></span>
@@ -597,7 +597,7 @@ Disclaimer!
 <span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a><span class="co"># generate 3 outcomes via multinomial distribution</span></span>
 <span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">44</span>)</span>
 <span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>gender1 <span class="ot">&lt;-</span> <span class="fu">rmultinom</span>(<span class="at">n =</span> <span class="dv">1</span>,</span>
-<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>                     <span class="at">size =</span> <span class="dv">1000</span>,</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>                     <span class="at">size =</span> <span class="dv">10000</span>,</span>
 <span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>                     <span class="at">prob =</span> prob_gender) <span class="sc">|&gt;</span> </span>
 <span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">|&gt;</span></span>
 <span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Counts =</span> dplyr<span class="sc">::</span><span class="fu">row_number</span>()) <span class="sc">|&gt;</span></span>
@@ -615,31 +615,31 @@ Disclaimer!
 <span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a>  <span class="at">Bands =</span> <span class="fu">sort</span>(<span class="fu">as.ordered</span>(bands2), <span class="at">decreasing =</span> <span class="cn">FALSE</span>),</span>
 <span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a>  <span class="co"># sorting is necessary</span></span>
-<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a>  <span class="at">GrossFamilyIncome =</span> <span class="fu">sort</span>(<span class="fu">rnbinom</span>(<span class="at">n =</span> <span class="dv">1000</span>,</span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a>  <span class="at">GrossFamilyIncome =</span> <span class="fu">sort</span>(<span class="fu">rnbinom</span>(<span class="at">n =</span> <span class="dv">10000</span>,</span>
 <span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">size =</span> <span class="dv">5</span>,</span>
 <span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">mu =</span> <span class="dv">20000</span>), <span class="at">decreasing =</span> <span class="cn">FALSE</span>),</span>
 <span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a>  <span class="at">GeographicalLocation =</span> <span class="fu">as.factor</span>(<span class="fu">ceiling</span>(<span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">1000</span>,</span>
+<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a>  <span class="at">GeographicalLocation =</span> <span class="fu">as.factor</span>(<span class="fu">ceiling</span>(<span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">10000</span>,</span>
 <span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">min =</span> <span class="dv">1</span>,</span>
 <span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">max =</span> <span class="dv">47</span>))),</span>
 <span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a>  <span class="co"># sorting is necessary</span></span>
-<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a>  <span class="at">PovertyProbabilityIndex =</span> <span class="fu">sort</span>(<span class="fu">abs</span>(<span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">1000</span>,</span>
+<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a>  <span class="at">PovertyProbabilityIndex =</span> <span class="fu">sort</span>(<span class="fu">abs</span>(<span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">10000</span>,</span>
 <span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">mean =</span> <span class="fl">0.3</span>,</span>
 <span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">sd =</span> <span class="fl">0.2</span>)), <span class="at">decreasing =</span> <span class="cn">TRUE</span>),</span>
 <span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a>  <span class="at">Orphans =</span> <span class="fu">as.factor</span>(<span class="fu">rbinom</span>(<span class="at">n =</span> <span class="dv">1000</span>,</span>
+<span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a>  <span class="at">Orphans =</span> <span class="fu">as.factor</span>(<span class="fu">rbinom</span>(<span class="at">n =</span> <span class="dv">10000</span>,</span>
 <span id="cb12-64"><a href="#cb12-64" aria-hidden="true" tabindex="-1"></a>                             <span class="at">size =</span> <span class="dv">1</span>,</span>
 <span id="cb12-65"><a href="#cb12-65" aria-hidden="true" tabindex="-1"></a>                             <span class="at">prob =</span> <span class="fl">0.222</span>)),</span>
 <span id="cb12-66"><a href="#cb12-66" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-67"><a href="#cb12-67" aria-hidden="true" tabindex="-1"></a>  <span class="at">Disability =</span> <span class="fu">as.factor</span>(<span class="fu">rbinom</span>(<span class="at">n =</span> <span class="dv">1000</span>,</span>
+<span id="cb12-67"><a href="#cb12-67" aria-hidden="true" tabindex="-1"></a>  <span class="at">Disability =</span> <span class="fu">as.factor</span>(<span class="fu">rbinom</span>(<span class="at">n =</span> <span class="dv">10000</span>,</span>
 <span id="cb12-68"><a href="#cb12-68" aria-hidden="true" tabindex="-1"></a>                                <span class="at">size =</span> <span class="dv">1</span>,</span>
 <span id="cb12-69"><a href="#cb12-69" aria-hidden="true" tabindex="-1"></a>                                <span class="at">prob =</span> <span class="fl">0.022</span>)), </span>
 <span id="cb12-70"><a href="#cb12-70" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-71"><a href="#cb12-71" aria-hidden="true" tabindex="-1"></a>  <span class="at">NumberOfDependents =</span> <span class="fu">rpois</span>(<span class="at">n =</span> <span class="dv">1000</span>,</span>
+<span id="cb12-71"><a href="#cb12-71" aria-hidden="true" tabindex="-1"></a>  <span class="at">NumberOfDependents =</span> <span class="fu">rpois</span>(<span class="at">n =</span> <span class="dv">10000</span>,</span>
 <span id="cb12-72"><a href="#cb12-72" aria-hidden="true" tabindex="-1"></a>                             <span class="at">lambda =</span> <span class="dv">4</span>),</span>
 <span id="cb12-73"><a href="#cb12-73" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-74"><a href="#cb12-74" aria-hidden="true" tabindex="-1"></a>  <span class="at">ProgramCostsKES =</span> <span class="fu">abs</span>(<span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">1000</span>,</span>
+<span id="cb12-74"><a href="#cb12-74" aria-hidden="true" tabindex="-1"></a>  <span class="at">ProgramCostsKES =</span> <span class="fu">abs</span>(<span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">10000</span>,</span>
 <span id="cb12-75"><a href="#cb12-75" aria-hidden="true" tabindex="-1"></a>                              <span class="at">mean =</span> <span class="dv">500000</span>,</span>
 <span id="cb12-76"><a href="#cb12-76" aria-hidden="true" tabindex="-1"></a>                              <span class="at">sd =</span> <span class="dv">50000</span>)),</span>
 <span id="cb12-77"><a href="#cb12-77" aria-hidden="true" tabindex="-1"></a>  </span>
@@ -679,56 +679,56 @@ Disclaimer!
 <tr class="odd">
 <td style="text-align: left;">1</td>
 <td style="text-align: right;">1154</td>
-<td style="text-align: left;">30</td>
-<td style="text-align: right;">0.9179034</td>
+<td style="text-align: left;">9</td>
+<td style="text-align: right;">1.0563022</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">488193.9</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">509734.8</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">1</td>
-<td style="text-align: right;">3069</td>
-<td style="text-align: left;">25</td>
-<td style="text-align: right;">0.8663438</td>
+<td style="text-align: right;">2400</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: right;">0.9868637</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">546991.2</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">469997.6</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">1</td>
-<td style="text-align: right;">3127</td>
-<td style="text-align: left;">44</td>
-<td style="text-align: right;">0.8652463</td>
+<td style="text-align: right;">2411</td>
+<td style="text-align: left;">27</td>
+<td style="text-align: right;">0.9790371</td>
+<td style="text-align: left;">1</td>
 <td style="text-align: left;">0</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">514901.7</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">547886.0</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">1</td>
-<td style="text-align: right;">3582</td>
-<td style="text-align: left;">10</td>
-<td style="text-align: right;">0.8356267</td>
+<td style="text-align: right;">2494</td>
+<td style="text-align: left;">22</td>
+<td style="text-align: right;">0.9679570</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: right;">3</td>
-<td style="text-align: right;">393526.7</td>
+<td style="text-align: right;">420495.4</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">1</td>
-<td style="text-align: right;">3691</td>
-<td style="text-align: left;">22</td>
-<td style="text-align: right;">0.8293217</td>
+<td style="text-align: right;">2559</td>
+<td style="text-align: left;">41</td>
+<td style="text-align: right;">0.9642283</td>
+<td style="text-align: left;">1</td>
 <td style="text-align: left;">0</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">499307.9</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">530990.7</td>
 <td style="text-align: left;">1</td>
 </tr>
 </tbody>
