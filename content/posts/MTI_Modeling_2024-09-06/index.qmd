@@ -1,10 +1,10 @@
 ---
-title: Kenyan Household Bands Classifier
+title: Machine Learning Classifier for Banding University Students in Kenya  
 description: Predicting the Household Economic Bands Into Which University Students Fall for Award of Financial Support from the Kenyan Government.
 author: 
   - name: Cornelius Tanui
     url: https://corneliustanui.rbind.io/
-date: '2024-09-06'
+date: '2024-08-06'
 
 format: 
   html: 
@@ -26,7 +26,7 @@ knitr::opts_chunk$set(warning = FALSE,
 
 ```
 
-![Image source: Imagine Art](ImagineArt_University_Students_in_Kenya.png){fig-alt="Statistical Data simulation" width="80%" height="100%"}
+![Image source: Imagine Art](ImagineArt_University_Students_in_Kenya.png){fig-alt="Machine Learning Classifier for Banding University Students in Kenya" width="80%" height="100%"}
 
 # University Funding in Kenya
 
@@ -106,22 +106,6 @@ The table below shows the properties of the variables are;
 The data is **simulated**, and therefore substantially differs with the actual scenario! The data is meant for learning purposes only, and the statistical estimates reported MUST NOT be taken as true reflection of the real-word situation.
 :::
 
-```{r load packages}
-
-## load packages
-library(tidyverse)  # data processing packages
-library(tidymodels) # model definition packages
-library(parsnip)    # model manipulation functions
-
-library(glmnet)     # model processing engine
-# library(spark)      # model processing engine
-library(keras)      # model processing engine (requires package tensorflow)
-library(tensorflow) # The Python Module needs to be installed
-library(nnet)       # model processing engine
-library(brulee)     # model processing engine (requires libtorch distro of PyTorch)
-
-```
-
 The simulated data looks like this;
 
 ```{r the data}
@@ -139,14 +123,70 @@ knitr::kable(head(x = simulated_data, n = 5))
 
 ```
 
-## Model Creation
+## Inferential Model Creation
 
-For a start, we shall define the the model pipeline using the conventional *tidymodels* steps, and specify *keras* as the engine. Later on we will try other engines such as *brulee*, *glmnet*, and *nnet*.
+Before we create a model that predicts or assigns bands, let's first explore the relationship between the outcome (Bands) and all the  predictors.
 
-```{r Model Creation}
+```{r descriptive model}
+
+mti_model_fit <- parsnip::multinom_reg() |> 
+  parsnip::fit(Bands ~ ., data = simulated_data)
+
+```
+
+Now, we can extract the meaning from the information contained in the model created above. Instead of reporting log of odds, we can report just odd, as that make sit easier to interpret;- 
+
+```{r model interpretation}
+
+model_results <- broom::tidy(mti_model_fit, exponentiate = TRUE, conf.int = TRUE) |>
+  dplyr::select(Bands = y.level, 
+                Predictors = term,
+                Odds = estimate,
+                StandardError = std.error,
+                Statistic = statistic,
+                `P-value` = p.value,
+                Lower95 = conf.low,
+                Upper95 = conf.high
+                ) |> 
+  
+  dplyr::mutate(Odds = round(Odds, 4),
+                Lower95 = round(Lower95, 4),
+                Upper95 = round(Upper95, 4))
+
+model_results
+
+```
+
+A multinomial regression is, under the hood, an ensemble of several "binary logistic regressions". As we can see from the results above, the outcome `Bands` contains all the outcome bands (technically called 'classes'). Each class creates a binary logistic regression, and that is why we see all the `Predictors` for each class. Band 1 (class 1) is not reported because it is taken as the reference group. Any class can be made a reference groub by relevelling the factors. For example, to make band 5 the reference class, `simulated_data$Bands <- relevel(simulated_data$Bands, ref = "5")`.
+
+Looking at the p-values at 95% level of confidence, some independent indicators are significant predictors of certain bands. For instance, gross family income is significant at all bands (p-value <0.0001) respectively.) Therefore, a unit increase of a gross family income increases the odds of the family being in band 4 than being in band 1 by 25.07%, holding all other predictors constant. The value of 25.07% is gotten by $(1.2507 - 1)*100 = 25.07\%$. 
+
+## Prediction Model Creation
+
+For a start, we shall define the the model pipeline using the conventional *tidymodels* process workflow with [parsnip](https://parsnip.tidymodels.org/), and specify *glmnet* as the engine. Later on, maybe in a separate post, we will explore other engines such as *brulee*, *nnet*, and *keras*. The keras engine is a Python library that depends on *tensorflow*, another Python library that must be installed. To install keras and tensorflow, open **Anaconda Command Prompt** and run the commands `pip install keras`, and `pip install tensorflow` and then load the R package equivalents of the two python libraries, along with other necessary packages, as follows: -
+
+```{r load packages}
+
+## load packages
+library(tidyverse)  # data processing packages
+library(tidymodels) # model definition packages
+library(parsnip)    # model manipulation functions
+
+library(glmnet)     # model processing engine
+# library(spark)      # model processing engine
+# library(keras)      # model processing engine (requires package tensorflow)
+# library(tensorflow) # The Python package needs to be installed
+# library(nnet)       # model processing engine
+# library(brulee)     # model processing engine (requires libtorch distro of PyTorch)
+
+```
+
+### Generate Training and Testing Datasets
+
+```{r training and testing sets}
 
 ## create training and testing sets
-# set seed for reproducibility
+# set seed for reproducibility of the sets
 set.seed(44)
 data_split <- initial_split(simulated_data, prop = 0.75)
 
@@ -156,13 +196,34 @@ train_data <- training(data_split)
 # 25% of records
 test_data  <- testing(data_split)
 
+```
+
+### Create Initial Model
+
+In this model, there are only two (hyper)parameters that need to be specified: penalty and mixture. The value of the penalty defines the degree to which *regularization* is applied to the model. Regularization is a technique used to control overfitting by adding a penalty (error) term to the model. On the other hand, mixture is the value that species how the penalty term is added. There are three ways of adding this penalty[^11];
+
+[^11]: https://www.geeksforgeeks.org/lasso-vs-ridge-vs-elastic-net-ml/
+
+1. Lasso (also called L1 regularization): The penalty term added to the model is the sum of absolute coefficients of the predictors, multiplied by some constant -- $λ∑ |β|$. If $mixture = 1$ then the resulting model is pure L1.
+2. Ridge (also called L2 regularization): The penalty term added to the model is the sum of squares of coefficients of the predictors, multiplied by some constant -- $λ∑ β^2$. If $mixture = 0$ then the resulting model is pure L2.
+3. Elastic net (a mix of L1 and L2): The penalty term added to the model is the sum of L1 and L2 -- $λ∑ |β| + λ∑ β²$. If $0 < mixture < 1$ then the resulting model is elastic net.
+
+```{r create initial model}
+
 # create the null model
-multinom_reg_keras_spec <-
-  multinom_reg(
-    mode = "classification",
-    penalty = NULL,
-    mixture = NULL) |>
-  set_engine('keras')
+multinom_reg_glmnet_spec <-
+  # parsnip::multinom_reg(penalty = tune(), mixture = tune()) |> # to be tuned later
+  parsnip::multinom_reg(penalty = double(1), mixture = double(1)) |> # manual starting values
+  set_engine('glmnet') |>
+  set_mode("classification")
+
+```
+
+### Recipe Definition
+
+Create pre-processing steps for the predictors (also called features.);
+
+```{r create the recipe}
 
 # create the recipe
 multinom_recipe <- 
@@ -182,23 +243,172 @@ multinom_recipe <-
   # normalize all numeric variables
   step_normalize(GrossFamilyIncome, PovertyProbabilityIndex, NumberOfDependents, ProgramCostsKES)
   
+```
+
+### Workflow Definition
+
+A workflow defines the order in which the model is build by sequentially combining pre-processing steps (recipe) and other pipeline elements into a workflow;
+
+```{r create the workflow}
+
 # Create the workflow
 multinom_workflow <- 
   workflow() |>
-  add_model(multinom_reg_keras_spec) |> 
-  add_recipe(multinom_recipe)
+  add_recipe(multinom_recipe) |>
+  add_model(multinom_reg_glmnet_spec)  
+  
+```
+
+## Model Training
+
+We can now train(fit) the model using the training data as follows;
+
+```{r train model}
 
 # train model
-# multinom_fit <- 
-#   multinom_workflow |>
-#   fit(data = train_data)
+multinom_fit <-
+  multinom_workflow |>
+  parsnip::fit(data = train_data)
 
 ```
 
-### Model Fitting
+## Model Performance Diagnostics
 
-### Model Diagnostics
+Now that we have a 'bare bones' model, let's find out it's performance using metrics from the [yardstick](https://yardstick.tidymodels.org/) package, which is part of tidymodels. There are many ways to calculate multiclass metrics, such as using confusion matrix and accuracy level. Note that ROC (receiver operating characteristic) curve is used for binary classifiers, not multiclass classifiers which is the focus of this article.
 
-### Band Prediction
+```{r model performance diagnostics}
+
+# create new data (can be completely new or use training data without resposne variable)
+predictors_data <- test_data |> dplyr::select(-Bands)
+
+# use the model and the training data to get predictions of bands
+bands_data <- test_data
+bands_data$Bands_pred <- predict(multinom_fit, new_data = predictors_data, type = "class")
+bands_data$Bands_pred <- bands_data$Bands_pred$.pred_class
+
+bands_data <- bands_data |> dplyr::select(Bands, Bands_pred)
+
+## measure performance
+# 1) confusion matrix
+conf_mat(data = bands_data, truth = Bands, estimate = Bands_pred)
+
+# 2) kappa and accuracy
+metrics(data = bands_data, truth = Bands, estimate = Bands_pred)
+
+# 3) precision (same as accuracy)
+precision(data = bands_data, truth = Bands, estimate = Bands_pred, estimator = "micro")
+
+```
+
+There you go; a model accuracy of 0.862 is pretty high, given that the data was *simulated*! So much good news here, almost too good to be true. And what's more, this is a basic model, i.e. the (hyper)parameters *penalty* and *mixture* have the conservative values of `doubel(1)`. Are we able to improve the accuracy further by changing these values, i.e. by tuning them? Let's find out below.
+
+## Hyperparameter Tuning
+
+Note that the mixture and penalty levels (values) are arbitrarily set to 3 and 2 respectively -- these are simply starting points, and can be any numbers but the closer they are to the optimal values the quicker it is for the grid search to converge to those optimal values, which saves the computer tonnes of processing resources and time. The same goes for cross-validation of 3 folds.
+
+```{r improve model performance}
+
+# define model
+multinom_reg_glmnet_spec_tuned <-
+  parsnip::multinom_reg(penalty = tune(), mixture = tune()) |> # to be tuned
+  set_engine('glmnet') |>
+  set_mode("classification")
+
+# define grid search
+multinom_grid <- grid_regular(mixture(), penalty(), levels = c(mixture = 3, penalty = 2))
+
+# define work flow
+multinom_wf <- workflow() %>%
+  add_recipe(multinom_recipe) |>
+  add_model(multinom_reg_glmnet_spec_tuned)
+
+# define 3-fold CV resamples from which to search best parameter values
+multinom_3f_cv_folds <- vfold_cv(data = train_data, v = 3)
+
+# tune the hyperparameters using the grid search
+multinom_tuned <- tune_grid(
+  multinom_wf,
+  resamples = multinom_3f_cv_folds,
+  grid = multinom_grid,
+  control = control_grid(save_pred = TRUE)
+)
+
+select_best(multinom_tuned, metric = "accuracy")
+
+```
+
+From the above grid search, we got $penalty = 0.0000000001$ and $mixture = 1$. Let's plug these values into the model and see if the accuracy has improved;
+
+```{r fit updated model}
+
+# create the null model
+multinom_reg_glmnet_spec <-
+  parsnip::multinom_reg(penalty = 0.0000000001, mixture = 1) |>
+  set_engine('glmnet') |>
+  set_mode("classification")
+
+# rerun the workflow now that model has been updated
+multinom_workflow <- 
+  workflow() |>
+  add_recipe(multinom_recipe) |>
+  add_model(multinom_reg_glmnet_spec)
+
+# re-train the model based on new parameters
+multinom_fit <-
+  multinom_workflow |>
+  parsnip::fit(data = train_data)
+
+## measure performance of new model
+# create new data (can be completely new or use training data without resposne variable)
+predictors_data <- test_data |> dplyr::select(-Bands)
+
+# use the model and the training data to get predictions of bands
+bands_data <- test_data
+bands_data$Bands_pred <- predict(multinom_fit, new_data = predictors_data, type = "class")
+bands_data$Bands_pred <- bands_data$Bands_pred$.pred_class
+
+bands_data <- bands_data |> dplyr::select(Bands, Bands_pred)
+
+## measure performance
+# 1) confusion matrix
+conf_mat(data = bands_data, truth = Bands, estimate = Bands_pred)
+
+# 2) kappa and accuracy
+metrics(data = bands_data, truth = Bands, estimate = Bands_pred)
+
+# 3) precision (same as accuracy)
+precision(data = bands_data, truth = Bands, estimate = Bands_pred, estimator = "micro")
+
+```
+
+There is a huge improvement on model performance; we went from an accuracy of 0.862 to an accuracy of 0.9896! This is no small feat at all. Wonder if this can be improved further? Maybe, maybe not. At this point, there is no sensible need to go further.
+
+## Band Prediction
+
+Now that we have a reasonably reliable model, we can ask it to place a student into bands. All we need to do is provide the values of "GrossFamilyIncome", "GeographicalLocation", "PovertyProbabilityIndex", "Orphans", "Disability", "NumberOfDependents",  "ProgramCostsKES", and "Gender" for a particular student in the `new_data` argument of the `predict` function, as follows;
+
+```{r predicting bands}
+
+# enter new student data
+new_student_data <- data.frame(
+  GrossFamilyIncome = 3000,
+  GeographicalLocation = factor(5),
+  PovertyProbabilityIndex = 0.7,
+  Orphans = factor(1), 
+  Disability = factor(1), 
+  NumberOfDependents = 5, 
+  ProgramCostsKES = 500000, 
+  Gender = factor(1)
+)
+
+# predict new student band
+new_student_band <- predict(multinom_fit, new_data = new_student_data, type = "class")
+
+new_student_band
+
+```
+The new student above, as reasonably expected, is assigned band 1. "Reasonably expected' because the student comes from a family of low gross income, high poverty probability index, and is orphaned and disabled. 
 
 # Conclusion
+
+As we have seen, this is an advanced, machine learning way to create bands for students seeking to join the university. As an alternative to MTI, the ML model is scientifically sound, reliable, faster, and scalable. It gets even better as more and more training data becomes available over time, which enables the ML model to "learn" more about what it is excepted to do, therefore improving the banding accuracy.

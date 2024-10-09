@@ -49,17 +49,17 @@ The data is **simulated**, and therefore substantially differs with the actual s
 
 # Literature {#sec-lit_rev}
 
-There are a number of factors[^1] that the new MTI-based university funding model in Kenya considers for placement of students into the 5 bands. We shall discuss each one of them and deduce the probable underlying probability distributions and their associated parametric values that will enable us to simulate these factors. We shall simulate the data for 1000 students, thus $x_i$ where $i = 1, 2, 3, ..., 1000$. Because the values are randomly generated, we shall seed the random number generator (RNG), for reproducibility purposes, with the arbitrary value of 44. Note that there is no real reason for this choice.
+There are a number of factors[^1] that the new MTI-based university funding model in Kenya considers for placement of students into the 5 bands. We shall discuss each one of them and deduce the probable underlying probability distributions and their associated parametric values that will enable us to simulate these factors. We shall simulate the data for 10000 students, thus $x_i$ where $i = 1, 2, 3, ..., 10000$. Because the values are randomly generated, we shall seed the random number generator (RNG), for reproducibility purposes, with the arbitrary value of 44. Note that there is no real reason for this choice.
 
 [^1]: https://kafu.ac.ke/images/2022/Academics/nfm/NEW_FUNDING_MODEL\_-\_6TH_AUGUST_2024.pdf
 
 ## Bands {#sec-bands}
 
-This is the outcome -- a categorical 5-point ordinal variable where 1 represents the most needy and 5 represents the least needy[^2], thus $x_{ij}$ where $j = \{1, 2, 3, ..., 5\}$. We will assume that the first 2 or 3 bands have a fairly higher chance of occurring compared to the last bands, i.e for the $i^{th}$ student, $p(x_{i1}) > p(x_{i2}) >... >p(x_{i5})$. We need a probability distribution function that draws 5 numbers between 1 to 5 for 1000 observations. A multinomial distribution will do just that. We simply need to specify $n = 1$ (create 1 vector), $size = 1000$ (number of observations), and $prob = p(x_{ij})$ (vector of probabilities) in the function `rmultinom` from the package `{stats}`. The function is the Application Programming Interface (API) to the RNG for multinomial distribution.
-
-If we use a uniform probability of $p(x_{ij}) = 1/5$ we will end up with a uniform distribution, but we desire a distribution that is skewed to the left. Remember that the bands are a proxy for the socio-economic status of the household, and in Kenya -- as in most other countries[^3] -- the number of rich households is significantly lower than the number of poor households, therefore we need to expect more band 1 households than band 5 households.
+This is the outcome -- a categorical 5-point ordinal variable where 1 represents the most needy and 5 represents the least needy[^2], thus $x_{ij}$ where $j = \{1, 2, 3, ..., 5\}$. We will assume that the first 2 or 3 bands have a fairly higher chance of occurring compared to the last bands, i.e for the $i^{th}$ student, $p(x_{i1}) > p(x_{i2}) >... >p(x_{i5})$. We need a probability distribution function that draws 5 numbers between 1 to 5 for 10000 observations. A multinomial distribution will do just that. We simply need to specify $n = 1$ (create 1 vector), $size = 10000$ (number of observations), and $prob = p(x_{ij})$ (vector of probabilities) in the function `rmultinom` from the package `{stats}`. The function is the Application Programming Interface (API) to the RNG for multinomial distribution.
 
 [^2]: https://www.universitiesfund.go.ke/wp-content/uploads/2024/03/Issue-December-2023.pdf
+
+If we use a uniform probability of $p(x_{ij}) = 1/5$ we will end up with a uniform distribution, but we desire a distribution that is skewed to the left. Remember that the bands are a proxy for the socio-economic status of the household, and in Kenya -- as in most other countries[^3] -- the number of rich households is significantly lower than the number of poor households, therefore we need to expect more band 1 households than band 5 households.
 
 [^3]: https://www.researchgate.net/figure/US-Distribution-of-Income-Actual-vs-Lognormal-model_fig1_327971358
 
@@ -68,7 +68,7 @@ If we use a uniform probability of $p(x_{ij}) = 1/5$ we will end up with a unifo
 # generate 5 bands via multinomial distribution with equal probabilities
 set.seed(44)
 sample1 <- rmultinom(n = 1,
-                     size = 1000,
+                     size = 10000,
                      prob = rep(1/5, 5)) |> 
   as.data.frame() |>
   dplyr::mutate(Counts = dplyr::row_number()) |>
@@ -81,20 +81,20 @@ sample2 <- rep(sample1$Counts, sample1$Summary)
 barplot(table(sample2), xlab  = "Bands", main = "Histogram of Bands (Almost Uniform)")
 
 ```
-We could specify the 5 distinct probabilities $p(x_{ij})$ by trial and error, but the most effective way to get better probabilities is to think of each observation as a sum of 5 binomial trials ($p(x) = (_x^n)p^xq^{n-x}$) --not to be confused with multinomial -- with the probability of success in each trial being $p(x_{ij}) = 1/5$. Each trial results in either a success (1) or a fail (0). Summing these outcomes, the lowest possible value will be 0 (all fails), and the highest will be 5 (all successes). Therefore, each student will be assigned a value between 0 and 5 (inclusive). As it turns out, 4s and 5s are significantly fewer than 0s and 1s, regardless of the seed value of the RNG. This is exactly what we want. Finally, declare $x$ as an ordered factor because there is an intrinsic element of order or natural rank among the bands.
 
+We could specify the 5 distinct probabilities $p(x_{ij})$ by trial and error, but the most effective way to get better probabilities is to think of each observation as a sum of 5 binomial trials ($p(x) = (_x^n)p^xq^{n-x}$) --not to be confused with multinomial -- with the probability of success in each trial being $p(x_{ij}) = 1/5$. Each trial results in either a success (1) or a fail (0). Summing these outcomes, the lowest possible value will be 0 (all fails), and the highest will be 5 (all successes). Therefore, each student will be assigned a value between 0 and 5 (inclusive). As it turns out, 4s and 5s are significantly fewer than 0s and 1s, regardless of the seed value of the RNG. This is exactly what we want. Finally, declare $x$ as an ordered factor because there is an intrinsic element of order or natural rank among the bands.
 
 ```{r desirable bands}
 
 # generate probabilities via 5 binomial trails with p = 1/5
 # 1 is added to remove band 0 and introduce band 5
 set.seed(44)
-prob <- prop.table(table(rbinom(n = 1000, size = 5, prob = 1/5) + 1)) 
+prob <- prop.table(table(rbinom(n = 10000, size = 5, prob = 1/5) + 1)) 
 
 # generate 5 bands via multinomial distribution
 set.seed(44)
 sample1 <- rmultinom(n = 1,
-                     size = 1000,
+                     size = 10000,
                      prob = prob) |> 
   as.data.frame() |>
   dplyr::mutate(Counts = dplyr::row_number()) |>
@@ -109,14 +109,14 @@ barplot(table(sample2),  xlab  = "Bands", main = "Histogram of Bands (Appropriat
 
 ## Gross Family Income
 
-Income, as with bands, is expected to be a positively skewed real-valued number ($x ∈ ℝ^+$) which can assume the negative binomial distribution with the mean of KES 20,000[^4]. From this knowledge we can generate 1000 income values using `rnbinom` function from the package `{stats}` as shown in the code below;
+Income, as with bands, is expected to be a positively skewed real-valued number ($x ∈ ℝ^+$) which can assume the negative binomial distribution with the mean of KES 20,000[^4]. From this knowledge we can generate 10000 income values using `rnbinom` function from the package `{stats}` as shown in the code below;
 
 [^4]: https://www.businessdailyafrica.com/bd/economy/kenyans-average-income-of-sh20-123-hits-six-year-high--4043204
 
 ```{r Gross Family Income}
 
 set.seed(44)
-hist(rnbinom(n = 1000, size = 5, mu = 20000),  xlab  = "Income", main = "Histogram of Gross Family Income")
+hist(rnbinom(n = 10000, size = 5, mu = 20000),  xlab  = "Income", main = "Histogram of Gross Family Income")
 
 ```
 
@@ -127,7 +127,7 @@ We will take all the 47 counties as the distinct geographical locations from whi
 ```{r Geographical Location}
 
 set.seed(44)
-barplot(table(ceiling(runif(n = 1000, min = 1,  max = 47))), xlab  = "Geographical Location", main = "Discrete Uniform Distribution of Geographical Location")
+barplot(table(ceiling(runif(n = 10000, min = 1,  max = 47))), xlab  = "Geographical Location", main = "Discrete Uniform Distribution of Geographical Location")
 
 ```
 
@@ -138,7 +138,7 @@ We shall treat this as $x \sim N(\mu, s)$ which is in the field $x ∈ ℝ^+$. T
 ```{r Poverty Probability Index}
 
 set.seed(44)
-hist(abs(rnorm(n = 1000, mean = 0.3, sd = 0.2)), xlab  = "Poverty Probability Index", main = "Normal Distribution of Poverty Probability Index")
+hist(abs(rnorm(n = 10000, mean = 0.3, sd = 0.2)), xlab  = "Poverty Probability Index", main = "Normal Distribution of Poverty Probability Index")
 
 ```
 
@@ -149,7 +149,7 @@ This is a binary variable which indicates whether a student is an orphan or not,
 ```{r Orphans}
 
 set.seed(44)
-barplot(table(rbinom(n = 1000, size = 1, prob = 0.222)), xlab  = "Orphan Status", main = "Bargraph of the Distribution of Orphan Status")
+barplot(table(rbinom(n = 10000, size = 1, prob = 0.222)), xlab  = "Orphan Status", main = "Bargraph of the Distribution of Orphan Status")
 
 ```
 
@@ -162,7 +162,7 @@ This is yet another binary variable which indicates whether a student has disabi
 ```{r Disability}
 
 set.seed(44)
-barplot(table(rbinom(n = 1000, size = 1, prob = 0.022)), xlab  = "Disability Status", main = "Bargraph of the Distribution of Disability Status")
+barplot(table(rbinom(n = 10000, size = 1, prob = 0.022)), xlab  = "Disability Status", main = "Bargraph of the Distribution of Disability Status")
 
 ```
 
@@ -175,7 +175,7 @@ The variable represents counts, and therefore $x ∈ ℕ^+$. Both Poisson and ne
 ```{r Number of Dependents}
 
 set.seed(44)
-barplot(table(rpois(n = 1000, lambda = 4)), xlab  = "Number of Dependents", main = "Bargraph of the Distribution of Number of Dependents")
+barplot(table(rpois(n = 10000, lambda = 4)), xlab  = "Number of Dependents", main = "Bargraph of the Distribution of Number of Dependents")
 
 ```
 
@@ -186,7 +186,7 @@ Similar to @sec-pov_prob_ind, this variable is in the field $x ∈ ℝ^+$ where 
 ```{r Program Costs}
 
 set.seed(44)
-hist(abs(rnorm(n = 1000, mean = 500000, sd = 50000)), xlab  = "Program Costs", main = "Histogram of Distribution of Program Costs (KES)")
+hist(abs(rnorm(n = 10000, mean = 500000, sd = 50000)), xlab  = "Program Costs", main = "Histogram of Distribution of Program Costs (KES)")
 
 ```
 
@@ -204,7 +204,7 @@ prob <- c(0.49, 0.50, 0.01)
 # generate 3 outcomes via multinomial distribution
 set.seed(44)
 sample1 <- rmultinom(n = 1,
-                     size = 1000,
+                     size = 10000,
                      prob = prob) |> 
   as.data.frame() |>
   dplyr::mutate(Counts = dplyr::row_number()) |>
@@ -241,12 +241,12 @@ Now, let's combine all the simulated data according to probability distributions
 # generate probabilities via 5 binomial trials with p = 1/5
 # 1 is added to remove band 0 and introduce band 5
 set.seed(44)
-prob_bands <- prop.table(table(rbinom(n = 1000, size = 5, prob = 1/5) + 1)) 
+prob_bands <- prop.table(table(rbinom(n = 10000, size = 5, prob = 1/5) + 1)) 
 
 # generate 5 bands via multinomial distribution
 set.seed(44)
 bands1 <- rmultinom(n = 1,
-                     size = 1000,
+                     size = 10000,
                      prob = prob_bands) |> 
   as.data.frame() |>
   dplyr::mutate(Counts = dplyr::row_number()) |>
@@ -263,7 +263,7 @@ prob_gender <- c(0.49, 0.50, 0.01)
 # generate 3 outcomes via multinomial distribution
 set.seed(44)
 gender1 <- rmultinom(n = 1,
-                     size = 1000,
+                     size = 10000,
                      prob = prob_gender) |> 
   as.data.frame() |>
   dplyr::mutate(Counts = dplyr::row_number()) |>
@@ -281,31 +281,31 @@ simulated_data <- data.frame(
   Bands = sort(as.ordered(bands2), decreasing = FALSE),
   
   # sorting is necessary
-  GrossFamilyIncome = sort(rnbinom(n = 1000,
+  GrossFamilyIncome = sort(rnbinom(n = 10000,
                                    size = 5,
                                    mu = 20000), decreasing = FALSE),
   
-  GeographicalLocation = as.factor(ceiling(runif(n = 1000,
+  GeographicalLocation = as.factor(ceiling(runif(n = 10000,
                                                  min = 1,
                                                  max = 47))),
   
   # sorting is necessary
-  PovertyProbabilityIndex = sort(abs(rnorm(n = 1000,
+  PovertyProbabilityIndex = sort(abs(rnorm(n = 10000,
                                       mean = 0.3,
                                       sd = 0.2)), decreasing = TRUE),
   
-  Orphans = as.factor(rbinom(n = 1000,
+  Orphans = as.factor(rbinom(n = 10000,
                              size = 1,
                              prob = 0.222)),
   
-  Disability = as.factor(rbinom(n = 1000,
+  Disability = as.factor(rbinom(n = 10000,
                                 size = 1,
                                 prob = 0.022)), 
   
-  NumberOfDependents = rpois(n = 1000,
+  NumberOfDependents = rpois(n = 10000,
                              lambda = 4),
   
-  ProgramCostsKES = abs(rnorm(n = 1000,
+  ProgramCostsKES = abs(rnorm(n = 10000,
                               mean = 500000,
                               sd = 50000)),
   
