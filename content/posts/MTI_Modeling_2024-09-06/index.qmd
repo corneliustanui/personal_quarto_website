@@ -70,7 +70,7 @@ Now, let us explore how a machine learning (ML) classifier could be used as an a
 
 It goes without saying that a student requires a couple of lessons before sitting an exam, so does a ML model require massive -- yet meticulous -- training before it can be deployed for use, as noted in @sec-shallow.
 
-It is not too clear how and which factors were considered to create the 5 bands, although gross family income, geographical location poverty probability index, special circumstances such as orphans and students with disability, number of dependents, program costs, and gender are some of the variables that have been mentioned[^8]. Because I do not have readily available data covering these variables, I am going to simulate them and use R[^9], [{tidyverse}](https://https://www.tidyverse.org//), [{tidymodels}](https://www.tidymodels.org/) and other R packages to develop a data processing, modelling, and prediction pipeline using a ML multi-class classification (MCC)[^10] model of our choice. Note that the outcome should be in discrete ordinal scale.
+It is not too clear how and which factors were considered to create the 5 bands, although gross family income, geographical location poverty probability index, special circumstances such as orphans and students with disability, number of dependents, program costs, and gender are some of the variables that have been mentioned[^8]. Because I do not have readily available data covering these variables, I am going to simulate them and use R[^9], [{tidyverse}](https://www.tidyverse.org/), [{tidymodels}](https://www.tidymodels.org/) and other R packages to develop a data processing, modelling, and prediction pipeline using a ML multi-class classification (MCC)[^10] model of our choice. Note that the outcome should be in discrete ordinal scale.
 
 [^8]: https://kafu.ac.ke/images/2022/Academics/nfm/NEW_FUNDING_MODEL\_-\_6TH_AUGUST_2024.pdf
 
@@ -125,7 +125,7 @@ knitr::kable(head(x = simulated_data, n = 5))
 
 ## Inferential Model Creation
 
-Before we create a model that predicts or assigns bands, let's first explore the relationship between the outcome (Bands) and all the  predictors.
+Before we create a model that predicts or assigns bands, let's first explore the relationship between the outcome (Bands) and all the predictors.
 
 ```{r descriptive model}
 
@@ -134,7 +134,7 @@ mti_model_fit <- parsnip::multinom_reg() |>
 
 ```
 
-Now, we can extract the meaning from the information contained in the model created above. Instead of reporting log of odds, we can report just odd, as that make sit easier to interpret;- 
+Now, we can extract the meaning from the information contained in the model created above. Instead of reporting log of odds, we can report just odd, as that make sit easier to interpret;-
 
 ```{r model interpretation}
 
@@ -159,7 +159,7 @@ model_results
 
 A multinomial regression is, under the hood, an ensemble of several "binary logistic regressions". As we can see from the results above, the outcome `Bands` contains all the outcome bands (technically called 'classes'). Each class creates a binary logistic regression, and that is why we see all the `Predictors` for each class. Band 1 (class 1) is not reported because it is taken as the reference group. Any class can be made a reference groub by relevelling the factors. For example, to make band 5 the reference class, `simulated_data$Bands <- relevel(simulated_data$Bands, ref = "5")`.
 
-Looking at the p-values at 95% level of confidence, some independent indicators are significant predictors of certain bands. For instance, gross family income is significant at all bands (p-value <0.0001) respectively.) Therefore, a unit increase of a gross family income increases the odds of the family being in band 4 than being in band 1 by 25.07%, holding all other predictors constant. The value of 25.07% is gotten by $(1.2507 - 1)*100 = 25.07\%$. 
+Looking at the p-values at 95% level of confidence, some independent indicators are significant predictors of certain bands. For instance, gross family income is significant at all bands (p-value \<0.0001) respectively. Therefore, a unit increase of a gross family income increases the odds of the family being in band 4 than being in band 1 by 25.07%, holding all other predictors constant. The value of 25.07% is gotten by $(1.2507 - 1)*100 = 25.07\%$.
 
 ## Prediction Model Creation
 
@@ -204,9 +204,9 @@ In this model, there are only two (hyper)parameters that need to be specified: p
 
 [^11]: https://www.geeksforgeeks.org/lasso-vs-ridge-vs-elastic-net-ml/
 
-1. Lasso (also called L1 regularization): The penalty term added to the model is the sum of absolute coefficients of the predictors, multiplied by some constant -- $λ∑ |β|$. If $mixture = 1$ then the resulting model is pure L1.
-2. Ridge (also called L2 regularization): The penalty term added to the model is the sum of squares of coefficients of the predictors, multiplied by some constant -- $λ∑ β^2$. If $mixture = 0$ then the resulting model is pure L2.
-3. Elastic net (a mix of L1 and L2): The penalty term added to the model is the sum of L1 and L2 -- $λ∑ |β| + λ∑ β²$. If $0 < mixture < 1$ then the resulting model is elastic net.
+1.  Lasso (also called L1 regularization) -- the penalty term added to the model is the sum of absolute coefficients of the predictors, multiplied by some constant: $λ∑ |β|$. If $mixture = 1$ then the resulting model is pure L1.
+2.  Ridge (also called L2 regularization) --  the penalty term added to the model is the sum of squares of coefficients of the predictors, multiplied by some constant: $λ∑ β^2$. If $mixture = 0$ then the resulting model is pure L2.
+3.  Elastic net (a mix of L1 and L2) -- the penalty term added to the model is the sum of L1 and L2: $λ∑ |β| + λ∑ β²$. If $0 < mixture < 1$ then the resulting model is elastic net.
 
 ```{r create initial model}
 
@@ -278,7 +278,7 @@ Now that we have a 'bare bones' model, let's find out it's performance using met
 
 ```{r model performance diagnostics}
 
-# create new data (can be completely new or use training data without resposne variable)
+# create new data (can be completely new or use training data without response variable)
 predictors_data <- test_data |> dplyr::select(-Bands)
 
 # use the model and the training data to get predictions of bands
@@ -300,7 +300,7 @@ precision(data = bands_data, truth = Bands, estimate = Bands_pred, estimator = "
 
 ```
 
-There you go; a model accuracy of 0.862 is pretty high, given that the data was *simulated*! So much good news here, almost too good to be true. And what's more, this is a basic model, i.e. the (hyper)parameters *penalty* and *mixture* have the conservative values of `doubel(1)`. Are we able to improve the accuracy further by changing these values, i.e. by tuning them? Let's find out below.
+There you go; a model accuracy of 0.862 is pretty high, given that the data was *simulated*! So much good news here, almost too good to be true. And what's more, this is a basic model, i.e. both (hyper)parameters *penalty* and *mixture* have conservative values of `double(1)`. Are we able to improve the accuracy further by changing these values, i.e. by tuning them? Let's find out in the next section below.
 
 ## Hyperparameter Tuning
 
@@ -385,7 +385,7 @@ There is a huge improvement on model performance; we went from an accuracy of 0.
 
 ## Band Prediction
 
-Now that we have a reasonably reliable model, we can ask it to place a student into bands. All we need to do is provide the values of "GrossFamilyIncome", "GeographicalLocation", "PovertyProbabilityIndex", "Orphans", "Disability", "NumberOfDependents",  "ProgramCostsKES", and "Gender" for a particular student in the `new_data` argument of the `predict` function, as follows;
+Now that we have a reasonably reliable model, we can ask it to place a student into a band. All we need to do is provide the values of "GrossFamilyIncome", "GeographicalLocation", "PovertyProbabilityIndex", "Orphans", "Disability", "NumberOfDependents", "ProgramCostsKES", and "Gender" for a particular student in the `new_data` argument of the `predict` function, as follows;
 
 ```{r predicting bands}
 
@@ -407,7 +407,8 @@ new_student_band <- predict(multinom_fit, new_data = new_student_data, type = "c
 new_student_band
 
 ```
-The new student above, as reasonably expected, is assigned band 1. "Reasonably expected' because the student comes from a family of low gross income, high poverty probability index, and is orphaned and disabled. 
+
+The new student above, as reasonably expected, is assigned band 1. "Reasonably expected' because the student comes from a family of low gross income, high poverty probability index, and is orphaned and disabled.
 
 # Conclusion
 

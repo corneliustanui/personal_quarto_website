@@ -331,7 +331,7 @@ window.Quarto = {
 <section id="ml-approach-to-household-banding" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> ML Approach to Household Banding</h1>
 <p>It goes without saying that a student requires a couple of lessons before sitting an exam, so does a ML model require massive – yet meticulous – training before it can be deployed for use, as noted in <a href="#sec-shallow" class="quarto-xref">Section&nbsp;1.1</a>.</p>
-<p>It is not too clear how and which factors were considered to create the 5 bands, although gross family income, geographical location poverty probability index, special circumstances such as orphans and students with disability, number of dependents, program costs, and gender are some of the variables that have been mentioned<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>. Because I do not have readily available data covering these variables, I am going to simulate them and use R<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>, <a href="https://https://www.tidyverse.org//">{tidyverse}</a>, <a href="https://www.tidymodels.org/">{tidymodels}</a> and other R packages to develop a data processing, modelling, and prediction pipeline using a ML multi-class classification (MCC)<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> model of our choice. Note that the outcome should be in discrete ordinal scale.</p>
+<p>It is not too clear how and which factors were considered to create the 5 bands, although gross family income, geographical location poverty probability index, special circumstances such as orphans and students with disability, number of dependents, program costs, and gender are some of the variables that have been mentioned<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>. Because I do not have readily available data covering these variables, I am going to simulate them and use R<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>, <a href="https://www.tidyverse.org/">{tidyverse}</a>, <a href="https://www.tidymodels.org/">{tidymodels}</a> and other R packages to develop a data processing, modelling, and prediction pipeline using a ML multi-class classification (MCC)<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> model of our choice. Note that the outcome should be in discrete ordinal scale.</p>
 <section id="data-simulation" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="data-simulation"><span class="header-section-number">2.1</span> Data Simulation</h2>
 <p>Simulation of these data is outside the scope of this article and is <a href="https://corneliustanui.rbind.io/content/posts/Simulation_2024-09-12/">covered in my other post</a>.</p>
@@ -577,7 +577,7 @@ Disclaimer!
 </div>
 </div>
 <p>A multinomial regression is, under the hood, an ensemble of several “binary logistic regressions”. As we can see from the results above, the outcome <code>Bands</code> contains all the outcome bands (technically called ‘classes’). Each class creates a binary logistic regression, and that is why we see all the <code>Predictors</code> for each class. Band 1 (class 1) is not reported because it is taken as the reference group. Any class can be made a reference groub by relevelling the factors. For example, to make band 5 the reference class, <code>simulated_data$Bands &lt;- relevel(simulated_data$Bands, ref = "5")</code>.</p>
-<p>Looking at the p-values at 95% level of confidence, some independent indicators are significant predictors of certain bands. For instance, gross family income is significant at all bands (p-value &lt;0.0001) respectively.) Therefore, a unit increase of a gross family income increases the odds of the family being in band 4 than being in band 1 by 25.07%, holding all other predictors constant. The value of 25.07% is gotten by <span class="math inline">(1.2507 - 1)*100 = 25.07\%</span>.</p>
+<p>Looking at the p-values at 95% level of confidence, some independent indicators are significant predictors of certain bands. For instance, gross family income is significant at all bands (p-value &lt;0.0001) respectively. Therefore, a unit increase of a gross family income increases the odds of the family being in band 4 than being in band 1 by 25.07%, holding all other predictors constant. The value of 25.07% is gotten by <span class="math inline">(1.2507 - 1)*100 = 25.07\%</span>.</p>
 </section>
 <section id="prediction-model-creation" class="level2" data-number="2.4">
 <h2 data-number="2.4" class="anchored" data-anchor-id="prediction-model-creation"><span class="header-section-number">2.4</span> Prediction Model Creation</h2>
@@ -620,9 +620,9 @@ Disclaimer!
 <h3 data-number="2.4.2" class="anchored" data-anchor-id="create-initial-model"><span class="header-section-number">2.4.2</span> Create Initial Model</h3>
 <p>In this model, there are only two (hyper)parameters that need to be specified: penalty and mixture. The value of the penalty defines the degree to which <em>regularization</em> is applied to the model. Regularization is a technique used to control overfitting by adding a penalty (error) term to the model. On the other hand, mixture is the value that species how the penalty term is added. There are three ways of adding this penalty<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a>;</p>
 <ol type="1">
-<li>Lasso (also called L1 regularization): The penalty term added to the model is the sum of absolute coefficients of the predictors, multiplied by some constant – <span class="math inline">λ∑ |β|</span>. If <span class="math inline">mixture = 1</span> then the resulting model is pure L1.</li>
-<li>Ridge (also called L2 regularization): The penalty term added to the model is the sum of squares of coefficients of the predictors, multiplied by some constant – <span class="math inline">λ∑ β^2</span>. If <span class="math inline">mixture = 0</span> then the resulting model is pure L2.</li>
-<li>Elastic net (a mix of L1 and L2): The penalty term added to the model is the sum of L1 and L2 – <span class="math inline">λ∑ |β| + λ∑ β²</span>. If <span class="math inline">0 &lt; mixture &lt; 1</span> then the resulting model is elastic net.</li>
+<li>Lasso (also called L1 regularization) – the penalty term added to the model is the sum of absolute coefficients of the predictors, multiplied by some constant: <span class="math inline">λ∑ |β|</span>. If <span class="math inline">mixture = 1</span> then the resulting model is pure L1.</li>
+<li>Ridge (also called L2 regularization) – the penalty term added to the model is the sum of squares of coefficients of the predictors, multiplied by some constant: <span class="math inline">λ∑ β^2</span>. If <span class="math inline">mixture = 0</span> then the resulting model is pure L2.</li>
+<li>Elastic net (a mix of L1 and L2) – the penalty term added to the model is the sum of L1 and L2: <span class="math inline">λ∑ |β| + λ∑ β²</span>. If <span class="math inline">0 &lt; mixture &lt; 1</span> then the resulting model is elastic net.</li>
 </ol>
 <div class="cell">
 <details class="code-fold">
@@ -696,7 +696,7 @@ Disclaimer!
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create new data (can be completely new or use training data without resposne variable)</span></span>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create new data (can be completely new or use training data without response variable)</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>predictors_data <span class="ot">&lt;-</span> test_data <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>Bands)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># use the model and the training data to get predictions of bands</span></span>
@@ -743,7 +743,7 @@ Prediction   1   2   3   4   5
 1 precision micro          0.862</code></pre>
 </div>
 </div>
-<p>There you go; a model accuracy of 0.862 is pretty high, given that the data was <em>simulated</em>! So much good news here, almost too good to be true. And what’s more, this is a basic model, i.e.&nbsp;the (hyper)parameters <em>penalty</em> and <em>mixture</em> have the conservative values of <code>doubel(1)</code>. Are we able to improve the accuracy further by changing these values, i.e.&nbsp;by tuning them? Let’s find out below.</p>
+<p>There you go; a model accuracy of 0.862 is pretty high, given that the data was <em>simulated</em>! So much good news here, almost too good to be true. And what’s more, this is a basic model, i.e.&nbsp;both (hyper)parameters <em>penalty</em> and <em>mixture</em> have conservative values of <code>double(1)</code>. Are we able to improve the accuracy further by changing these values, i.e.&nbsp;by tuning them? Let’s find out in the next section below.</p>
 </section>
 <section id="hyperparameter-tuning" class="level2" data-number="2.7">
 <h2 data-number="2.7" class="anchored" data-anchor-id="hyperparameter-tuning"><span class="header-section-number">2.7</span> Hyperparameter Tuning</h2>
@@ -858,7 +858,7 @@ Prediction    1    2    3    4    5
 </section>
 <section id="band-prediction" class="level2" data-number="2.8">
 <h2 data-number="2.8" class="anchored" data-anchor-id="band-prediction"><span class="header-section-number">2.8</span> Band Prediction</h2>
-<p>Now that we have a reasonably reliable model, we can ask it to place a student into bands. All we need to do is provide the values of “GrossFamilyIncome”, “GeographicalLocation”, “PovertyProbabilityIndex”, “Orphans”, “Disability”, “NumberOfDependents”, “ProgramCostsKES”, and “Gender” for a particular student in the <code>new_data</code> argument of the <code>predict</code> function, as follows;</p>
+<p>Now that we have a reasonably reliable model, we can ask it to place a student into a band. All we need to do is provide the values of “GrossFamilyIncome”, “GeographicalLocation”, “PovertyProbabilityIndex”, “Orphans”, “Disability”, “NumberOfDependents”, “ProgramCostsKES”, and “Gender” for a particular student in the <code>new_data</code> argument of the <code>predict</code> function, as follows;</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
