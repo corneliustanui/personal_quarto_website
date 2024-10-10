@@ -98,7 +98,6 @@ The table below shows the properties of the variables are;
 
 : Properties of variables {#tbl-properties .striped .hover .primary .bordered}
 
-## Descrpitive Analysis
 
 ::: {.callout-important appearance="default" collapse="false"}
 ## Disclaimer!
@@ -118,16 +117,16 @@ The simulated data looks like this;
 # load data
 simulated_data <- readRDS(here::here("./Data/simulated_data.rds"))
 
-# view data (printed on your browser)
-knitr::kable(head(x = simulated_data, n = 5))
+# view 5 random records of the data (printed out on your browser's page)
+knitr::kable(dplyr::slice_sample(.data = simulated_data, n = 5))
 
 ```
 
-## Inferential Model Creation
+## Inferential Model
 
 Before we create a model that predicts or assigns bands, let's first explore the relationship between the outcome (Bands) and all the predictors.
 
-```{r descriptive model}
+```{r inferential model}
 
 mti_model_fit <- parsnip::multinom_reg() |> 
   parsnip::fit(Bands ~ ., data = simulated_data)
@@ -138,6 +137,7 @@ Now, we can extract the meaning from the information contained in the model crea
 
 ```{r model interpretation}
 
+# tidy up model results
 model_results <- broom::tidy(mti_model_fit, exponentiate = TRUE, conf.int = TRUE) |>
   dplyr::select(Bands = y.level, 
                 Predictors = term,
@@ -153,7 +153,8 @@ model_results <- broom::tidy(mti_model_fit, exponentiate = TRUE, conf.int = TRUE
                 Lower95 = round(Lower95, 4),
                 Upper95 = round(Upper95, 4))
 
-model_results
+# view 5 random records of results data (printed out on your browser's page)
+knitr::kable(dplyr::slice_sample(.data = model_results, n = 5))
 
 ```
 
@@ -296,11 +297,11 @@ conf_mat(data = bands_data, truth = Bands, estimate = Bands_pred)
 metrics(data = bands_data, truth = Bands, estimate = Bands_pred)
 
 # 3) precision (same as accuracy)
-precision(data = bands_data, truth = Bands, estimate = Bands_pred, estimator = "micro")
+(prec <- precision(data = bands_data, truth = Bands, estimate = Bands_pred, estimator = "micro"))
 
 ```
 
-There you go; a model accuracy of 0.862 is pretty high, given that the data was *simulated*! So much good news here, almost too good to be true. And what's more, this is a basic model, i.e. both (hyper)parameters *penalty* and *mixture* have conservative values of `double(1)`. Are we able to improve the accuracy further by changing these values, i.e. by tuning them? Let's find out in the next section below.
+There you go; a model accuracy of `{r} prec$.estimate` is pretty high, given that the data was *simulated*! So much good news here, almost too good to be true. And what's more, this is a basic model, i.e. both (hyper)parameters *penalty* and *mixture* have conservative values of `double(1)`. Are we able to improve the accuracy further by changing these values, i.e. by tuning them? Let's find out in the next section below.
 
 ## Hyperparameter Tuning
 
@@ -333,6 +334,7 @@ multinom_tuned <- tune_grid(
   control = control_grid(save_pred = TRUE)
 )
 
+# select the best performing model
 select_best(multinom_tuned, metric = "accuracy")
 
 ```
@@ -377,11 +379,11 @@ conf_mat(data = bands_data, truth = Bands, estimate = Bands_pred)
 metrics(data = bands_data, truth = Bands, estimate = Bands_pred)
 
 # 3) precision (same as accuracy)
-precision(data = bands_data, truth = Bands, estimate = Bands_pred, estimator = "micro")
+(prec2 <- precision(data = bands_data, truth = Bands, estimate = Bands_pred, estimator = "micro"))
 
 ```
 
-There is a huge improvement on model performance; we went from an accuracy of 0.862 to an accuracy of 0.9896! This is no small feat at all. Wonder if this can be improved further? Maybe, maybe not. At this point, there is no sensible need to go further.
+There is a huge improvement on model performance; we went from an accuracy of `{r} prec$.estimate` to an accuracy of `{r} prec2$.estimate`. This is no small feat at all! Wonder if this can be improved further? Maybe, maybe not. At this point, there is no sensible need to go further.
 
 ## Band Prediction
 
