@@ -23,7 +23,7 @@ about:
       
     - text: CV
       icon: file-earmark-person
-      url: "assets/pdf/Cornelius Tanui_Resume.pdf"
+      url: "www/Cornelius Tanui_Resume.pdf"
 comments: false 
 ---
 
