@@ -1,7 +1,7 @@
 project:
   type: website
   resources:
-    - "www/Cornelius Tanui_Resume.pdf"
+    - "www/Cornelius Tanui_CV.pdf"
 
 website:
   title: "Cornelius Tanui"
